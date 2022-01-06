@@ -1,34 +1,49 @@
-on: push
-name: CI
+name: run-tests
+
+on: [push, pull_request]
+
 jobs:
-  phpunit:
-    runs-on: ubuntu-latest
-    container:
-      image: kirschbaumdevelopment/laravel-test-runner:7.3
+    test:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: true
+            matrix:
+                os: [ubuntu-latest]
+                php: [7.4]
+                laravel: [8.*, 6.*, 7.*]
+                dependency-version: [prefer-lowest, prefer-stable]
+                include:
+                    -   laravel: 8.*
+                        testbench: 6.*
+                    -   laravel: 7.*
+                        testbench: 5.*
+                    -   laravel: 6.*
+                        testbench: 4.*
+                    -   laravel: 5.8.*
+                        testbench: 3.8.*
 
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: test
-        ports:
-          - 33306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
 
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v1
 
-    - name: Install composer dependencies
-      run: |
-        composer install --no-scripts
+            -   name: Cache dependencies
+                uses: actions/cache@v1
+                with:
+                    path: ~/.composer/cache/files
+                    key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-    - name: Prepare Laravel Application
-      run: |
-        cp .env.ci .env
-        php artisan key:generate
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+                    coverage: none
 
-    - name: Run Testsuite
-      run: vendor/bin/phpunit tests/
+            -   name: Install dependencies
+                run: |
+                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+            -   name: Execute tests
+                run: vendor/bin/phpunit
