@@ -184,6 +184,7 @@ return [
         Yajra\DataTables\HtmlServiceProvider::class,
         Yajra\DataTables\ButtonsServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+                Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*
