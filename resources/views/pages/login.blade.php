@@ -1,12 +1,14 @@
 @extends('layouts.auth')
 @section('content')
-    <div class="middle-box text-center loginscreen animated fadeInDown mt-5">
+    <div class="middle-box loginscreen animated fadeInDown mt-5">
         <div>
-            <div>
-                <img src="https://core-solutions.in/wp-content/uploads/2017/03/core-solution-amritsar-website-development.png" />
-            </div>
-            <h3>Welcome to Core Payroll</h3>
+            <center>
+                <img src="https://hospital.ripungupta.com/public/images/core.png" width="40%"/>
+            </center>
+            <br/>
+            <h3>Welcome to Accounting Software</h3>
             <p>Login in. To see it in action.</p>
+            <br/>
             @if(request()->route()->getPrefix() == '/user')
                 @php($isEmployee = true)
                 <h4>Employee Login</h4>
@@ -18,39 +20,47 @@
                 {!! Form::open(['route'=>'user.login.now']) !!}
                 {!! Form::hidden('type','user') !!}
             @else
-                {!! Form::open(['route'=>'login.now']) !!}
+                {!! Form::open(['route'=>'admin.login.now']) !!}
                 {!! Form::hidden('type','admin') !!}
             @endif
-                @if($isEmployee == true)
-                    <div class="form-group">
-                        {!! Form::text('user_code',null,['class'=>'form-control','placeholder'=>'Employee Code','autocomplete'=>'off']) !!}
-                        @error('user_code')
-                        <span class="help-block">
-                                {{ $message }}
-                            </span>
-                        @enderror
-                    </div>
-                @else
-                    <div class="form-group">
-                        {!! Form::text('email',null,['class'=>'form-control','placeholder'=>'Email','autocomplete'=>'off']) !!}
-                        @error('email')
-                        <span class="help-block">
-                                {{ $message }}
-                            </span>
-                        @enderror
-                    </div>
-                @endif
+            @if($isEmployee == true)
                 <div class="form-group">
-                    {!! Form::password('password',['class'=>'form-control','placeholder'=>'Password']) !!}
-                    @error('password')
-                        <span class="help-block">
-                            {{ $message }}
-                        </span>
+                    {!! Form::text('email',null,['class'=>'form-control','placeholder'=>'Employee Code','autocomplete'=>'off']) !!}
+                    @error('email')
+                    <span class="help-block">
+                                {{ $message }}
+                            </span>
                     @enderror
                 </div>
-                {!! Form::submit('Login',['class'=>'btn btn-primary block full-width m-b']) !!}
+            @else
+                <div class="form-group">
+                    {!! Form::text('email',null,['class'=>'form-control','placeholder'=>'Email','autocomplete'=>'off']) !!}
+                    @error('email')
+                    <span class="help-block">
+                                {{ $message }}
+                            </span>
+                    @enderror
+                </div>
+            @endif
+            <div class="form-group">
+                {!! Form::password('password',['class'=>'form-control','placeholder'=>'Password']) !!}
+                @error('password')
+                <span class="help-block">
+                    {{ $message }}
+                </span>
+                @enderror
+            </div>
+            <div class="form-group">
+                {!! Form::select('company_id',['company_1','company_2'],null,['class'=>'form-control select2','placeholder'=>'Company']) !!}
+                @error('company_id')
+                <span class="help-block">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+            {!! Form::submit('Login',['class'=>'btn btn-primary block full-width m-b']) !!}
             {!! Form::close() !!}
-            <p class="m-t"> <small>Core Payroll &copy; 2020</small> </p>
+            <p class="m-t"><small>Core Accounting Software &copy; {{ date('Y') }}</small></p>
         </div>
     </div>
 @endsection

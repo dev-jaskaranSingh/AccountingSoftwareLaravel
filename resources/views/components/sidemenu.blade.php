@@ -21,48 +21,60 @@
                 </div>
             </li>
             <li>
-                <a href="javascript:void(0)"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span></a>
+                <a href="javascript:void(0)"><i class="fa fa-th-large"></i> <span
+                        class="nav-label">Dashboards</span></a>
             </li>
-            @auth('employee')
-                <li>
-                    <a href="{{ route('employee.my-salary') }}"><i class="fa fa-credit-card"></i> <span class="nav-label">My Salary</span></a>
-                </li>
+            @auth('user')
+{{--                <li>--}}
+{{--                    <a href=""><i class="fa fa-credit-card"></i> <span class="nav-label">My Salary</span></a>--}}
+{{--                </li>--}}
             @endauth
             @auth('admin')
                 <li>
-                    <a href="javascript:void(0)"><i class="fa fa-users"></i> <span class="nav-label">Employee Master</span><span class="fa arrow"></span></a>
+                    <a href="javascript:void(0)"><i class="fa fa-users"></i>
+                        <span class="nav-label">Users Management</span>
+                        <span class="fa arrow"></span>
+                    </a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a href="{{ route('admin.employees') }}">List Employee</a></li>
-                        <li><a href="{{ route('admin.employee.create') }}">Create New</a></li>
-                    <li><a href="{{ route('admin.employee.import') }}">Import</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="{{ route('admin.departments') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Departments</span></a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.categories') }}"><i class="fa fa-square-o"></i> <span class="nav-label">Categories</span></a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-users"></i> <span class="nav-label">Salaries</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                        <li><a href="{{ route('admin.salaries') }}">List Salaries</a></li>
-                        <li><a href="{{ route('admin.salary.create') }}">Create New</a></li>
-                        <li><a href="{{ route('admin.salary.import') }}">Import Salary</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{{ route('admin.loans') }}"><i class="fa fa-file-excel-o"></i> <span class="nav-label">Loans</span></a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)"><i class="fa fa-bank"></i> <span class="nav-label">PF Statement</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                        <li><a href="{{ route('admin.pf.report') }}">PF Statement</a></li>
-                        <li><a href="{{ route('admin.pf.final.settlement') }}">PF Final Settlement</a></li>
+                        <li><a href="">List users</a></li>
+                        <li><a href="">Create New</a></li>
                     </ul>
                 </li>
             @endauth
+            <li>
+                <a href="javascript:void(0)"><i class="fa fa-users"></i>
+                    <span class="nav-label">Masters</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="">Account Master</a></li>
+                    <li><a href="">Group Master</a></li>
+                    <li><a href="">HSN Master</a></li>
+                    <li><a href="">Item Master</a></li>
+                    <li><a href="">Item Group Master</a></li>
+                    <li><a href="">Unit Master</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:void(0)"><i class="fa fa-users"></i>
+                    <span class="nav-label">Transactions</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="">List users</a></li>
+                    <li><a href="">Create New</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:void(0)"><i class="fa fa-users"></i>
+                    <span class="nav-label">Reports</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="">List users</a></li>
+                    <li><a href="">Create New</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>
