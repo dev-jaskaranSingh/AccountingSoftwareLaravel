@@ -51,7 +51,8 @@
                 @enderror
             </div>
             <div class="form-group">
-                {!! Form::select('company_id',['company_1','company_2'],null,['class'=>'form-control select2','placeholder'=>'Company']) !!}
+                {!! Form::select('company_id',\App\Models\Company::getCompanies(),null,['class'=>'form-control
+                                select2','placeholder'=>'Company']) !!}
                 @error('company_id')
                 <span class="help-block">
                         {{ $message }}

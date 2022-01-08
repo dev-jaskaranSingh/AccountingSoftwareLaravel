@@ -13,7 +13,7 @@
                         <li><a class="dropdown-item" href="javascript:void(0)">Contacts</a></li>
                         <li><a class="dropdown-item" href="javascript:void(0)">Mailbox</a></li>
                         <li class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
                     </ul>
                 </div>
                 <div class="logo-element">
@@ -25,9 +25,9 @@
                         class="nav-label">Dashboards</span></a>
             </li>
             @auth('user')
-{{--                <li>--}}
-{{--                    <a href=""><i class="fa fa-credit-card"></i> <span class="nav-label">My Salary</span></a>--}}
-{{--                </li>--}}
+                {{--                <li>--}}
+                {{--                    <a href=""><i class="fa fa-credit-card"></i> <span class="nav-label">My Salary</span></a>--}}
+                {{--                </li>--}}
             @endauth
             @auth('admin')
                 <li>
@@ -36,7 +36,7 @@
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a href="">List users</a></li>
+                        <li><a href="{{ route('admin.users.index') }}">List users</a></li>
                         <li><a href="">Create New</a></li>
                     </ul>
                 </li>

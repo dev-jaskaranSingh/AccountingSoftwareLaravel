@@ -16,7 +16,6 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        dd(Auth::guard('admin')->check());
         return $next($request);
     }
 }
