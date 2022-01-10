@@ -86,7 +86,7 @@ class UserController extends Controller
         }
         UserForm::where('user_id', $user->id)->delete();
         $user->updateOrFail($request->validated());
-        UserForm::upsert($userForms, ['user_id', 'form_id'],['create', 'read', 'update', 'delete']);
+        UserForm::upsert($userForms, ['user_id', 'form_id'], ['create', 'read', 'update', 'delete']);
         Session::flash('success', 'Success|User updated successfully!');
         return back();
         return redirect()->route('admin.users.index');
@@ -103,5 +103,4 @@ class UserController extends Controller
         Session::flash('success', 'Success|User deleted successfully!');
         return redirect()->route('admin.users.index');
     }
-
 }
