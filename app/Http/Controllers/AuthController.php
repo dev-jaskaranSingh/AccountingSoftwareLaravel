@@ -17,7 +17,8 @@ class AuthController extends Controller
     public function loginNow(Request $request)
     {
         $rules = [
-            'password' => 'required'
+            'password' => 'required',
+            // 'company_id' => ['required', 'exists:companies,id', 'numeric'],
         ];
 
         if ($request->type == 'user') {

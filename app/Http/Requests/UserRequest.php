@@ -30,7 +30,6 @@ class UserRequest extends FormRequest
             'mobile' => ['required', 'unique:users,mobile'],
             'password' => ['required', 'confirmed','min:6'],
             'password_confirmation' => ['required','min:6'],
-
         ];
     }
 }

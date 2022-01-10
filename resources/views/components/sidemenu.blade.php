@@ -37,10 +37,11 @@
                     </a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{ route('admin.users.index') }}">List users</a></li>
-                        <li><a href="">Create New</a></li>
+<li><a href="{{ route('admin.users.create') }}">Create New</a></li>
                     </ul>
                 </li>
             @endauth
+
             <li>
                 <a href="javascript:void(0)"><i class="fa fa-users"></i>
                     <span class="nav-label">Masters</span>
