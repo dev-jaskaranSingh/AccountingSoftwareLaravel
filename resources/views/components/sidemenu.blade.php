@@ -17,18 +17,15 @@
                     </ul>
                 </div>
                 <div class="logo-element">
-                    CP+
+                    CORE+
                 </div>
             </li>
             <li>
-                <a href="javascript:void(0)"><i class="fa fa-th-large"></i> <span
-                        class="nav-label">Dashboards</span></a>
+                <a href="javascript:void(0)">
+                    <i class="fa fa-th-large"></i>
+                    <span class="nav-label">Dashboards</span>
+                </a>
             </li>
-            @auth('user')
-                {{--                <li>--}}
-                {{--                    <a href=""><i class="fa fa-credit-card"></i> <span class="nav-label">My Salary</span></a>--}}
-                {{--                </li>--}}
-            @endauth
             @auth('admin')
                 <li>
                     <a href="javascript:void(0)"><i class="fa fa-users"></i>
@@ -37,7 +34,7 @@
                     </a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{ route('admin.users.index') }}">List users</a></li>
-<li><a href="{{ route('admin.users.create') }}">Create New</a></li>
+                        <li><a href="{{ route('admin.users.create') }}">Create New</a></li>
                     </ul>
                 </li>
             @endauth
@@ -62,8 +59,16 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="">List users</a></li>
-                    <li><a href="">Create New</a></li>
+                    <li><a href="">Sale</a></li>
+                    <li><a href="">Purchase</a></li>
+                    <li><a href="">Sale Return</a></li>
+                    <li><a href="">Purchase Return</a></li>
+                    <li><a href="">Receipt</a></li>
+                    <li><a href="">Payment</a></li>
+                    <li><a href="">General</a></li>
+                    <li><a href="">Contra</a></li>
+                    <li><a href="">Stock In</a></li>
+                    <li><a href="">Stock Out</a></li>
                 </ul>
             </li>
             <li>
@@ -72,8 +77,12 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="">List users</a></li>
-                    <li><a href="">Create New</a></li>
+                    <li><a href="">Trail Balance</a></li>
+                    <li><a href="">Ledger Report</a></li>
+                    <li><a href="">Sale Register</a></li>
+                    <li><a href="">Purchase Register</a></li>
+                    <li><a href="">Sale Return</a></li>
+                    <li><a href="">Purchase Return</a></li>
                 </ul>
             </li>
         </ul>
