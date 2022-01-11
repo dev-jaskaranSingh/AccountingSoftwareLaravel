@@ -13,4 +13,6 @@
 
 Route::prefix('masters')->group(function() {
     Route::get('/', 'MastersController@index');
+    Route::resource('/account/group', 'AccountGroupController');
+    Route::resource('/accounts', 'AccountMasterController');
 });

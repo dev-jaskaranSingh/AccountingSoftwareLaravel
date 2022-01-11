@@ -45,8 +45,8 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
+                    <li><a href="{{route('group.index')}}">Account Group Master</a></li>
                     <li><a href="">Account Master</a></li>
-                    <li><a href="">Group Master</a></li>
                     <li><a href="">HSN Master</a></li>
                     <li><a href="">Item Master</a></li>
                     <li><a href="">Item Group Master</a></li>
