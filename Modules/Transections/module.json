@@ -1,0 +1,13 @@
+{
+    "name": "Transections",
+    "alias": "transections",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Transections\\Providers\\TransectionsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
