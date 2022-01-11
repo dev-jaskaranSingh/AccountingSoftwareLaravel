@@ -26,10 +26,11 @@ class UserRequest extends FormRequest
         return [
             'name' => ['required'],
             'email' => ['required', 'unique:users,email'],
-            'user_code' => ['required', 'unique:users,user_code','min:6'],
             'mobile' => ['required', 'unique:users,mobile'],
             'password' => ['required', 'confirmed','min:6'],
             'password_confirmation' => ['required','min:6'],
+            'is_admin' => '',
+            'is_active' => '',
         ];
     }
 }

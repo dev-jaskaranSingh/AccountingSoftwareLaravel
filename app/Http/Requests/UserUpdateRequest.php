@@ -26,10 +26,7 @@ class UserUpdateRequest extends FormRequest
         return [
             'name' => ['required'],
             'email' => ['required'],
-            'user_code' => ['required','min:6'],
             'mobile' => ['required'],
-            'password' => ['required', 'confirmed','min:6'],
-            'password_confirmation' => ['required','min:6'],
             'is_admin' => '',
             'is_active' => '',
         ];

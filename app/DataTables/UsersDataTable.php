@@ -73,7 +73,6 @@ class UsersDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name'),
-            Column::make('user_code')->title('User Code'),
             Column::make('is_active')->title('Status'),
             Column::make('created_at')->title('Created At'),
             Column::computed('action')

@@ -29,6 +29,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::group(['middleware' => 'admin'], function () {
         Route::get('/',[DashboardController::class,'index'])->name('dashboard');
         Route::resource('users', UserController::class);
+        Route::get('/users/{user}/edit/password',[UserController::class,'editPassword'])->name('users.edit.password');
+        Route::put('/users/{user}/update/password',[UserController::class,'updatePassword'])->name('users.update.password');
     });
 
     Route::group(['middleware' => 'admin.guest'], function () {

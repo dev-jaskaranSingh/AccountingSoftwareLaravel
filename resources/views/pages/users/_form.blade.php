@@ -33,33 +33,26 @@
                                 </span>
                         @enderror
                     </div>
-                    <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('user_code','User Code') !!}
-                        {!! Form::text('user_code',null,['class'=>'form-control']) !!}
-                        @error('user_code')
-                        <span class="help-block text-danger">
+                    @if(Route::currentRouteName() == 'admin.users.create')
+                        <div class="col-md-6 col-sm-12 mb-3">
+                            {!! Form::label('password','Password') !!}
+                            {!! Form::password('password',['class'=>'form-control']) !!}
+                            @error('password')
+                            <span class="help-block text-danger">
                                     {{ $message }}
                                 </span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('password','Password') !!}
-                        {!! Form::password('password',['class'=>'form-control']) !!}
-                        @error('password')
-                        <span class="help-block text-danger">
+                            @enderror
+                        </div>
+                        <div class="col-md-6 col-sm-12 mb-3">
+                            {!! Form::label('password_confirmation','Confirm Password') !!}
+                            {!! Form::password('password_confirmation',['class'=>'form-control']) !!}
+                            @error('password_confirmation')
+                            <span class="help-block text-danger">
                                     {{ $message }}
                                 </span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('password_confirmation','Confirm Password') !!}
-                        {!! Form::password('password_confirmation',['class'=>'form-control']) !!}
-                        @error('password_confirmation')
-                        <span class="help-block text-danger">
-                                    {{ $message }}
-                                </span>
-                        @enderror
-                    </div>
+                            @enderror
+                        </div>
+                    @endif
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('is_active','Status') !!}
                         {!! Form::select('is_active',[0 =>'Inactive', 1 => 'Active'],null,['class'=>'form-control']) !!}

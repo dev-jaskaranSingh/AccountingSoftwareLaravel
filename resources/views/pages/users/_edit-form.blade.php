@@ -20,34 +20,41 @@
                         <td><strong>Update</strong></td>
                         <td><strong>Delete</strong></td>
                     </tr>
-                    @foreach($forms as $key => $form)
-                        @php($userFormsPermission = $userForms->where('form_id', $form->id)->last())
+                    @foreach($formsGroups as $group => $forms)
                         <tr>
-                            <td>
-                                <strong>{!! $form->name !!} </strong>
-                                <input type="hidden" name="forms[{{$form->id}}]" value="{!! $form->id !!}"/>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="forms[{{ $form->id }}][create]" value="1"
-                                       @if(isset($userFormsPermission->create) && ($userFormsPermission->create == 1))
-                                       checked @endif>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="forms[{{ $form->id }}][read]" value="1"
-                                       @if(isset($userFormsPermission->read) && ($userFormsPermission->read == 1)) checked
-                                    @endif>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="forms[{{ $form->id }}][update]" value="1"
-                                       @if(isset($userFormsPermission->update) && ($userFormsPermission->update == 1))
-                                       checked @endif>
-                            </td>
-                            <td>
-                                <input type="checkbox" name="forms[{{ $form->id }}][delete]" value="1"
-                                       @if(isset($userFormsPermission->delete) && ($userFormsPermission->delete == 1))
-                                       checked @endif>
+                            <td colspan="5" align="center">
+                                <h3><strong>{!! $group !!}</strong></h3>
                             </td>
                         </tr>
+                        @foreach($forms as $key => $form)
+                            @php($userFormsPermission = $userForms->where('form_id', $form->id)->last())
+                            <tr>
+                                <td>
+                                    <strong>{!! $form->name !!} </strong>
+                                    <input type="hidden" name="forms[{{$form->id}}]" value="{!! $form->id !!}"/>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="forms[{{ $form->id }}][create]" value="1"
+                                           @if(isset($userFormsPermission->create) && ($userFormsPermission->create == 1))
+                                           checked @endif>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="forms[{{ $form->id }}][read]" value="1"
+                                           @if(isset($userFormsPermission->read) && ($userFormsPermission->read == 1)) checked
+                                        @endif>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="forms[{{ $form->id }}][update]" value="1"
+                                           @if(isset($userFormsPermission->update) && ($userFormsPermission->update == 1))
+                                           checked @endif>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="forms[{{ $form->id }}][delete]" value="1"
+                                           @if(isset($userFormsPermission->delete) && ($userFormsPermission->delete == 1))
+                                           checked @endif>
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
                     </tbody>
                 </table>

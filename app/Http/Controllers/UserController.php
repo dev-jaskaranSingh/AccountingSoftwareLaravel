@@ -12,6 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Session;
 use Throwable;
 
@@ -61,7 +62,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $userForms = UserForm::where('user_id', $user->id)->get();
-        return view('pages.users.edit', ['model' => $user, 'forms' => Form::all(), 'userForms' => $userForms]);
+        return view('pages.users.edit', ['model' => $user, 'formsGroups' => Form::all()->groupBy('form_group'), 'userForms' => $userForms]);
     }
 
     /**
@@ -89,7 +90,6 @@ class UserController extends Controller
         UserForm::upsert($userForms, ['user_id', 'form_id'], ['create', 'read', 'update', 'delete']);
         Session::flash('success', 'Success|User updated successfully!');
         return back();
-        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -103,4 +103,31 @@ class UserController extends Controller
         Session::flash('success', 'Success|User deleted successfully!');
         return redirect()->route('admin.users.index');
     }
+
+    /**
+     * @param User $user
+     * @return Application|Factory|View
+     */
+    public function editPassword(User $user)
+    {
+        return view('pages.users.edit-password', ['model' => $user]);
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse
+     * @throws Throwable
+     */
+    public function updatePassword(Request $request, User $user): RedirectResponse
+    {
+        $request->validate([
+            'password' => 'required|confirmed|min:6',
+            'password_confirmation' => 'required'
+        ]);
+        $user->updateOrFail($request->validated());
+        Session::flash('success', 'Success|User password updated successfully!');
+        return redirect()->route('admin.users.index');
+    }
+
 }

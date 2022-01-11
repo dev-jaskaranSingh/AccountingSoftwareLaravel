@@ -27,7 +27,7 @@
                 <div class="form-group">
                     {!! Form::text('email',null,['class'=>'form-control','placeholder'=>'Employee Code','autocomplete'=>'off']) !!}
                     @error('email')
-                    <span class="help-block">
+                    <span class="help-block text-danger">
                                 {{ $message }}
                             </span>
                     @enderror
@@ -36,7 +36,7 @@
                 <div class="form-group">
                     {!! Form::text('email',null,['class'=>'form-control','placeholder'=>'Email','autocomplete'=>'off']) !!}
                     @error('email')
-                    <span class="help-block">
+                    <span class="help-block text-danger">
                                 {{ $message }}
                             </span>
                     @enderror
@@ -45,7 +45,7 @@
             <div class="form-group">
                 {!! Form::password('password',['class'=>'form-control','placeholder'=>'Password']) !!}
                 @error('password')
-                <span class="help-block">
+                <span class="help-block text-danger">
                     {{ $message }}
                 </span>
                 @enderror
@@ -54,7 +54,7 @@
                 {!! Form::select('company_id',\App\Models\Company::getCompanies(),null,['class'=>'form-control
                                 select2','placeholder'=>'Company']) !!}
                 @error('company_id')
-                <span class="help-block">
+                <span class="help-block text-danger">
                         {{ $message }}
                     </span>
                 @enderror
