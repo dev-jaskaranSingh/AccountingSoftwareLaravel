@@ -20533,6 +20533,17 @@
      
 }
 
+    namespace Nwidart\Modules { 
+            /**
+     * 
+     *
+     */ 
+        class Collection {
+         
+    }
+     
+}
+
     namespace Yajra\DataTables { 
             /**
      * 
