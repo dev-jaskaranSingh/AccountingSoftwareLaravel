@@ -20,9 +20,8 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::model($model,['method'=>'PUT','route'=>['admin.users.update',$model->id]]) !!}
-            @include('pages.users._form')
-            @include('pages.users._edit-form')
+        {!! Form::model($model,['method'=>'PUT','route'=>['group.update',$model->id]]) !!}
+            @include('masters::account_group._form')
         {!! Form::submit('Update',['class'=>'btn btn-primary']) !!}
         {!! Form::close() !!}
     </div>

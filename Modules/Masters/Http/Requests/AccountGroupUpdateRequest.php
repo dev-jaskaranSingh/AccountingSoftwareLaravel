@@ -4,7 +4,7 @@ namespace Modules\Masters\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AccountGroupSaveRequest extends FormRequest
+class AccountGroupUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -13,9 +13,8 @@ class AccountGroupSaveRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
-            'name' => ['required', 'unique:account_groups,name', 'max:255'],
+            'name' => ['required', 'max:255'],
             'is_primary' => [''],
         ];
     }

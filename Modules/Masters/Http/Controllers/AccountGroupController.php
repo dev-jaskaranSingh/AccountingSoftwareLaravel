@@ -3,12 +3,13 @@
 namespace Modules\Masters\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Modules\Masters\DataTables\AccountGroupDataTable;
 use Modules\Masters\Entities\AccountGroup;
+use Modules\Masters\Entities\AccountSubGroup;
 use Modules\Masters\Http\Requests\AccountGroupSaveRequest;
+use Modules\Masters\Http\Requests\AccountGroupUpdateRequest;
 use Session;
 
 class AccountGroupController extends Controller
@@ -35,49 +36,58 @@ class AccountGroupController extends Controller
      */
     public function store(AccountGroupSaveRequest $request): RedirectResponse
     {
-        AccountGroup::create($request->validated());
+
+        $accountGroup = AccountGroup::create($request->validated());
+        if($request->is_primary !== 'on' && !is_null($request->sub_group_id)){
+            AccountSubGroup::create([
+                'parent_id' => $request->sub_group_id,
+                'child_id' => $accountGroup->id,
+            ]);
+        }
         Session::flash('success', 'Success|Account Group Created Successfully');
         return redirect()->route('group.index');
     }
 
     /**
      * Show the specified resource.
-     * @param AccountGroup $accountGroup
+     * @param AccountGroup $group
      * @return Renderable
      */
-    public function show(AccountGroup $accountGroup): Renderable
+    public function show(AccountGroup $group): Renderable
     {
-        return view('masters::account_group.show', ['model' => $accountGroup]);
+        return view('masters::account_group.view', ['model' => $group->load('children', 'parent')]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param AccountGroup $accountGroup
+     * @param AccountGroup $group
      * @return Renderable
      */
-    public function edit(AccountGroup $accountGroup): Renderable
+    public function edit(AccountGroup $group): Renderable
     {
-        return view('masters::account_group.edit', ['model' => $accountGroup]);
+        return view('masters::account_group.edit', ['model' => $group]);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param AccountGroupSaveRequest $request
-     * @param AccountGroup $accountGroup
-     * @return Renderable
+     * @param AccountGroupUpdateRequest $request
+     * @param AccountGroup $group
+     * @return RedirectResponse
      */
-    public function update(AccountGroupSaveRequest $request, AccountGroup $accountGroup): Renderable
+    public function update(AccountGroupUpdateRequest $request, AccountGroup $group): RedirectResponse
     {
-
+        $group->update($request->validated());
+        Session::flash('success', 'Success|Account Group Updated Successfully');
+        return redirect()->route('group.index');
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
+     * @param AccountGroup $group
+     * @return RedirectResponse
      */
-    public function destroy(AccountGroup $accountGroup)
+    public function destroy(AccountGroup $group): RedirectResponse
     {
-        //
+        dd($group);
     }
 }
