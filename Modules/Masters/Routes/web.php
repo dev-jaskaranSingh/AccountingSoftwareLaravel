@@ -11,8 +11,12 @@
 |
 */
 
-Route::prefix('masters')->group(function() {
+Route::group(['prefix' => 'masters','as' => 'master.'],function() {
     Route::get('/', 'MastersController@index');
-    Route::resource('/account/group', 'AccountGroupController');
-    Route::resource('/accounts/master', 'AccountMasterController');
+    Route::resource('/account-groups', 'AccountGroupController');
+    Route::resource('/accounts', 'AccountMasterController');
+    Route::resource('/items', 'ItemMasterController');
+    Route::resource('/item-groups', 'ItemMasterController');
+    Route::resource('/units', 'UnitMasterController');
+    Route::resource('/hsn', 'HSNMasterController');
 });

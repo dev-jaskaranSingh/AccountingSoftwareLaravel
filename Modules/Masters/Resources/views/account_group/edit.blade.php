@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::model($model,['method'=>'PUT','route'=>['group.update',$model->id]]) !!}
+        {!! Form::model($model,['method'=>'PUT','route'=>['master.account-groups.update',$model->id]]) !!}
             @include('masters::account_group._form')
         {!! Form::submit('Update',['class'=>'btn btn-primary']) !!}
         {!! Form::close() !!}

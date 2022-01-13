@@ -45,7 +45,7 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <a href="{{ route('group.index') }}" class="btn btn-danger">Go Back</a>
+                        <a href="{{ route('master.account-groups.index') }}" class="btn btn-danger">Go Back</a>
                     </div>
                 </div>
             </div>

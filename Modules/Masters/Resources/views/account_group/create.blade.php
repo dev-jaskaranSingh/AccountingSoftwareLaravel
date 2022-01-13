@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::open(['route'=>'group.store']) !!}
+        {!! Form::open(['route'=>'master.account-groups.store']) !!}
             @include('masters::account_group._form')
             {!! Form::submit('Create',['class'=>'btn btn-primary']) !!}
         {!! Form::close() !!}
