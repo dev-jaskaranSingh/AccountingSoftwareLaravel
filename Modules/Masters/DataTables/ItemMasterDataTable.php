@@ -3,16 +3,14 @@
 namespace Modules\Masters\DataTables;
 
 
-use Modules\Masters\Entities\AccountGroup;
-use Modules\Masters\Entities\AccountMaster;
-use Modules\Masters\Entities\UnitMaster;
+use Modules\Masters\Entities\ItemMaster;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class AccountMasterDataTable extends DataTable
+class ItemMasterDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,7 +23,7 @@ class AccountMasterDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->editColumn('action', function ($model) {
-                return view('masters::account_master._action', compact('model'));
+                return view('masters::account_group._action', compact('model'));
             })->editColumn('created_at', function ($model) {
                 if (is_null($model->created_at)) return null;
                 return $model->created_at->format('d-m-Y h:i:s A');
@@ -35,10 +33,10 @@ class AccountMasterDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param AccountMaster $model
+     * @param ItemMaster $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(AccountMaster $model): \Illuminate\Database\Eloquent\Builder
+    public function query(ItemMaster $model): \Illuminate\Database\Eloquent\Builder
     {
         return $model->newQuery();
     }
@@ -51,7 +49,7 @@ class AccountMasterDataTable extends DataTable
     public function html(): Builder
     {
         return $this->builder()
-            ->setTableId('account-master-datatable-table')
+            ->setTableId('item-group-datatable-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -91,6 +89,6 @@ class AccountMasterDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'AccountMaster_' . date('YmdHis');
+        return 'ItemMaster_' . date('YmdHis');
     }
 }

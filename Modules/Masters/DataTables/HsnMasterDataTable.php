@@ -3,16 +3,14 @@
 namespace Modules\Masters\DataTables;
 
 
-use Modules\Masters\Entities\AccountGroup;
-use Modules\Masters\Entities\AccountMaster;
-use Modules\Masters\Entities\UnitMaster;
+use Modules\Masters\Entities\HsnMaster;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class AccountMasterDataTable extends DataTable
+class HsnMasterDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -20,25 +18,25 @@ class AccountMasterDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return DataTableAbstract
      */
-    public function dataTable($query): DataTableAbstract
+    public function dataTable($query)
     {
         return datatables()
             ->eloquent($query)
             ->editColumn('action', function ($model) {
-                return view('masters::account_master._action', compact('model'));
+                return view('masters::account_group._action', compact('model'));
             })->editColumn('created_at', function ($model) {
                 if (is_null($model->created_at)) return null;
                 return $model->created_at->format('d-m-Y h:i:s A');
-            })->rawColumns(['is_primary', 'action']);
+            })->rawColumns(['action']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param AccountMaster $model
+     * @param HsnMaster $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(AccountMaster $model): \Illuminate\Database\Eloquent\Builder
+    public function query(HsnMaster $model)
     {
         return $model->newQuery();
     }
@@ -48,10 +46,10 @@ class AccountMasterDataTable extends DataTable
      *
      * @return Builder
      */
-    public function html(): Builder
+    public function html()
     {
         return $this->builder()
-            ->setTableId('account-master-datatable-table')
+            ->setTableId('account-group-datatable-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -70,7 +68,7 @@ class AccountMasterDataTable extends DataTable
      *
      * @return array
      */
-    protected function getColumns(): array
+    protected function getColumns()
     {
         return [
             Column::make('id'),
@@ -89,8 +87,8 @@ class AccountMasterDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename(): string
+    protected function filename()
     {
-        return 'AccountMaster_' . date('YmdHis');
+        return 'HsnMaster_' . date('YmdHis');
     }
 }
