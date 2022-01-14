@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'masters','as' => 'master.'],function() {
+Route::group(['prefix' => 'masters', 'as' => 'master.'], function () {
     Route::get('/', 'MastersController@index');
     Route::resource('/account-groups', 'AccountGroupController');
     Route::resource('/accounts', 'AccountMasterController');

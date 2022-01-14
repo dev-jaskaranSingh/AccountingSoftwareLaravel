@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UnitMaster extends Migration
+class CreateItemsGroupMasterTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,11 @@ class UnitMaster extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('items_group_master',function (Blueprint $table){
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +27,6 @@ class UnitMaster extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('items_group_master');
     }
 }

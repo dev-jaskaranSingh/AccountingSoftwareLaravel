@@ -45,12 +45,12 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="{{route('group.index')}}">Account Group Master</a></li>
-                    <li><a href="">Account Master</a></li>
-                    <li><a href="">HSN Master</a></li>
-                    <li><a href="">Item Master</a></li>
-                    <li><a href="">Item Group Master</a></li>
-                    <li><a href="">Unit Master</a></li>
+                    <li><a href="{{ route('master.account-groups.index') }}">Account Group Master</a></li>
+                    <li><a href="{{ route('master.accounts.index') }}">Account Master</a></li>
+                    <li><a href="{{ route('master.hsn.index') }}">HSN Master</a></li>
+                    <li><a href="{{ route('master.items.index') }}">Item Master</a></li>
+                    <li><a href="{{ route('master.item-groups.index') }}">Item Group Master</a></li>
+                    <li><a href="{{ route('master.units.index') }}">Unit Master</a></li>
                 </ul>
             </li>
             <li>
