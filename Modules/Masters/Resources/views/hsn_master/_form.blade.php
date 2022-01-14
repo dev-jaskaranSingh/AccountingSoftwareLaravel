@@ -7,51 +7,51 @@
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('name','Name') !!}
-                        {!! Form::text('name',null,['class'=>'form-control']) !!}
-                        @error('name')
+                        {!! Form::label('hsn_code','Hsn code') !!}
+                        {!! Form::text('hsn_code',null,['class'=>'form-control']) !!}
+                        @error('hsn_code')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
                         @enderror
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('is_primary','Is Primary') !!}
-                        {!! Form::checkbox('is_primary',null,false,['class'=>'form-control is_primary']) !!}
-                        @error('is_primary')
+                        {!! Form::label('min_amount','Min Amount') !!}
+                        {!! Form::text('min_amount',null,['class'=>'form-control']) !!}
+                        @error('min_amount')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
                         @enderror
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('sub_group_id','Select Sub Group') !!}
-                        {!! Form::select('sub_group_id',[\Modules\Masters\Entities\AccountGroup::pluck('name','id')],null,['class'=>'form-control select']) !!}
-                        @error('sub_group_id')
+                        {!! Form::label('gst_min_percentage','GST Min (%)') !!}
+                        {!! Form::text('gst_min_percentage',null,['class'=>'form-control']) !!}
+                        @error('gst_min_percentage')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
                         @enderror
                     </div>
-{{--                    <div class="col-md-6 col-sm-12 mb-3">--}}
-{{--                        {!! Form::label('sub_group_name','Dub Group Name') !!}--}}
-{{--                        {!! Form::text('sub_group_name',null,['class'=>'form-control']) !!}--}}
-{{--                        @error('sub_group_name')--}}
-{{--                        <span class="help-block text-danger">--}}
-{{--                                        {{ $message }}--}}
-{{--                                    </span>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('gst_max_percentage','GST Max (%)') !!}
+                        {!! Form::text('gst_max_percentage',null,['class'=>'form-control']) !!}
+                        @error('gst_max_percentage')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
 
-{{--                    <div class="col-md-6 col-sm-12 mb-3">--}}
-{{--                        {!! Form::label('category_name','Category Name') !!}--}}
-{{--                        {!! Form::text('category_name',null,['class'=>'form-control']) !!}--}}
-{{--                        @error('category_name')--}}
-{{--                        <span class="help-block text-danger">--}}
-{{--                                        {{ $message }}--}}
-{{--                                    </span>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('hsn_description','HSN Description') !!}
+                        {!! Form::textarea('hsn_description',null,['class'=>'form-control']) !!}
+                        @error('hsn_description')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>

@@ -18,12 +18,12 @@ class HsnMasterDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return DataTableAbstract
      */
-    public function dataTable($query)
+    public function dataTable($query): DataTableAbstract
     {
         return datatables()
             ->eloquent($query)
             ->editColumn('action', function ($model) {
-                return view('masters::account_group._action', compact('model'));
+                return view('masters::hsn_master._action', compact('model'));
             })->editColumn('created_at', function ($model) {
                 if (is_null($model->created_at)) return null;
                 return $model->created_at->format('d-m-Y h:i:s A');
@@ -36,7 +36,7 @@ class HsnMasterDataTable extends DataTable
      * @param HsnMaster $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(HsnMaster $model)
+    public function query(HsnMaster $model): \Illuminate\Database\Eloquent\Builder
     {
         return $model->newQuery();
     }
@@ -46,10 +46,10 @@ class HsnMasterDataTable extends DataTable
      *
      * @return Builder
      */
-    public function html()
+    public function html(): Builder
     {
         return $this->builder()
-            ->setTableId('account-group-datatable-table')
+            ->setTableId('hsn-master-datatable-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -68,11 +68,14 @@ class HsnMasterDataTable extends DataTable
      *
      * @return array
      */
-    protected function getColumns()
+    protected function getColumns(): array
     {
         return [
             Column::make('id'),
-            Column::make('name'),
+            Column::make('hsn_code')->title('HSN Code'),
+            Column::make('min_amount')->title('Min Amount'),
+            Column::make('gst_min_percentage')->title('GST Min(%)'),
+            Column::make('gst_max_percentage')->title('GST Max(%)'),
             Column::make('created_at')->title('Created At'),
             Column::computed('action')
                 ->exportable(false)
@@ -87,7 +90,7 @@ class HsnMasterDataTable extends DataTable
      *
      * @return string
      */
-    protected function filename()
+    protected function filename(): string
     {
         return 'HsnMaster_' . date('YmdHis');
     }

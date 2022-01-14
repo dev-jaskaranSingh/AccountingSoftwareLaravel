@@ -11,10 +11,14 @@ class HsnMasterSaveRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'hsn_code' => ['required','unique:hsn_master,hsn_code'],
+            'hsn_description' => ['required'],
+            'min_amount' => ['required'],
+            'gst_min_percentage' => ['required'],
+            'gst_max_percentage' => ['required']
         ];
     }
 
@@ -23,7 +27,7 @@ class HsnMasterSaveRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
