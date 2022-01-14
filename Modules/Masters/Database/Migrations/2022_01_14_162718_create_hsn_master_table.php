@@ -14,7 +14,7 @@ class CreateHsnMasterTable extends Migration
     public function up()
     {
         Schema::create('hsn_master',function (Blueprint $table){
-            $table->increments('id');
+            $table->id();
             $table->string('hsn_code');
             $table->string('hsn_description');
             $table->string('min_amount');
