@@ -11,11 +11,33 @@ class ItemMasterSaveRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255|unique:items_master,name',
+            'unit_id' => 'required|integer|exists:units_master,id',
+            'item_group_id' => 'required|integer|exists:items_group_master,id',
         ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Item Name is required',
+            'name.string' => 'Item Name must be a string',
+            'name.max' => 'Item Name must be less than 255 characters',
+            'name.unique' => 'Item Name must be unique',
+            'unit_id.required' => 'Unit is required',
+            'unit_id.integer' => 'Unit must be an integer',
+            'unit_id.exists' => 'Unit must be an existing unit',
+            'item_group_id.required' => 'Item Group is required',
+            'item_group_id.integer' => 'Item Group must be an integer',
+            'item_group_id.exists' => 'Item Group must be an existing item group',
+        ];
+
     }
 
     /**
@@ -23,7 +45,7 @@ class ItemMasterSaveRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }

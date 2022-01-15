@@ -22,12 +22,20 @@ class ItemMasterDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+
             ->editColumn('action', function ($model) {
-                return view('masters::account_group._action', compact('model'));
+                return view('masters::items_master._action', compact('model'));
+            })->editColumn('item_group', function ($model) {
+                if (is_null($model->itemGroup)) return null;
+                return $model->itemGroup->name;
+            })->editColumn('unit', function ($model) {
+                if (is_null($model->unit)) return null;
+                return $model->unit->name;
             })->editColumn('created_at', function ($model) {
                 if (is_null($model->created_at)) return null;
                 return $model->created_at->format('d-m-Y h:i:s A');
-            })->rawColumns(['is_primary', 'action']);
+            })
+            ->rawColumns(['is_primary', 'action']);
     }
 
     /**
@@ -38,7 +46,7 @@ class ItemMasterDataTable extends DataTable
      */
     public function query(ItemMaster $model): \Illuminate\Database\Eloquent\Builder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('itemGroup', 'unit');
     }
 
     /**
@@ -49,7 +57,7 @@ class ItemMasterDataTable extends DataTable
     public function html(): Builder
     {
         return $this->builder()
-            ->setTableId('item-group-datatable-table')
+            ->setTableId('item-master-datatable-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -73,6 +81,8 @@ class ItemMasterDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name'),
+            Column::make('item_group')->title('Item Group'),
+            Column::make('unit')->title('Unit'),
             Column::make('created_at')->title('Created At'),
             Column::computed('action')
                 ->exportable(false)

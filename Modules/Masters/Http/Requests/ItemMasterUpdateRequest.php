@@ -11,10 +11,23 @@ class ItemMasterUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'unit_id' => 'required|integer|exists:units_master,id',
+            'item_group_id' => 'required|integer|exists:items_group_master,id',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Item Name is required',
+            'unit_id.required' => 'Unit is required',
+            'unit_id.exists' => 'Unit does not exists',
+            'item_group_id.required' => 'Item Group is required',
+            'item_group_id.exists' => 'Item Group does not exists',
         ];
     }
 
@@ -23,7 +36,7 @@ class ItemMasterUpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
