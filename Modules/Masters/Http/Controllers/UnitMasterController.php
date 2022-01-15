@@ -43,7 +43,7 @@ class UnitMasterController extends Controller
         } else {
             Session::flash('error', 'Failed|Failed to save Unit');
         }
-        return redirect()->route('master.units.index');
+        return back();
     }
 
     /**
