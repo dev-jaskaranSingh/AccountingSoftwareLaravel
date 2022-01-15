@@ -11,10 +11,28 @@ class AccountMasterUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => 'required',
+            'email' => 'email|required',
+            'phone' => 'required',
+            'address' => 'required',
+            'account_type' => 'required',
+            'dealer_type' => 'required',
+            'city_id' => 'required|exists:cities,id',
+            'state_id' => 'required|exists:states,id',
+            'country_id' => 'required|exists:countries,id',
+            'pincode' => 'required',
+            'gstin' => 'required',
+            'pan' => 'required',
+            'bank_name' => '',
+            'branch_name' => '',
+            'account_number' => '',
+            'ifsc_code' => '',
+            'account_holder_name' => '',
+            'opening_balance' => 'required',
+            'account_group_id' => 'required|exists:account_groups,id',
         ];
     }
 

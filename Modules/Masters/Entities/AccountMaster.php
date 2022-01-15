@@ -9,8 +9,8 @@ class AccountMaster extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
-    
+protected $guarded = ['id'];
+
     protected static function newFactory()
     {
         return \Modules\Masters\Database\factories\AccountMasterFactory::new();

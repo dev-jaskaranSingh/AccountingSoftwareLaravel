@@ -11,10 +11,28 @@ class AccountMasterSaveRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => 'required|unique:account_masters,name',
+            'email' => 'email|required|unique:account_masters,email',
+            'phone' => 'required|unique:account_masters,phone',
+            'address' => 'required',
+            'account_type' => 'required',
+            'dealer_type' => 'required',
+            'city_id' => 'required|exists:cities,id',
+            'state_id' => 'required|exists:states,id',
+            'country_id' => 'required|exists:countries,id',
+            'pincode' => 'required',
+            'gstin' => 'required',
+            'pan' => 'required',
+            'bank_name' => '',
+            'branch_name' => '',
+            'account_number' => '',
+            'ifsc_code' => '',
+            'account_holder_name' => '',
+            'opening_balance' => 'required',
+            'account_group_id' => 'required|exists:account_groups,id',
         ];
     }
 
@@ -23,7 +41,7 @@ class AccountMasterSaveRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }

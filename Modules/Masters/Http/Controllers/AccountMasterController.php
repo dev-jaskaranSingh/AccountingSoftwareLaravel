@@ -5,6 +5,7 @@ namespace Modules\Masters\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Session;
 use Modules\Masters\DataTables\AccountMasterDataTable;
 use Modules\Masters\Entities\AccountMaster;
 use Modules\Masters\Http\Requests\AccountMasterSaveRequest;
@@ -37,47 +38,53 @@ class AccountMasterController extends Controller
      */
     public function store(AccountMasterSaveRequest $request): RedirectResponse
     {
-        dd($request->all());
+        AccountMaster::create($request->validated());
+        Session::flash('success', 'Success|Account Created Successfully');
+        return redirect()->route('master.accounts.index');
     }
 
     /**
      * Show the specified resource.
-     * @param AccountMaster $master
+     * @param AccountMaster $account
      * @return Renderable
      */
-    public function show(AccountMaster $master): Renderable
+    public function show(AccountMaster $account): Renderable
     {
-        return view('masters::account_master.show', ['model' => $master]);
+        return view('masters::account_master.view', ['model' => $account]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param AccountMaster $master
+     * @param AccountMaster $account
      * @return Renderable
      */
-    public function edit(AccountMaster $master): Renderable
+    public function edit(AccountMaster $account): Renderable
     {
-        return view('masters::account_master.edit', ['model' => $master]);
+        return view('masters::account_master.edit', ['model' => $account]);
     }
 
     /**
      * Update the specified resource in storage.
      * @param AccountMasterUpdateRequest $request
-     * @param AccountMaster $master
-     * @return Renderable
+     * @param AccountMaster $account
+     * @return RedirectResponse
      */
-    public function update(AccountMasterUpdateRequest $request, AccountMaster $master): Renderable
+    public function update(AccountMasterUpdateRequest $request, AccountMaster $account): RedirectResponse
     {
-        dd($request->all(), $master);
+        $account->update($request->validated());
+        Session::flash('success', 'Success|Account Updated Successfully');
+        return redirect()->route('master.accounts.index');
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param AccountMaster $master
-     * @return Renderable
+     * @param AccountMaster $account
+     * @return RedirectResponse
      */
-    public function destroy(AccountMaster $master): Renderable
+    public function destroy(AccountMaster $account): RedirectResponse
     {
-        dd($master);
+        $account->delete();
+        Session::flash('success', 'Success|Account Deleted Successfully');
+        return back();
     }
 }

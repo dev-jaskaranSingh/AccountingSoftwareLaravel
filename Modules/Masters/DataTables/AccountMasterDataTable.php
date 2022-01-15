@@ -3,9 +3,7 @@
 namespace Modules\Masters\DataTables;
 
 
-use Modules\Masters\Entities\AccountGroup;
 use Modules\Masters\Entities\AccountMaster;
-use Modules\Masters\Entities\UnitMaster;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
