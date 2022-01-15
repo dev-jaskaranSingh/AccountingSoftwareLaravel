@@ -16,7 +16,7 @@ Route::group(['prefix' => 'masters', 'as' => 'master.'], function () {
     Route::resource('/account-groups', 'AccountGroupController');
     Route::resource('/accounts', 'AccountMasterController');
     Route::resource('/items', 'ItemMasterController');
-    Route::resource('/item-groups', 'ItemMasterController');
+    Route::resource('/items-group', 'ItemGroupMasterController');
     Route::resource('/units', 'UnitMasterController');
     Route::resource('/hsn', 'HSNMasterController');
 });

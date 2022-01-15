@@ -3,7 +3,7 @@
 namespace Modules\Masters\DataTables;
 
 
-use Modules\Masters\Entities\AccountGroup;
+use Modules\Masters\Entities\ItemGroupMaster;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -23,7 +23,7 @@ class ItemGroupMasterDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->editColumn('action', function ($model) {
-                return view('masters::account_group._action', compact('model'));
+                return view('masters::items_group_master._action', compact('model'));
             })->editColumn('created_at', function ($model) {
                 if (is_null($model->created_at)) return null;
                 return $model->created_at->format('d-m-Y h:i:s A');
@@ -33,10 +33,10 @@ class ItemGroupMasterDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param AccountGroup $model
+     * @param ItemGroupMaster $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(AccountGroup $model): \Illuminate\Database\Eloquent\Builder
+    public function query(ItemGroupMaster $model): \Illuminate\Database\Eloquent\Builder
     {
         return $model->newQuery();
     }
@@ -46,7 +46,7 @@ class ItemGroupMasterDataTable extends DataTable
      *
      * @return Builder
      */
-    public function html()
+    public function html(): Builder
     {
         return $this->builder()
             ->setTableId('item-group-master-datatable-table')

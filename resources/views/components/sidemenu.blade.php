@@ -48,8 +48,8 @@
                     <li><a href="{{ route('master.account-groups.index') }}">Account Group Master</a></li>
                     <li><a href="{{ route('master.accounts.index') }}">Account Master</a></li>
                     <li><a href="{{ route('master.hsn.index') }}">HSN Master</a></li>
+                    <li><a href="{{ route('master.items-group.index') }}">Item Group Master</a></li>
                     <li><a href="{{ route('master.items.index') }}">Item Master</a></li>
-                    <li><a href="{{ route('master.item-groups.index') }}">Item Group Master</a></li>
                     <li><a href="{{ route('master.units.index') }}">Unit Master</a></li>
                 </ul>
             </li>
