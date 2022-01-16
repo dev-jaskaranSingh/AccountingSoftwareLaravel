@@ -5,6 +5,7 @@ namespace Modules\Masters\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
+use Modules\Masters\DataTables\AccountGroupDataTable;
 use Modules\Masters\DataTables\UnitMasterDataTable;
 use Modules\Masters\Entities\AccountGroup;
 use Modules\Masters\Entities\AccountSubGroup;
@@ -15,7 +16,7 @@ use Session;
 class AccountGroupController extends Controller
 {
 
-    public function index(UnitMasterDataTable $dataTable)
+    public function index(AccountGroupDataTable $dataTable)
     {
         return $dataTable->render('masters::account_group.index');
     }
@@ -36,7 +37,6 @@ class AccountGroupController extends Controller
      */
     public function store(AccountGroupSaveRequest $request): RedirectResponse
     {
-
         $accountGroup = AccountGroup::create($request->validated());
         if($request->is_primary !== 'on' && !is_null($request->sub_group_id)){
             AccountSubGroup::create([
@@ -45,49 +45,52 @@ class AccountGroupController extends Controller
             ]);
         }
         Session::flash('success', 'Success|Account Group Created Successfully');
-        return redirect()->route('group.index');
+
+        return redirect()->route('master.account-groups.index');
     }
 
     /**
      * Show the specified resource.
-     * @param AccountGroup $group
+     * @param AccountGroup $account_group
      * @return Renderable
      */
-    public function show(AccountGroup $group): Renderable
+    public function show(AccountGroup $account_group): Renderable
     {
-        return view('masters::account_group.view', ['model' => $group->load('children', 'parent')]);
+        return view('masters::account_group.view', ['model' => $account_group->load('children', 'parent')]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param AccountGroup $group
+     * @param AccountGroup $account_group
      * @return Renderable
      */
-    public function edit(AccountGroup $group): Renderable
+    public function edit(AccountGroup $account_group): Renderable
     {
-        return view('masters::account_group.edit', ['model' => $group]);
+        return view('masters::account_group.edit', ['model' => $account_group]);
     }
 
     /**
      * Update the specified resource in storage.
      * @param AccountGroupUpdateRequest $request
-     * @param AccountGroup $group
+     * @param AccountGroup $account_group
      * @return RedirectResponse
      */
-    public function update(AccountGroupUpdateRequest $request, AccountGroup $group): RedirectResponse
+    public function update(AccountGroupUpdateRequest $request, AccountGroup $account_group): RedirectResponse
     {
-        $group->update($request->validated());
+        $account_group->update($request->validated());
         Session::flash('success', 'Success|Account Group Updated Successfully');
-        return redirect()->route('group.index');
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param AccountGroup $group
+     * @param AccountGroup $account_group
      * @return RedirectResponse
      */
-    public function destroy(AccountGroup $group): RedirectResponse
+    public function destroy(AccountGroup $account_group): RedirectResponse
     {
-        dd($group);
+        $account_group->delete();
+        Session::flash('success', 'Success|Account Group Deleted Successfully');
+        return back();
     }
 }

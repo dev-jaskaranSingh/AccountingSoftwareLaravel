@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('email','Email') !!}
-                        {!! Form::email('email',null,['class'=>'form-control']) !!}
+                        {!! Form::text('email',null,['class'=>'form-control']) !!}
                         @error('email')
                         <span class="help-block text-danger">
                                     {{ $message }}
@@ -36,7 +36,7 @@
                     @if(Route::currentRouteName() == 'admin.users.create')
                         <div class="col-md-6 col-sm-12 mb-3">
                             {!! Form::label('password','Password') !!}
-                            {!! Form::password('password',['class'=>'form-control']) !!}
+                            {!! Form::text('password',null,['class'=>'form-control password']) !!}
                             @error('password')
                             <span class="help-block text-danger">
                                     {{ $message }}
@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3">
                             {!! Form::label('password_confirmation','Confirm Password') !!}
-                            {!! Form::password('password_confirmation',['class'=>'form-control']) !!}
+                            {!! Form::text('password_confirmation',null,['class'=>'form-control password']) !!}
                             @error('password_confirmation')
                             <span class="help-block text-danger">
                                     {{ $message }}
@@ -55,7 +55,7 @@
                     @endif
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('is_active','Status') !!}
-                        {!! Form::select('is_active',[0 =>'Inactive', 1 => 'Active'],null,['class'=>'form-control']) !!}
+                        {!! Form::select('is_active',[0 =>'Inactive', 1 => 'Active'],null,['class'=>'form-control select2']) !!}
                         @error('is_active')
                         <span class="help-block text-danger">
                                         {{ $message }}
@@ -65,7 +65,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('is_admin','Is Admin') !!}
-                        {!! Form::select('is_admin',[0 =>'Inactive', 1 => 'Active'],null,['class'=>'form-control']) !!}
+                        {!! Form::select('is_admin',[0 =>'Inactive', 1 => 'Active'],null,['class'=>'form-control select2']) !!}
                         @error('is_admin')
                         <span class="help-block text-danger">
                                         {{ $message }}

@@ -78,7 +78,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('country_id','Select Country') !!}
-                        {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->take(10),null,['class'=>'select2 form-control select']) !!}
+                        {!! Form::select('country_id',\App\Models\Country::pluck('name','id'),null,['class'=>'select2 country form-control']) !!}
                         @error('country_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -89,7 +89,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('state_id','Select State') !!}
-                        {!! Form::select('state_id',\App\Models\State::pluck('name','id')->take(10),null,['class'=>'select2 form-control select']) !!}
+                        {!! Form::select('state_id',[],null,['class'=>'select2 state form-control']) !!}
                         @error('state_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -99,7 +99,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('city_id','Select City') !!}
-                        {!! Form::select('city_id',\App\Models\City::pluck('name','id')->take(10),null,['class'=>'select2 form-control select']) !!}
+                        {!! Form::select('city_id',[],null,['class'=>'select2 city form-control']) !!}
                         @error('city_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -211,7 +211,42 @@
 </div>
 
 
+<script>
+    $(document).ready(function () {
 
+        $('body').on('change', '.country', function () {
+            var country_id = $(this).val();
+            $.ajax({
+                url: "{{ route('ajax.get-state-by-country') }}",
+                type: "GET",
+                data: {country_id: country_id},
+                success: function (data) {
+                    console.log(data);
+                    $('.state').select2({
+                        data: data.states,
+                        placeholder: 'Select State'
+                    });
+                }
+            });
+        });
+
+        $('body').on('change', '.state', function () {
+            var state_id = $(this).val();
+            $.ajax({
+                url: "{{ route('ajax.get-city-by-state') }}",
+                type: "GET",
+                data: {state_id: state_id},
+                success: function (data) {
+                    console.log(data);
+                    $('.city').select2({
+                        data: data.cities,
+                        placeholder: 'Select City'
+                    });
+                }
+            });
+        });
+    });
+</script>
 @section('scripts')
 
 @endsection

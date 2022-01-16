@@ -40,7 +40,7 @@ class AccountMasterController extends Controller
     {
         AccountMaster::create($request->validated());
         Session::flash('success', 'Success|Account Created Successfully');
-        return redirect()->route('master.accounts.index');
+        return back();
     }
 
     /**

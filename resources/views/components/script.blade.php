@@ -50,7 +50,12 @@
 
 <script>
     $(document).ready(function(){
+
+        $('form').attr('autocomplete','false');
+        $('input').attr('autocomplete','false');
+
         $('.select2').select2();
+
         $('.dataTables-example').DataTable({
             pageLength: 25,
             responsive: true,
@@ -103,8 +108,8 @@
         @endphp
         toastr.error('{{ $message[1] }}','{{ $message[0] }}')
         @endif
-    });
 
+    });
 </script>
 
 @section('scripts')
