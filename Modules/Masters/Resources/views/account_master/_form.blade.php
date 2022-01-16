@@ -6,6 +6,16 @@
             </div>
             <div class="ibox-content">
                 <div class="row">
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('account_group_id','Select Account Group') !!}
+                        {!! Form::select('account_group_id',\Modules\Masters\Entities\AccountGroup::pluck('name','id')->take(10),null,['class'=>'select2 form-control select']) !!}
+                        @error('account_group_id')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('name','Name') !!}
                         {!! Form::text('name',null,['class'=>'form-control']) !!}
@@ -27,7 +37,7 @@
                     </div>
 
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('phone','Email') !!}
+                        {!! Form::label('phone','Phone') !!}
                         {!! Form::tel('phone',null,['class'=>'form-control']) !!}
                         @error('phone')
                         <span class="help-block text-danger">
@@ -58,7 +68,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('account_type','Account Type') !!}
-                        {!! Form::select('account_type',['debit' => 'Debit','credit' => 'Credit'],null,['class'=>'form-control select']) !!}
+                        {!! Form::select('account_type',['debit' => 'Debit','credit' => 'Credit'],null,['class'=>'form-control select2']) !!}
                         @error('account_type')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -68,7 +78,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('dealer_type','Dealer Type') !!}
-                        {!! Form::select('dealer_type',['register' => 'Register','unregister' => 'Unregister'],null,['class'=>'form-control select']) !!}
+                        {!! Form::select('dealer_type',['register' => 'Register','unregister' => 'Unregister'],null,['class'=>'select2 form-control dealer_type']) !!}
                         @error('dealer_type')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -117,7 +127,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-6 col-sm-12 mb-3 gstin_group">
                         {!! Form::label('gstin','GSTIN') !!}
                         {!! Form::text('gstin',null,['class'=>'form-control gstin']) !!}
                         @error('gstin')
@@ -136,15 +146,7 @@
                         </span>
                         @enderror
                     </div>
-                    <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('account_group_id','Select Account Group') !!}
-                        {!! Form::select('account_group_id',\Modules\Masters\Entities\AccountGroup::pluck('name','id')->take(10),null,['class'=>'select2 form-control select']) !!}
-                        @error('account_group_id')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -232,7 +234,7 @@
             if (gstinformat.test(inputvalues)) {
                 return true;
             } else {
-                toastr.warning('Please Enter Valid GSTIN Number','Warning!');
+                toastr.warning('Please Enter Valid GSTIN Number', 'Warning!');
                 $(".gstin").focus();
             }
         });
@@ -240,16 +242,33 @@
         $(".pan").change(function () {
             var inputvalues = $(this).val();
             var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-            if(!regex.test(inputvalues)){
-                toastr.warning('Please Enter Valid PAN Number','Warning!');
+            if (!regex.test(inputvalues)) {
+                toastr.warning('Please Enter Valid PAN Number', 'Warning!');
                 return regex.test(inputvalues);
+            }
+        });
+
+        $(".mobile").change(function () {
+            var inputvalues = $(this).val();
+            var regex = /^[0-9]{10}$/;
+            if (!regex.test(inputvalues)) {
+                toastr.warning('Please Enter Valid Mobile Number', 'Warning!');
+                return regex.test(inputvalues);
+            }
+        });
+
+        $('body').on('change', '.dealer_type', function () {
+            if ($(this).val() == 'unregister') {
+                $('.gstin_group').hide();
+            } else {
+                $('.gstin_group').show();
             }
         });
 
         $('body').on('change', '.country', function () {
             var country_id = $(this).val();
             ajaxHandler('{{route('ajax.get-state-by-country')}}', {country_id: country_id}, 'GET', function (data) {
-                toastr.success('States loaded.','Success!');
+                toastr.success('States loaded.', 'Success!');
                 window.states = data.states;
                 $('.state').select2({
                     data: data?.states,
@@ -263,7 +282,7 @@
             let statesArray = window.states;
             var selectedState = statesArray.find(item => item.id == state_id);
             $('.gstin').val(selectedState?.tin);
-            toastr.success('Cities loaded.','Success!');
+            toastr.success('Cities loaded.', 'Success!');
             ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
                 $('.city').select2({
                     data: data?.cities,
