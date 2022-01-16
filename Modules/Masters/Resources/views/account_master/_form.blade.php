@@ -48,7 +48,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('opening_balance','Opening Balance') !!}
-                        {!! Form::number('opening_balance',null,['class'=>'form-control']) !!}
+                        {!! Form::number('opening_balance',0,['class'=>'form-control']) !!}
                         @error('opening_balance')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -109,7 +109,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('pincode','PIN Code') !!}
-                        {!! Form::text('pincode',null,['class'=>'form-control select']) !!}
+                        {!! Form::number('pincode',null,['class'=>'form-control select']) !!}
                         @error('pincode')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -119,7 +119,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('gstin','GSTIN') !!}
-                        {!! Form::text('gstin',null,['class'=>'form-control select']) !!}
+                        {!! Form::text('gstin',null,['class'=>'form-control gstin']) !!}
                         @error('gstin')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -129,7 +129,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('pan','PAN Number') !!}
-                        {!! Form::text('pan',null,['class'=>'form-control select']) !!}
+                        {!! Form::text('pan',null,['class'=>'form-control pan']) !!}
                         @error('pan')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -212,37 +212,63 @@
 
 
 <script>
+
+    function ajaxHandler(url, data, type, callback) {
+        $.ajax({
+            url: url,
+            data: data,
+            type: type,
+            success: function (data) {
+                callback(data);
+            }
+        });
+    }
+
     $(document).ready(function () {
+
+        $(".gstin").change(function () {
+            var inputvalues = $(this).val();
+            var gstinformat = new RegExp('^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]1}[1-9A-Z]{1}Z[0-9A-Z]{1}$');
+            if (gstinformat.test(inputvalues)) {
+                return true;
+            } else {
+                toastr.warning('Please Enter Valid GSTIN Number','Warning!');
+                $(".gstin").focus();
+            }
+        });
+
+        $(".pan").change(function () {
+            var inputvalues = $(this).val();
+            var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+            if(!regex.test(inputvalues)){
+                toastr.warning('Please Enter Valid PAN Number','Warning!');
+                return regex.test(inputvalues);
+            }
+        });
 
         $('body').on('change', '.country', function () {
             var country_id = $(this).val();
-            $.ajax({
-                url: "{{ route('ajax.get-state-by-country') }}",
-                type: "GET",
-                data: {country_id: country_id},
-                success: function (data) {
-                    console.log(data);
-                    $('.state').select2({
-                        data: data.states,
-                        placeholder: 'Select State'
-                    });
-                }
+            ajaxHandler('{{route('ajax.get-state-by-country')}}', {country_id: country_id}, 'GET', function (data) {
+                toastr.success('States loaded.','Success!');
+                window.states = data.states;
+                $('.state').select2({
+                    data: data?.states,
+                    placeholder: 'Select State'
+                });
             });
         });
 
         $('body').on('change', '.state', function () {
             var state_id = $(this).val();
-            $.ajax({
-                url: "{{ route('ajax.get-city-by-state') }}",
-                type: "GET",
-                data: {state_id: state_id},
-                success: function (data) {
-                    console.log(data);
-                    $('.city').select2({
-                        data: data.cities,
-                        placeholder: 'Select City'
-                    });
-                }
+            let statesArray = window.states;
+            var selectedState = statesArray.find(item => item.id == state_id);
+            $('.gstin').val(selectedState?.tin);
+            toastr.success('Cities loaded.','Success!');
+            ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
+                $('.city').select2({
+                    data: data?.cities,
+                    placeholder: 'Select City'
+                });
             });
         });
     });
