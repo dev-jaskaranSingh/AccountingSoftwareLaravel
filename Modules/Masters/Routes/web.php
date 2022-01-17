@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'masters', 'as' => 'master.'], function () {
+Route::group(['prefix' => 'masters', 'as' => 'master.','middleware' => 'admin'], function () {
     Route::get('/', 'MastersController@index');
     Route::resource('/account-groups', 'AccountGroupController');
     Route::resource('/accounts', 'AccountMasterController');
@@ -19,6 +19,7 @@ Route::group(['prefix' => 'masters', 'as' => 'master.'], function () {
     Route::resource('/items-group', 'ItemGroupMasterController');
     Route::resource('/units', 'UnitMasterController');
     Route::resource('/hsn', 'HSNMasterController');
+    Route::resource('/company', 'CompanyController');
 });
 
 Route::group(['prefix' => 'ajax', 'as' => 'ajax.'], function () {

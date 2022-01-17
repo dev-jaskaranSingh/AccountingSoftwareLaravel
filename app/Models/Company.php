@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Database\Factories\CompanyFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Company
@@ -11,30 +15,22 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  * @property string $logo
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\CompanyFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Company newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Company newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Company query()
- * @method static \Illuminate\Database\Eloquent\Builder|Company whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Company whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Company whereLogo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Company whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Company whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static CompanyFactory factory(...$parameters)
+ * @method static Builder|Company newModelQuery()
+ * @method static Builder|Company newQuery()
+ * @method static Builder|Company query()
+ * @method static Builder|Company whereCreatedAt($value)
+ * @method static Builder|Company whereId($value)
+ * @method static Builder|Company whereLogo($value)
+ * @method static Builder|Company whereName($value)
+ * @method static Builder|Company whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class Company extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'logo'];
-
-    /**
-     * @return mixed
-     */
-    public static function getCompanies()
-    {
-        return Company::pluck('name', 'id');
-    }
+    protected $fillable = ['name', 'logo', 'db_name', 'address', 'email'];
 }

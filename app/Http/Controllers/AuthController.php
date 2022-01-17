@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -14,9 +16,10 @@ class AuthController extends Controller
 
     public function loginNow(Request $request)
     {
+        Session::put('company', null);
         $rules = [
             'password' => 'required',
-            // 'company_id' => ['required', 'exists:companies,id', 'numeric'],
+             'company_id' => ['required', 'exists:companies,id', 'numeric'],
         ];
 
         if ($request->type == 'user') {
@@ -25,10 +28,12 @@ class AuthController extends Controller
             $rules['email'] = 'required';
         }
         $request->validate($rules);
+        $company = Company::where('id' , $request->company_id)->first();
 
         if ($request->type == 'user') {
             if (Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password])) {
                 if (Auth::guard('user')->check()) {
+                    Session::put('company', $company);
                     return redirect()->route('user.dashboard');
                 } else {
                     return redirect()->route('user.login');
@@ -39,6 +44,8 @@ class AuthController extends Controller
         } elseif ($request->type == 'admin') {
             if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
                 if (Auth::guard('admin')->check()) {
+
+                    Session::put('company', $company);
                     return redirect()->route('admin.dashboard');
                 } else {
                     return redirect()->route('admin.login');

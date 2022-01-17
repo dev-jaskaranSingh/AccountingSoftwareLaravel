@@ -1,5 +1,6 @@
 @php
     $currentRoute = Route::currentRouteName();
+    $activeUser = Auth::guard('admin','user')->user();
 
     $mastersAccountsGroupRouteArray= ['master.account-groups.index', 'master.account-groups.create', 'master.account-groups.edit', 'master.account-groups.show'];
     $mastersAccountsRouteArray = ['master.accounts.index', 'master.accounts.create', 'master.accounts.edit', 'master.accounts.show'];
@@ -16,10 +17,10 @@
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <img alt="image" class="rounded-circle" src="img/profile_small.jpg"/>
+                    <img alt="image" class="rounded-circle" src="{{Session::get('company')->logo}}" width="60"/>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="block m-t-xs font-bold">David Williams</span>
-                        <span class="text-muted text-xs block">Art Director <b class="caret"></b></span>
+                        <span class="block m-t-xs font-bold">{{$activeUser->name}}</span>
+                        <span class="text-muted text-xs block">{{Session::get('company')->name}}<b class="caret"></b></span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a class="dropdown-item" href="javascript:void(0)">Profile</a></li>
@@ -48,6 +49,16 @@
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{ route('admin.users.index') }}">List users</a></li>
                         <li><a href="{{ route('admin.users.create') }}">Create New</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="fa fa-users"></i>
+                        <span class="nav-label">Company Management</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{{ route('master.company.index') }}">List Companies</a></li>
+                        <li><a href="{{ route('master.company.create') }}">Create New</a></li>
                     </ul>
                 </li>
             @endauth
