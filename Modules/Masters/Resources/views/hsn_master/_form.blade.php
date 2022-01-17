@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('min_amount','Min Amount') !!}
-                        {!! Form::text('min_amount',null,['class'=>'form-control']) !!}
+                        {!! Form::number('min_amount',null,['class'=>'form-control']) !!}
                         @error('min_amount')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('gst_min_percentage','GST Min (%)') !!}
-                        {!! Form::text('gst_min_percentage',null,['class'=>'form-control']) !!}
+                        {!! Form::number('gst_min_percentage',null,['class'=>'form-control']) !!}
                         @error('gst_min_percentage')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('gst_max_percentage','GST Max (%)') !!}
-                        {!! Form::text('gst_max_percentage',null,['class'=>'form-control']) !!}
+                        {!! Form::number('gst_max_percentage',null,['class'=>'form-control']) !!}
                         @error('gst_max_percentage')
                         <span class="help-block text-danger">
                             {{ $message }}

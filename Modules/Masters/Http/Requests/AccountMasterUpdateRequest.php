@@ -37,11 +37,24 @@ class AccountMasterUpdateRequest extends FormRequest
     }
 
     /**
+     * @return string[]
+     */
+    public function messages(): array
+    {
+        return [
+            'city_id.exists' => 'City does not exists',
+            'state_id.exists' => 'State does not exists',
+            'country_id.exists' => 'Country does not exists',
+            'account_group_id.exists' => 'Account Group does not exists',
+        ];
+    }
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }

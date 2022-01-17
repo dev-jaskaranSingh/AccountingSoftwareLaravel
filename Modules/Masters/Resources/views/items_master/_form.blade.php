@@ -19,10 +19,55 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('item_group_id','Select Item Group') !!}
                         <a href="javascript::0">
-                        &nbsp;<i class="fa fa-1x fa-plus text-success" data-toggle="modal" data-target="#myModal7"></i>
+                            &nbsp;<i class="fa fa-1x fa-plus text-success" data-toggle="modal"
+                                     data-target="#myModal7"></i>
                         </a>
-                        {!! Form::select('item_group_id',[\Modules\Masters\Entities\ItemGroupMaster::pluck('name','id')],null,['class'=>'select2 form-control select']) !!}
+                        {!! Form::select('item_group_id',\Modules\Masters\Entities\ItemGroupMaster::pluck('name','id')->prepend('Select', null),null,['class'=>'select2 form-control select']) !!}
                         @error('item_group_id')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('sale_price','Sale Price') !!}
+                        {!! Form::number('sale_price',null,['class'=>'form-control']) !!}
+                        @error('sale_price')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('purchase_price','Purchase Price') !!}
+                        {!! Form::number('purchase_price',null,['class'=>'form-control']) !!}
+                        @error('purchase_price')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('opening_balance','Opening balance') !!}
+                        {!! Form::number('opening_balance',0,['class'=>'form-control']) !!}
+                        @error('opening_balance')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('hsn_id','Select HSN') !!}
+                        <a href="javascript::0">
+                            &nbsp;<i class="fa fa-1x fa-plus text-success" data-toggle="modal"
+                                     data-target="#myModal8"></i>
+                        </a>
+                        {!! Form::select('hsn_id',\Modules\Masters\Entities\HsnMaster::pluck('hsn_code','id')->prepend('Select', null),null,['class'=>'select2 form-control select']) !!}
+                        @error('hsn_id')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
@@ -32,9 +77,10 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('unit_id','Select Unit') !!}
                         <a href="javascript::0">
-                        &nbsp;<i class="fa fa-1x fa-plus text-success" data-toggle="modal" data-target="#myModal6"></i>
+                            &nbsp;<i class="fa fa-1x fa-plus text-success" data-toggle="modal"
+                                     data-target="#myModal6"></i>
                         </a>
-                        {!! Form::select('unit_id',[\Modules\Masters\Entities\UnitMaster::pluck('name','id')],null,['class'=>'select2 form-control select']) !!}
+                        {!! Form::select('unit_id',\Modules\Masters\Entities\UnitMaster::pluck('name','id')->prepend('Select', null),null,['class'=>'select2 form-control select']) !!}
                         @error('unit_id')
                         <span class="help-block text-danger">
                             {{ $message }}

@@ -15,7 +15,7 @@ class HsnMasterSaveRequest extends FormRequest
     {
         return [
             'hsn_code' => ['required','unique:hsn_master,hsn_code'],
-            'hsn_description' => ['required'],
+            'hsn_description' => '',
             'min_amount' => ['required'],
             'gst_min_percentage' => ['required'],
             'gst_max_percentage' => ['required']

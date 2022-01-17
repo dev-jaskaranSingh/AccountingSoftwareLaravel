@@ -15,7 +15,7 @@ class HsnMasterUpdateRequest extends FormRequest
     {
         return [
             'hsn_code' => ['required'],
-            'hsn_description' => ['required'],
+            'hsn_description' => '',
             'min_amount' => ['required'],
             'gst_min_percentage' => ['required'],
             'gst_max_percentage' => ['required']

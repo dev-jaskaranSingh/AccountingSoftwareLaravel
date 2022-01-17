@@ -1,3 +1,16 @@
+@php
+    $currentRoute = Route::currentRouteName();
+
+    $mastersAccountsGroupRouteArray= ['master.account-groups.index', 'master.account-groups.create', 'master.account-groups.edit', 'master.account-groups.show'];
+    $mastersAccountsRouteArray = ['master.accounts.index', 'master.accounts.create', 'master.accounts.edit', 'master.accounts.show'];
+    $mastersItemsGroupRouteArray = ['master.items-group.index', 'master.items-group.create', 'master.items-group.edit', 'master.items-group.show'];
+    $mastersItemsRouteArray = ['master.items.index', 'master.items.create', 'master.items.edit', 'master.items.show'];
+    $mastersHsnRouteArray = ['master.hsn.index', 'master.hsn.create', 'master.hsn.edit', 'master.hsn.show'];
+    $mastersUnitsRouteArray = ['master.units.index', 'master.units.create', 'master.units.edit', 'master.units.show'];
+
+    $mastersRouteArray = array_merge($mastersAccountsGroupRouteArray,$mastersAccountsRouteArray,$mastersItemsGroupRouteArray,$mastersItemsRouteArray,$mastersHsnRouteArray,$mastersUnitsRouteArray);
+
+@endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
@@ -39,18 +52,24 @@
                 </li>
             @endauth
 
-            <li>
+            <li class="@if(in_array($currentRoute,$mastersRouteArray)) active @endif">
                 <a href="javascript:void(0)"><i class="fa fa-users"></i>
                     <span class="nav-label">Masters</span>
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="{{ route('master.account-groups.index') }}">Account Group Master</a></li>
-                    <li><a href="{{ route('master.accounts.index') }}">Account Master</a></li>
-                    <li><a href="{{ route('master.hsn.index') }}">HSN Master</a></li>
-                    <li><a href="{{ route('master.items-group.index') }}">Item Group Master</a></li>
-                    <li><a href="{{ route('master.items.index') }}">Item Master</a></li>
-                    <li><a href="{{ route('master.units.index') }}">Unit Master</a></li>
+                    <li class="@if(in_array($currentRoute,$mastersAccountsGroupRouteArray)) active @endif"><a
+                            href="{{ route('master.account-groups.index') }}">Account Group Master</a></li>
+                    <li class="@if(in_array($currentRoute,$mastersAccountsRouteArray)) active @endif"><a
+                            href="{{ route('master.accounts.index') }}">Account Master</a></li>
+                    <li class="@if(in_array($currentRoute,$mastersHsnRouteArray)) active @endif"><a
+                            href="{{ route('master.hsn.index') }}">HSN Master</a></li>
+                    <li class="@if(in_array($currentRoute,$mastersItemsGroupRouteArray)) active @endif"><a
+                            href="{{ route('master.items-group.index') }}">Item Group Master</a></li>
+                    <li class="@if(in_array($currentRoute,$mastersItemsRouteArray)) active @endif"><a
+                            href="{{ route('master.items.index') }}">Item Master</a></li>
+                    <li class="@if(in_array($currentRoute,$mastersUnitsRouteArray)) active @endif"><a
+                            href="{{ route('master.units.index') }}">Unit Master</a></li>
                 </ul>
             </li>
             <li>
@@ -65,7 +84,7 @@
                     <li><a href="">Purchase Return</a></li>
                     <li><a href="">Receipt</a></li>
                     <li><a href="">Payment</a></li>
-                    <li><a href="">General</a></li>
+                    <li><a href="">Journal</a></li>
                     <li><a href="">Contra</a></li>
                     <li><a href="">Stock In</a></li>
                     <li><a href="">Stock Out</a></li>

@@ -88,7 +88,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('country_id','Select Country') !!}
-                        {!! Form::select('country_id',\App\Models\Country::pluck('name','id'),null,['class'=>'select2 country form-control']) !!}
+                        {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),null,['class'=>'select2 country form-control']) !!}
                         @error('country_id')
                         <span class="help-block text-danger">
                             {{ $message }}

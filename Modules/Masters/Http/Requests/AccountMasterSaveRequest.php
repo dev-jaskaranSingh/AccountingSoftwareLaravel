@@ -36,6 +36,16 @@ class AccountMasterSaveRequest extends FormRequest
         ];
     }
 
+    public function messages(){
+        return [
+            'city_id.required' => 'City is required',
+            'state_id.required' => 'State is required',
+            'country_id.required' => 'Country is required',
+            'account_group.required' => 'Account Group is required',
+            'account_group.exists' => 'Account Group is invalid',
+        ];
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *

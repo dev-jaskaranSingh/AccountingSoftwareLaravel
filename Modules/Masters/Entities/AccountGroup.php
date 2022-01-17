@@ -22,7 +22,7 @@ class AccountGroup extends Model
 
     public function setIsPrimaryAttribute($value)
     {
-        $this->attributes['is_primary'] = (boolean)$value == 'on' ? 1 : 0;
+        $this->attributes['is_primary'] = (boolean)$value == 'on' ? 0 : 1;
     }
 
 

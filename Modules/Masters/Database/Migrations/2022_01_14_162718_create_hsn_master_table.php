@@ -16,7 +16,7 @@ class CreateHsnMasterTable extends Migration
         Schema::create('hsn_master',function (Blueprint $table){
             $table->id();
             $table->string('hsn_code');
-            $table->string('hsn_description');
+            $table->string('hsn_description')->nullable();
             $table->string('min_amount');
             $table->string('gst_min_percentage');
             $table->string('gst_max_percentage');

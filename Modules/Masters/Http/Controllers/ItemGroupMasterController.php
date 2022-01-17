@@ -6,7 +6,9 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Modules\Masters\DataTables\ItemGroupMasterDataTable;
+use Modules\Masters\Entities\AccountSubGroup;
 use Modules\Masters\Entities\ItemGroupMaster;
+use Modules\Masters\Entities\ItemSubGroup;
 use Modules\Masters\Http\Requests\ItemGroupMasterSaveRequest;
 use Modules\Masters\Http\Requests\ItemGroupMasterUpdateRequest;
 use Session;
@@ -38,9 +40,15 @@ class ItemGroupMasterController extends Controller
      */
     public function store(ItemGroupMasterSaveRequest $request): RedirectResponse
     {
-        ItemGroupMaster::create($request->validated());
+        $itemGroup = ItemGroupMaster::create($request->validated());
+        if($request->is_primary !== 'on' && !is_null($request->sub_group_id)){
+            ItemSubGroup::create([
+                'parent_id' => $request->sub_group_id,
+                'child_id' => $itemGroup->id,
+            ]);
+        }
         Session::flash('success', 'Success|Item Group Master Created Successfully');
-        return redirect()->route('master.items-group.index');
+        return back();
     }
 
     /**

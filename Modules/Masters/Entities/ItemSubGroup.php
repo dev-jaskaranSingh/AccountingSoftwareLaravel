@@ -5,14 +5,14 @@ namespace Modules\Masters\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Account extends Model
+class ItemSubGroup extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = ['parent_id','child_id'];
     
     protected static function newFactory()
     {
-        return \Modules\Masters\Database\factories\AccountFactory::new();
+        return \Modules\Masters\Database\factories\ItemSubGroupFactory::new();
     }
 }

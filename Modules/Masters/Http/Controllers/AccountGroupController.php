@@ -45,8 +45,7 @@ class AccountGroupController extends Controller
             ]);
         }
         Session::flash('success', 'Success|Account Group Created Successfully');
-
-        return redirect()->route('master.account-groups.index');
+        return back();
     }
 
     /**

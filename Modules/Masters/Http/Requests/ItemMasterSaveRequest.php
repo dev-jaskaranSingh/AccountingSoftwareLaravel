@@ -17,6 +17,10 @@ class ItemMasterSaveRequest extends FormRequest
             'name' => 'required|string|max:255|unique:items_master,name',
             'unit_id' => 'required|integer|exists:units_master,id',
             'item_group_id' => 'required|integer|exists:items_group_master,id',
+            'hsn_id' => 'required|integer|exists:hsn_master,id',
+            'opening_balance' => 'numeric',
+            'purchase_price' => 'numeric',
+            'sale_price' => 'numeric',
         ];
     }
 
@@ -36,6 +40,7 @@ class ItemMasterSaveRequest extends FormRequest
             'item_group_id.required' => 'Item Group is required',
             'item_group_id.integer' => 'Item Group must be an integer',
             'item_group_id.exists' => 'Item Group must be an existing item group',
+            'hsn_id.required' => 'HSN is required',
         ];
 
     }

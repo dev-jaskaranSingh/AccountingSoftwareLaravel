@@ -43,7 +43,7 @@ class HSNMasterController extends Controller
         } else {
             Session::flash('error', 'Error|HSN Code Creation Failed');
         }
-        return redirect()->route('master.hsn.index');
+        return back();
     }
 
     /**
