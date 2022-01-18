@@ -40,7 +40,7 @@ class CompanyController extends Controller
         Company::create($request->validate([
             'name' => 'required|unique:companies,name',
             'address' => '',
-            'email' => 'required|email|unique:companies,email',
+            'email' => 'email|unique:companies,email',
             'db_name' => 'unique:companies',
             'website' => '',
             'mobile' => '',
@@ -51,6 +51,7 @@ class CompanyController extends Controller
             'gstin' => 'required|unique:companies,gstin',
             'country_id' => 'required|exists:countries,id',
             'state_id' => 'required|exists:states,id',
+            'city_id' => 'required|exists:cities,id',
             'pincode' => '',
         ]));
 
@@ -89,9 +90,19 @@ class CompanyController extends Controller
     {
         $company->update($request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'address' => '',
-            'db_name' => 'required',
+            'email' => 'email',
+            'db_name' => 'required|string|max:255',
+            'website' => '',
+            'mobile' => '',
+            'phone' => '',
+            'to_date' => 'required|date',
+            'from_date' => 'required|date',
+            'pan' => '',
+            'gstin' => 'required|unique:companies,gstin',
+            'country_id' => 'required|exists:countries,id',
+            'state_id' => 'required|exists:states,id',
+            'city_id' => 'required|exists:cities,id',
+            'pincode' => '',
         ]));
         Session::flash('success', 'Success|Company updated successfully');
         return back();
