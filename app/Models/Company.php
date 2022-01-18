@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\Company
@@ -34,7 +35,12 @@ class Company extends Model
 
     // protected $fillable = ['name', 'logo', 'db_name', 'address', 'email'];
     protected $guarded = [];
-    public function getCompanies(){
+
+    /**
+     * @return Collection
+     */
+    public function getCompanies(): Collection
+    {
         return Self::pluck('name', 'id');
     }
 }
