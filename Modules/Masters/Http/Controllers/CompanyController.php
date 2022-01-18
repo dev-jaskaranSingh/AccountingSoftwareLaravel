@@ -42,7 +42,19 @@ class CompanyController extends Controller
             'address' => '',
             'email' => 'required|email|unique:companies,email',
             'db_name' => 'unique:companies',
+            'website' => '',
+            'mobile' => '',
+            'phone' => '',
+            'to_date' => 'required|date',
+            'from_date' => 'required|date',
+            'pan' => '',
+            'gstin' => 'required|unique:companies,gstin',
+            'country_id' => 'required|exists:countries,id',
+            'state_id' => 'required|exists:states,id',
+            'pincode' => '',
         ]));
+
+
         Session::flash('success', 'Success|Company Created Successfully');
         return back();
     }

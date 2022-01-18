@@ -10,7 +10,7 @@ class AccountSubGroup extends Model
     use HasFactory;
 
     protected $fillable = ['parent_id','child_id'];
-    protected $table = 'account_sub_group';
+    protected $table = 'account_sub_groups';
 
     protected static function newFactory()
     {

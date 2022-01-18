@@ -1,0 +1,2 @@
+[10-Jan-2022 22:51:16 America/Chicago] PHP Fatal error:  Out of memory (allocated 369631232) (tried to allocate 12288 bytes) in phar:///opt/cpanel/composer/bin/composer/src/Composer/DependencyResolver/GenericRule.php on line 35
+[10-Jan-2022 22:52:21 America/Chicago] PHP Fatal error:  Out of memory (allocated 369631232) (tried to allocate 12288 bytes) in phar:///opt/cpanel/composer/bin/composer/src/Composer/DependencyResolver/GenericRule.php on line 35
