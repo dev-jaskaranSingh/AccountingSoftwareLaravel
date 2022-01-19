@@ -39,7 +39,7 @@ class Company extends Model
     /**
      * @return Collection
      */
-    public Cstatic function getCompanies(): Collection
+    public static function getCompanies(): Collection
     {
         return Self::pluck('name', 'id');
     }
