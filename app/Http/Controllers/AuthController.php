@@ -44,7 +44,6 @@ class AuthController extends Controller
         } elseif ($request->type == 'admin') {
             if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
                 if (Auth::guard('admin')->check()) {
-
                     Session::put('company', $company);
                     return redirect()->route('admin.dashboard');
                 } else {

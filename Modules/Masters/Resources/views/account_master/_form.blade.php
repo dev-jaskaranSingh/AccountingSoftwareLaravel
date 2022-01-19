@@ -9,7 +9,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('account_group_id','Select Account Group') !!}
-                        {!! Form::select('account_group_id',\Modules\Masters\Entities\AccountGroup::pluck('name','id')->take(10),null,['class'=>'select2 form-control select']) !!}
+                        {!! Form::select('account_group_id',\Modules\Masters\Entities\AccountGroup::pluck('name','id'),@$model->account_group_id,['class'=>'select2 form-control select']) !!}
                         @error('account_group_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -88,7 +88,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('country_id','Select Country') !!}
-                        {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),null,['class'=>'select2 country form-control']) !!}
+                        {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),@$model->country_id,['class'=>'select2 country form-control']) !!}
                         @error('country_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -99,7 +99,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('state_id','Select State') !!}
-                        {!! Form::select('state_id',[],null,['class'=>'select2 state form-control']) !!}
+                        {!! Form::select('state_id',[],@$model->state_id,['class'=>'select2 state form-control']) !!}
                         @error('state_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -109,7 +109,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('city_id','Select City') !!}
-                        {!! Form::select('city_id',[],null,['class'=>'select2 city form-control']) !!}
+                        {!! Form::select('city_id',[],@$model->city_id,['class'=>'select2 city form-control']) !!}
                         @error('city_id')
                         <span class="help-block text-danger">
                             {{ $message }}
