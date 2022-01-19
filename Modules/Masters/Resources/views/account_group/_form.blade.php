@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-md-2 col-sm-12 mb-3 text-center">
                         {!! Form::label('is_primary','Is Primary') !!}
-                        {!! Form::checkbox('is_primary',null,false,['class'=>'form-control is_primary']) !!}
+                        {!! Form::checkbox('is_primary',null,@$mode->is_primary,['class'=>'form-control is_primary']) !!}
                         @error('is_primary')
                         <span class="help-block text-danger">
                             {{ $message }}
