@@ -22,7 +22,7 @@
                             &nbsp;<i class="fa fa-1x fa-plus text-success" data-toggle="modal"
                                      data-target="#myModal7"></i>
                         </a>
-                        {!! Form::select('item_group_id',\Modules\Masters\Entities\ItemGroupMaster::pluck('name','id')->prepend('Select', null),null,['class'=>'select2 form-control select']) !!}
+                        {!! Form::select('item_group_id',\Modules\Masters\Entities\ItemGroupMaster::pluck('name','id')->prepend('Select', null),@$model->item_group_id,['class'=>'select2 form-control select']) !!}
                         @error('item_group_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -66,7 +66,7 @@
                             &nbsp;<i class="fa fa-1x fa-plus text-success" data-toggle="modal"
                                      data-target="#myModal8"></i>
                         </a>
-                        {!! Form::select('hsn_id',\Modules\Masters\Entities\HsnMaster::pluck('hsn_code','id')->prepend('Select', null),null,['class'=>'select2 form-control select']) !!}
+                        {!! Form::select('hsn_id',\Modules\Masters\Entities\HsnMaster::pluck('hsn_code','id')->prepend('Select', null),@$mode->hsn_id,['class'=>'select2 form-control select']) !!}
                         @error('hsn_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -80,7 +80,7 @@
                             &nbsp;<i class="fa fa-1x fa-plus text-success" data-toggle="modal"
                                      data-target="#myModal6"></i>
                         </a>
-                        {!! Form::select('unit_id',\Modules\Masters\Entities\UnitMaster::pluck('name','id')->prepend('Select', null),null,['class'=>'select2 form-control select']) !!}
+                        {!! Form::select('unit_id',\Modules\Masters\Entities\UnitMaster::pluck('name','id')->prepend('Select', null),@$model->unit_id,['class'=>'select2 form-control select']) !!}
                         @error('unit_id')
                         <span class="help-block text-danger">
                             {{ $message }}

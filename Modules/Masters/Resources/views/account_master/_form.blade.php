@@ -68,7 +68,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('account_type','Account Type') !!}
-                        {!! Form::select('account_type',['debit' => 'Debit','credit' => 'Credit'],null,['class'=>'form-control select2']) !!}
+                        {!! Form::select('account_type',['debit' => 'Debit','credit' => 'Credit'],@$mode->account_type,['class'=>'form-control select2']) !!}
                         @error('account_type')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -78,7 +78,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('dealer_type','Dealer Type') !!}
-                        {!! Form::select('dealer_type',['register' => 'Register','unregister' => 'Unregister'],null,['class'=>'select2 form-control dealer_type']) !!}
+                        {!! Form::select('dealer_type',['register' => 'Register','unregister' => 'Unregister'],@$model->dealer_type,['class'=>'select2 form-control dealer_type']) !!}
                         @error('dealer_type')
                         <span class="help-block text-danger">
                             {{ $message }}
