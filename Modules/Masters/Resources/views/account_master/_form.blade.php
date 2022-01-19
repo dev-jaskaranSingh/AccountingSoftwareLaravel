@@ -99,7 +99,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('state_id','Select State') !!}
-                        {!! Form::select('state_id',[],@$model->state_id,['class'=>'select2 state form-control']) !!}
+                        {!! Form::select('state_id',\App\Models\State::where('country_id',@$model->country_id)->get(),@$model->state_id,['class'=>'select2 state form-control']) !!}
                         @error('state_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -109,7 +109,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('city_id','Select City') !!}
-                        {!! Form::select('city_id',[],@$model->city_id,['class'=>'select2 city form-control']) !!}
+                        {!! Form::select('city_id',\App\Models\State::find(@$model->state_id)->cities()->get(),@$model->city_id,['class'=>'select2 city form-control']) !!}
                         @error('city_id')
                         <span class="help-block text-danger">
                             {{ $message }}
