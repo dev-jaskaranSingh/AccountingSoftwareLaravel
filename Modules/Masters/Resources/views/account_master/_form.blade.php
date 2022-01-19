@@ -58,7 +58,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('opening_balance','Opening Balance') !!}
-                        {!! Form::number('opening_balance',0,['class'=>'form-control']) !!}
+                        {!! Form::number('opening_balance',isset($model) ? $model->opening_balance : 0,['class'=>'form-control']) !!}
                         @error('opening_balance')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -109,8 +109,22 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('city_id','Select City') !!}
-                        {!! Form::select('city_id',\App\Models\State::find(@$model->state_id)->cities()->pluck('name','id'),@$model->city_id,['class'=>'select2 city form-control']) !!}
+                        @if(isset($model))
+                            {!! Form::select('city_id',\App\Models\State::find(@$model->state_id)->cities()->pluck('name','id'),@$model->city_id,['class'=>'select2 city form-control']) !!}
+                        @else
+                            {!! Form::select('city_id',[],@$model->city_id,['class'=>'select2 city form-control']) !!}
+                        @endif
                         @error('city_id')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('gst_state_code','GST State Code') !!}
+                        {!! Form::text('gst_state_code',null,['class'=>'form-control stateCode']) !!}
+                        @error('gst_state_code')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>

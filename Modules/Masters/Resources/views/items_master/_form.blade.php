@@ -52,7 +52,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('opening_balance','Opening balance') !!}
-                        {!! Form::number('opening_balance',0,['class'=>'form-control']) !!}
+                        {!! Form::number('opening_balance',isset($model) ? $model->opening_balance : 0,['class'=>'form-control']) !!}
                         @error('opening_balance')
                         <span class="help-block text-danger">
                             {{ $message }}

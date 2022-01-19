@@ -73,7 +73,7 @@ class AccountMasterController extends Controller
     {
         $account->update($request->validated());
         Session::flash('success', 'Success|Account Updated Successfully');
-        return redirect()->route('master.accounts.index');
+        return back();
     }
 
     /**

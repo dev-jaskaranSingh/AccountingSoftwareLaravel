@@ -33,10 +33,12 @@ class AccountMasterSaveRequest extends FormRequest
             'account_holder_name' => '',
             'opening_balance' => '',
             'account_group_id' => 'required|exists:account_groups,id',
+            'gst_state_code' => '',
         ];
     }
 
-    public function messages(){
+    public function messages(): array
+    {
         return [
             'city_id.required' => 'City is required',
             'state_id.required' => 'State is required',

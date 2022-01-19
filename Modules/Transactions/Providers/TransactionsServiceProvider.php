@@ -1,21 +1,21 @@
 <?php
 
-namespace Modules\Transections\Providers;
+namespace Modules\Transactions\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
-class TransectionsServiceProvider extends ServiceProvider
+class TransactionsServiceProvider extends ServiceProvider
 {
     /**
      * @var string $moduleName
      */
-    protected $moduleName = 'Transections';
+    protected $moduleName = 'Transactions';
 
     /**
      * @var string $moduleNameLower
      */
-    protected $moduleNameLower = 'transections';
+    protected $moduleNameLower = 'transactions';
 
     /**
      * Boot the application events.

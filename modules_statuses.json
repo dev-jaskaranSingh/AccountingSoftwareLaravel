@@ -1,6 +1,5 @@
 {
-    "Master": true,
-    "Transections": true,
+    "Transactions": true,
     "Reports": true,
     "Masters": true
 }

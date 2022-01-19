@@ -33,6 +33,7 @@ class AccountMasterUpdateRequest extends FormRequest
             'account_holder_name' => '',
             'opening_balance' => 'required',
             'account_group_id' => 'required|exists:account_groups,id',
+            'gst_state_code' => '',
         ];
     }
 

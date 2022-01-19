@@ -17,6 +17,7 @@ class ItemMasterUpdateRequest extends FormRequest
             'name' => 'required|string|max:255',
             'unit_id' => 'required|integer|exists:units_master,id',
             'item_group_id' => 'required|integer|exists:items_group_master,id',
+            'opening_balance' => 'numeric',
         ];
     }
 

@@ -1,11 +1,11 @@
 {
-    "name": "Transections",
-    "alias": "transections",
+    "name": "Transactions",
+    "alias": "transactions",
     "description": "",
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\Transections\\Providers\\TransectionsServiceProvider"
+        "Modules\\Transactions\\Providers\\TransactionsServiceProvider"
     ],
     "aliases": {},
     "files": [],

@@ -25,10 +25,15 @@
                         </span>
                         @enderror
                     </div>
+
                     <div class="col-md-6 col-sm-12 mb-3 subgroup">
                         {!! Form::label('sub_group_id','Select Sub Group') !!}
-                        {!! Form::select('sub_group_id',\Modules\Masters\Entities\ItemGroupMaster::pluck('name','id')->prepend('Select',null),@$model->sub_group_id,['class'=>'form-control select ']) !!}
-                        @error('sub_group_id')
+                        @if(isset($model))
+                            {!! Form::select('sub_group_id',\Modules\Masters\Entities\ItemGroupMaster::pluck('name','id')->prepend('Select Sub Group', null),@$model->load('parent')->parent->last()->id,['class'=>'form-control select2 ']) !!}
+                        @else
+                            {!! Form::select('sub_group_id',\Modules\Masters\Entities\ItemGroupMaster::pluck('name','id')->prepend('Select Sub Group', null),null,['class'=>'form-control select2 ']) !!}
+                        @endif
+                         @error('sub_group_id')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>

@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Transections\Http\Controllers;
+namespace Modules\Transactions\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-class ReceiptController extends Controller
+class JournalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        return view('transections::index');
+        return view('transactions::index');
     }
 
     /**
@@ -23,7 +23,7 @@ class ReceiptController extends Controller
      */
     public function create()
     {
-        return view('transections::create');
+        return view('transactions::create');
     }
 
     /**
@@ -43,7 +43,7 @@ class ReceiptController extends Controller
      */
     public function show($id)
     {
-        return view('transections::show');
+        return view('transactions::show');
     }
 
     /**
@@ -53,7 +53,7 @@ class ReceiptController extends Controller
      */
     public function edit($id)
     {
-        return view('transections::edit');
+        return view('transactions::edit');
     }
 
     /**

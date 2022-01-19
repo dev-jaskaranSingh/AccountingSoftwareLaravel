@@ -4,16 +4,16 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Module Transections</title>
+        <title>Module Transactions</title>
 
        {{-- Laravel Mix - CSS File --}}
-       {{-- <link rel="stylesheet" href="{{ mix('css/transections.css') }}"> --}}
+       {{-- <link rel="stylesheet" href="{{ mix('css/transactions.css') }}"> --}}
 
     </head>
     <body>
         @yield('content')
 
         {{-- Laravel Mix - JS File --}}
-        {{-- <script src="{{ mix('js/transections.js') }}"></script> --}}
+        {{-- <script src="{{ mix('js/transactions.js') }}"></script> --}}
     </body>
 </html>

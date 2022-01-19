@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Transections\Providers;
+namespace Modules\Transactions\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -12,7 +12,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $moduleNamespace = 'Modules\Transections\Http\Controllers';
+    protected $moduleNamespace = 'Modules\Transactions\Http\Controllers';
 
     /**
      * Called before routes are registered.
@@ -49,7 +49,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('web')
             ->namespace($this->moduleNamespace)
-            ->group(module_path('Transections', '/Routes/web.php'));
+            ->group(module_path('Transactions', '/Routes/web.php'));
     }
 
     /**
@@ -64,6 +64,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('api')
             ->middleware('api')
             ->namespace($this->moduleNamespace)
-            ->group(module_path('Transections', '/Routes/api.php'));
+            ->group(module_path('Transactions', '/Routes/api.php'));
     }
 }

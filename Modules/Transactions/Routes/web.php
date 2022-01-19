@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('transections')->group(function() {
-    Route::get('/', 'TransectionsController@index');
+Route::prefix('transactions')->group(function() {
+    Route::get('/', 'TransactionsController@index');
 });

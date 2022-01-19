@@ -76,8 +76,20 @@ class AccountGroupController extends Controller
      */
     public function update(AccountGroupUpdateRequest $request, AccountGroup $account_group): RedirectResponse
     {
-        $account_group->update($request->validated());
-        Session::flash('success', 'Success|Account Group Updated Successfully');
+        AccountSubGroup::where('child_id', $account_group->id)->delete();
+        if (is_null($request->is_primary)) {
+            if (is_null($request->sub_group_id)) {
+                Session::flash('error', 'Error|Please Select Sub Group');
+                return back();
+            }
+            AccountSubGroup::create([
+                'parent_id' => $request->sub_group_id,
+                'child_id' => $account_group->id,
+            ]);
+            $account_group->update($request->validated() + ['is_primary' => 0]);
+        } else {
+            $account_group->update($request->validated());
+        }Session::flash('success', 'Success|Account Group Updated Successfully');
         return back();
     }
 

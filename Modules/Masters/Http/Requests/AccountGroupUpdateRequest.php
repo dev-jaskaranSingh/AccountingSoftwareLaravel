@@ -15,7 +15,7 @@ class AccountGroupUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:255'],
-            'is_primary' => [''],
+            'is_primary' => '',
         ];
     }
 

@@ -79,9 +79,21 @@ class ItemGroupMasterController extends Controller
      */
     public function update(ItemGroupMasterUpdateRequest $request, ItemGroupMaster $items_group): RedirectResponse
     {
-        $items_group->update($request->validated());
-        Session::flash('success', 'Success|Item Group Updated Successfully');
-        return redirect()->route('master.items-group.index');
+        ItemSubGroup::where('child_id', $items_group->id)->delete();
+        if (is_null($request->is_primary)) {
+            if (is_null($request->sub_group_id)) {
+                Session::flash('error', 'Error|Please Select Sub Group');
+                return back();
+            }
+            ItemSubGroup::create([
+                'parent_id' => $request->sub_group_id,
+                'child_id' => $items_group->id,
+            ]);
+            $items_group->update($request->validated() + ['is_primary' => 0]);
+        } else {
+            $items_group->update($request->validated());
+        }Session::flash('success', 'Success|Item Group Updated Successfully');
+        return back();
     }
 
     /**
