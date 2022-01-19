@@ -98,7 +98,7 @@ class CompanyController extends Controller
             'to_date' => 'required|date',
             'from_date' => 'required|date',
             'pan' => '',
-            'gstin' => 'required|unique:companies,gstin',
+            'gstin' => 'required',
             'country_id' => 'required|exists:countries,id',
             'state_id' => 'required|exists:states,id',
             'city_id' => 'required|exists:cities,id',
