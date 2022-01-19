@@ -41,6 +41,8 @@ class ItemMasterSaveRequest extends FormRequest
             'item_group_id.integer' => 'Item Group must be an integer',
             'item_group_id.exists' => 'Item Group must be an existing item group',
             'hsn_id.required' => 'HSN is required',
+            'hsn_id.integer' => 'HSN must be an integer',
+            'hsn_id.exists' => 'HSN must be an existing HSN',
         ];
 
     }

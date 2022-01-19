@@ -17,7 +17,10 @@ class ItemMasterUpdateRequest extends FormRequest
             'name' => 'required|string|max:255',
             'unit_id' => 'required|integer|exists:units_master,id',
             'item_group_id' => 'required|integer|exists:items_group_master,id',
+            'hsn_id' => 'required|integer|exists:hsn_master,id',
             'opening_balance' => 'numeric',
+            'purchase_price' => 'numeric',
+            'sale_price' => 'numeric',
         ];
     }
 
@@ -29,6 +32,9 @@ class ItemMasterUpdateRequest extends FormRequest
             'unit_id.exists' => 'Unit does not exists',
             'item_group_id.required' => 'Item Group is required',
             'item_group_id.exists' => 'Item Group does not exists',
+            'hsn_id.required' => 'HSN is required',
+            'hsn_id.integer' => 'HSN must be an integer',
+            'hsn_id.exists' => 'HSN must be an existing HSN',
         ];
     }
 
