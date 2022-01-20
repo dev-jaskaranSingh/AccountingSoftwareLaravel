@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>Create Account Group <small>Account Group create form</small></h5>
+                <h5>Create Company <small>Company create form</small></h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -97,6 +97,17 @@
                         @enderror
                     </div>
 
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('gst_state_code','GST State Code') !!}
+                        {!! Form::text('gst_state_code',null,['class'=>'form-control stateCode']) !!}
+                        @error('gst_state_code')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+
                     <div class="col-md-6 col-sm-12 mb-3 gstin_group">
                         {!! Form::label('gstin','GSTIN') !!}
                         {!! Form::text('gstin',null,['class'=>'form-control gstin']) !!}
@@ -119,7 +130,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('from_date','From Date') !!}
-                        {!! Form::date('from_date',now(),['class'=>'form-control']) !!}
+                        {!! Form::text('from_date',isset($model) ? $model->from_date : now(),['class'=>'form-control datepicker']) !!}
                         @error('from_date')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -129,7 +140,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('to_date','To Date') !!}
-                        {!! Form::date('to_date',now()->addDays(365),['class'=>'form-control']) !!}
+                        {!! Form::text('to_date',isset($model) ? $model->to_date : now()->addDays(365),['class'=>'form-control datepicker']) !!}
                         @error('to_date')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -229,7 +240,7 @@
             var state_id = $(this).val();
             let statesArray = window.states;
             var selectedState = statesArray.find(item => item.id == state_id);
-            $('.gstin').val(selectedState?.tin);
+            $('.stateCode').val(selectedState?.tin);
             toastr.success('Cities loaded.', 'Success!');
             ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
                 $('.city').select2({

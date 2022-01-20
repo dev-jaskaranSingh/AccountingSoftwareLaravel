@@ -53,9 +53,8 @@ class CompanyController extends Controller
             'state_id' => 'required|exists:states,id',
             'city_id' => 'required|exists:cities,id',
             'pincode' => '',
+            'gst_state_code' => ''
         ]));
-
-
         Session::flash('success', 'Success|Company Created Successfully');
         return back();
     }
@@ -103,6 +102,7 @@ class CompanyController extends Controller
             'state_id' => 'required|exists:states,id',
             'city_id' => 'required|exists:cities,id',
             'pincode' => '',
+            'gst_state_code' => ''
         ]));
         Session::flash('success', 'Success|Company updated successfully');
         return back();

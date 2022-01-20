@@ -295,7 +295,7 @@
             var state_id = $(this).val();
             let statesArray = window.states;
             var selectedState = statesArray.find(item => item.id == state_id);
-            $('.gstin').val(selectedState?.tin);
+            $('.stateCode').val(selectedState?.tin);
             toastr.success('Cities loaded.', 'Success!');
             ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
                 $('.city').select2({
