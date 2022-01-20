@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>Create Company <small>Company create form</small></h5>
+                <h5>Create Account Group <small>Account Group create form</small></h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -79,7 +79,11 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('city_id','Select City') !!}
+                        @if(isset($model))
                         {!! Form::select('city_id',\App\Models\State::find(@$model->state_id)->cities()->pluck('name','id'),@$model->city_id,['class'=>'select2 city form-control']) !!}
+                        @else
+                        {!! Form::select('city_id',[],null,['class'=>'select2 city form-control']) !!}
+                        @endif
                         @error('city_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -96,17 +100,6 @@
                         </span>
                         @enderror
                     </div>
-
-                    <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('gst_state_code','GST State Code') !!}
-                        {!! Form::text('gst_state_code',null,['class'=>'form-control stateCode']) !!}
-                        @error('gst_state_code')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-
 
                     <div class="col-md-6 col-sm-12 mb-3 gstin_group">
                         {!! Form::label('gstin','GSTIN') !!}
@@ -240,7 +233,7 @@
             var state_id = $(this).val();
             let statesArray = window.states;
             var selectedState = statesArray.find(item => item.id == state_id);
-            $('.stateCode').val(selectedState?.tin);
+            $('.gstin').val(selectedState?.tin);
             toastr.success('Cities loaded.', 'Success!');
             ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
                 $('.city').select2({
