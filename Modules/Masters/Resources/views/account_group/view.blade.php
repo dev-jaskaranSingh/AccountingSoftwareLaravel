@@ -18,21 +18,21 @@
                             <tbody>
 
                             @foreach($model->toArray() as $key => $data)
-                                @if(!in_array($key,['id']) )
+                                @if(!in_array($key,['id','is_default']) )
                                     <tr>
                                         <td>{{ str_replace('_',' ',ucfirst($key)) }}</td>
                                         @if($key == 'children')
-                                            @forelse($data as $key1 => $data1)
-                                                <td>{{ $data1['name'] }}</td>
-                                            @empty
-                                                <td>No Data</td>
-                                            @endforelse
-                                        @elseif($key == 'parent')
-                                            @forelse($data as $key1 => $data1)
-                                                <td>{{ $data1['name'] }}</td>
-                                            @empty
-                                                <td>No Data</td>
-                                            @endforelse
+                                            @if (collect($data)->count() > 0)
+                                                <td>{{ collect($data)->pluck('name')->implode(', ') }}</td>
+                                            @else
+                                                <td>No Children</td>
+                                            @endif
+                                        @elseif($key == 'parent') 
+                                            @if (collect($data)->count() > 0)
+                                                <td>{{ collect($data)->pluck('name')->implode(', ') }}</td>
+                                            @else
+                                                <td>No Children</td>
+                                            @endif
                                         @elseif($key == 'is_primary')
                                             <td>{!! $data == 1 ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>' !!} </td>
                                         @else

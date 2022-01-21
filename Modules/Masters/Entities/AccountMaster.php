@@ -16,4 +16,9 @@ class AccountMaster extends Model
     {
         return AccountMasterFactory::new();
     }
+
+    public function accountGroup()
+    {
+        return $this->belongsTo(AccountGroup::class);
+    }
 }

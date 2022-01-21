@@ -77,7 +77,7 @@ class AccountGroupController extends Controller
     public function update(AccountGroupUpdateRequest $request, AccountGroup $account_group): RedirectResponse
     {
         AccountSubGroup::where('child_id', $account_group->id)->delete();
-        if (is_null($request->is_primary)) {
+        if (!isset($request->is_primary)) {
             if (is_null($request->sub_group_id)) {
                 Session::flash('error', 'Error|Please Select Sub Group');
                 return back();

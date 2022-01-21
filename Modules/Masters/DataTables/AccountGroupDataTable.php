@@ -24,6 +24,11 @@ class AccountGroupDataTable extends DataTable
             ->eloquent($query)
             ->editColumn('action', function ($model) {
                 return view('masters::account_group._action', compact('model'));
+            })->editColumn('sub_group',function($model){
+                if(is_null($model->parent)) return '-';
+                return $model->parent->pluck('name')->implode(', ');
+            })->editColumn('is_primary',function($model){
+                return $model->is_primary ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>';
             })->editColumn('created_at', function ($model) {
                 if (is_null($model->created_at)) return null;
                 return $model->created_at->format('d-m-Y h:i:s A');
@@ -38,7 +43,7 @@ class AccountGroupDataTable extends DataTable
      */
     public function query(AccountGroup $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('parent');
     }
 
     /**
@@ -73,6 +78,8 @@ class AccountGroupDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name'),
+            Column::make('is_primary')->title('Is Primary'),
+            Column::make('sub_group')->title('Sub Group'),
             Column::make('created_at')->title('Created At'),
             Column::computed('action')
                 ->exportable(false)

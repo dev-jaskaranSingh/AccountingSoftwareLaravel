@@ -27,7 +27,15 @@ class AccountMasterDataTable extends DataTable
             })->editColumn('created_at', function ($model) {
                 if (is_null($model->created_at)) return null;
                 return $model->created_at->format('d-m-Y h:i:s A');
-            })->rawColumns(['is_primary', 'action']);
+            })->editColumn('account_group_id', function ($model) {
+                if (is_null($model->accountGroup)) return null;
+                return $model->accountGroup->name;
+            })->editColumn('id', function ($model) {
+                return $model->id - 5;
+            })->editColumn('account_type', function ($model) {
+                return ucfirst($model->account_type);
+            })
+            ->rawColumns(['account_group_id', 'action']);
     }
 
     /**
@@ -38,7 +46,7 @@ class AccountMasterDataTable extends DataTable
      */
     public function query(AccountMaster $model): \Illuminate\Database\Eloquent\Builder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('id')->with('accountGroup');
     }
 
     /**
@@ -73,6 +81,9 @@ class AccountMasterDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('name'),
+            Column::make('account_group_id')->title('Account Group'),
+            Column::make('account_type'),
+            Column::make('opening_balance'),
             Column::make('created_at')->title('Created At'),
             Column::computed('action')
                 ->exportable(false)
