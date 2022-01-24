@@ -43,7 +43,7 @@ class AccountGroupDataTable extends DataTable
      */
     public function query(AccountGroup $model)
     {
-        return $model->newQuery()->with('parent');
+        return $model->newQuery()->with('parent')->orderBy('id', 'asc');
     }
 
     /**

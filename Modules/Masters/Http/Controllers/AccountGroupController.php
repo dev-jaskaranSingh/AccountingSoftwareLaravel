@@ -5,7 +5,7 @@ namespace Modules\Masters\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
-use Modules\Masters\DataTables\PurchaseDataTable;
+use Modules\Masters\DataTables\AccountGroupDataTable;
 use Modules\Masters\DataTables\UnitMasterDataTable;
 use Modules\Masters\Entities\AccountGroup;
 use Modules\Masters\Entities\AccountSubGroup;
@@ -16,7 +16,7 @@ use Session;
 class AccountGroupController extends Controller
 {
 
-    public function index(PurchaseDataTable $dataTable)
+    public function index(AccountGroupDataTable $dataTable)
     {
         return $dataTable->render('masters::account_group.index');
     }
@@ -65,6 +65,7 @@ class AccountGroupController extends Controller
      */
     public function edit(AccountGroup $account_group): Renderable
     {
+        if($account_group->is_default == 0) abort(403);
         return view('masters::account_group.edit', ['model' => $account_group]);
     }
 

@@ -60,6 +60,7 @@ class AccountMasterController extends Controller
      */
     public function edit(AccountMaster $account): Renderable
     {
+        if(is_null($account->created_at)) abort(403);
         return view('masters::account_master.edit', ['model' => $account]);
     }
 
