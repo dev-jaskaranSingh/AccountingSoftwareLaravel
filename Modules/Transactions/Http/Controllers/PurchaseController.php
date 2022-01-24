@@ -3,77 +3,90 @@
 namespace Modules\Transactions\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
+use Modules\Transactions\DataTables\PurchaseDataTable;
+use Modules\Transactions\Entities\Purchase;
+use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
+use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
+use Session;
 
 class PurchaseController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     * @param PurchaseDataTable $dataTable
+     * @return void
      */
-    public function index()
+    public function index(PurchaseDataTable $dataTable)
     {
-        return view('transactions::index');
+        return $dataTable->render('transactions::purchases.index');
     }
 
     /**
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function create(): Renderable
     {
-        return view('transactions::create');
+        return view('transactions::purchases.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
+     * @param PurchaseSaveRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(PurchaseSaveRequest $request): RedirectResponse
     {
-        //
+        Purchase::create($request->validated());
+        Session::flash("success", "Success|Purchase has been created successfully");
+        return back();
     }
 
     /**
      * Show the specified resource.
-     * @param int $id
+     * @param Purchase $purchase
      * @return Renderable
      */
-    public function show($id)
+    public function show(Purchase $purchase): Renderable
     {
-        return view('transactions::show');
+        return view('transactions::purchases.show', ['model' => $purchase]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param int $id
+     * @param Purchase $purchase
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(Purchase $purchase): Renderable
     {
-        return view('transactions::edit');
+        return view('transactions::purchases.edit', ['model' => $purchase]);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
+     * @param PurchaseUpdateRequest $request
+     * @param Purchase $purchase
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
     {
-        //
+        $purchase->update($request->validated());
+        Session::flash("success", "Success|Purchase has been updated successfully");
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
+     * @param Purchase $purchase
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Purchase $purchase): RedirectResponse
     {
-        //
+        $purchase->delete();
+        Session::flash("success", "Success|Purchase has been deleted successfully");
+        return back();
     }
 }
