@@ -1,6 +1,6 @@
 <a href="{{ route('master.account-groups.show',$model->id) }}" class="" data-id="{{ $model->id }}"><i
         class="fa fa-eye text-info"></i></a>
-@if($model->is_default == 0)
+@if($model->is_default == 1)
         | <a href="{{ route('master.account-groups.edit',$model->id) }}" class="" data-id="{{ $model->id }}"><i
                 class="fa fa-pencil text-warning"></i></a> |
         {!! Form::open(['method'=>'DELETE','route'=>['master.account-groups.destroy',$model->id],'class'=>'delete-form','style'=>'display:inline']) !!}
