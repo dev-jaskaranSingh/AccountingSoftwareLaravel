@@ -43,5 +43,4 @@ class Company extends Model
     {
         return Self::pluck('name', 'id');
     }
-
 }

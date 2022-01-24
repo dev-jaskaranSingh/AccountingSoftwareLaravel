@@ -28,7 +28,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('mobile','Mobile') !!}
-                        {!! Form::text('mobile',null,['class'=>'form-control']) !!}
+                        {!! Form::text('mobile',null,['class'=>'form-control mobile']) !!}
                         @error('mobile')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -102,6 +102,16 @@
                     </div>
 
                     <div class="col-md-6 col-sm-12 mb-3 gstin_group">
+                        {!! Form::label('gst_state_code','State GST CODE') !!}
+                        {!! Form::text('gst_state_code',null,['class'=>'form-control gst_code']) !!}
+                        @error('gst_state_code')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3 gstin_group">
                         {!! Form::label('gstin','GSTIN') !!}
                         {!! Form::text('gstin',null,['class'=>'form-control gstin']) !!}
                         @error('gstin')
@@ -123,7 +133,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('from_date','From Date') !!}
-                        {!! Form::text('from_date',isset($model) ? $model->from_date : now(),['class'=>'form-control datepicker']) !!}
+                        {!! Form::text('from_date',isset($model) ? $model->from_date : now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
                         @error('from_date')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -133,7 +143,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('to_date','To Date') !!}
-                        {!! Form::text('to_date',isset($model) ? $model->to_date : now()->addDays(365),['class'=>'form-control datepicker']) !!}
+                        {!! Form::text('to_date',isset($model) ? $model->to_date : now()->addDays(365)->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
                         @error('to_date')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -161,6 +171,55 @@
 @section('scripts')
     <script>
 
+    $('#formSubmit').submit(function(event) {
+        event.preventDefault();
+        var mobile = $('.mobile').val();
+        var pan = $('.pan').val();
+        var gstin = $('.gstin').val();
+
+        if(mobile.length < 10){
+            toastr.warning('Mobile Number should be 10 digit', 'Warning!');
+            return false;
+        }
+
+        if(verifyPAN(pan)&& verifyGSTIN(gstin) && verifyMobile(mobile)){
+            $(this).unbind('submit').submit();
+        }else{
+            return false;
+        }
+    })
+
+
+        function verifyMobile(mobile) {
+            var regex = /^[0-9]{10}$/;
+            if (regex.test(mobile)) {
+                return true;
+            }else{
+                toastr.warning('Please Enter Valid Mobile Number', 'Warning!');
+                return false;
+            }
+        }
+
+        function verifyGSTIN(gstin) {
+            var gstinformat = /^([0-2][0-9]|[3][0-7])[A-Z]{3}[ABCFGHLJPTK][A-Z]\d{4}[A-Z][A-Z0-9][Z][A-Z0-9]$/;
+            if (gstinformat.test(gstin)) {
+                return true;
+            } else {
+                toastr.warning('Please Enter Valid GSTIN Number', 'Warning!');
+                $(".gstin").focus();
+                return false;
+            }
+        }
+
+        function verifyPAN(pan) {
+            var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+            if (regex.test(pan)) {
+                return true;
+            }else{
+                toastr.warning('Please Enter Valid PAN Number', 'Warning!');
+                return false;
+            }
+        }
         function ajaxHandler(url, data, type, callback) {
             $.ajax({
                 url: url,
@@ -182,31 +241,18 @@
 
         $(".gstin").change(function () {
             var inputvalues = $(this).val();
-            var gstinformat = new RegExp('^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]1}[1-9A-Z]{1}Z[0-9A-Z]{1}$');
-            if (gstinformat.test(inputvalues)) {
-                return true;
-            } else {
-                toastr.warning('Please Enter Valid GSTIN Number', 'Warning!');
-                $(".gstin").focus();
-            }
+            verifyGSTIN(inputvalues);
         });
 
         $(".pan").change(function () {
             var inputvalues = $(this).val();
-            var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-            if (!regex.test(inputvalues)) {
-                toastr.warning('Please Enter Valid PAN Number', 'Warning!');
-                return regex.test(inputvalues);
-            }
+            verifyPAN(inputvalues);
         });
 
         $(".mobile").change(function () {
             var inputvalues = $(this).val();
-            var regex = /^[0-9]{10}$/;
-            if (!regex.test(inputvalues)) {
-                toastr.warning('Please Enter Valid Mobile Number', 'Warning!');
-                return regex.test(inputvalues);
-            }
+            verifyMobile(inputvalues);
+
         });
 
         $('body').on('change', '.dealer_type', function () {
@@ -233,7 +279,7 @@
             var state_id = $(this).val();
             let statesArray = window.states;
             var selectedState = statesArray.find(item => item.id == state_id);
-            $('.gstin').val(selectedState?.tin);
+            $('.gst_code').val(selectedState?.tin);
             toastr.success('Cities loaded.', 'Success!');
             ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
                 $('.city').select2({

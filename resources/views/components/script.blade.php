@@ -84,9 +84,11 @@
             ]
 
         });
+        
         $('.datepicker').datepicker({
-            format: 'yyyy-m-d'
+            format: 'yyyy-mm-d'
         });
+
         toastr.options = {
             closeButton: true,
             debug: false,
