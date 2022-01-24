@@ -2,15 +2,18 @@
     $currentRoute = Route::currentRouteName();
     $activeUser = Auth::guard('admin','user')->user();
 
+    //Master Route Array
     $mastersAccountsGroupRouteArray= ['master.account-groups.index', 'master.account-groups.create', 'master.account-groups.edit', 'master.account-groups.show'];
     $mastersAccountsRouteArray = ['master.accounts.index', 'master.accounts.create', 'master.accounts.edit', 'master.accounts.show'];
     $mastersItemsGroupRouteArray = ['master.items-group.index', 'master.items-group.create', 'master.items-group.edit', 'master.items-group.show'];
     $mastersItemsRouteArray = ['master.items.index', 'master.items.create', 'master.items.edit', 'master.items.show'];
     $mastersHsnRouteArray = ['master.hsn.index', 'master.hsn.create', 'master.hsn.edit', 'master.hsn.show'];
     $mastersUnitsRouteArray = ['master.units.index', 'master.units.create', 'master.units.edit', 'master.units.show'];
-
     $mastersRouteArray = array_merge($mastersAccountsGroupRouteArray,$mastersAccountsRouteArray,$mastersItemsGroupRouteArray,$mastersItemsRouteArray,$mastersHsnRouteArray,$mastersUnitsRouteArray);
 
+    //Transactions Route Array
+    $transactionsPurchaseRouteArray = ['transactions.purchases.index', 'transactions.purchases.create', 'transactions.purchases.edit', 'transactions.purchases.show'];
+    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray)
 @endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
@@ -20,7 +23,8 @@
                     <img alt="image" class="rounded-circle" src="{{Session::get('company')->logo}}" width="60"/>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="block m-t-xs font-bold">{{$activeUser->name}}</span>
-                        <span class="text-muted text-xs block">{{Session::get('company')->name}}<b class="caret"></b></span>
+                        <span class="text-muted text-xs block">{{Session::get('company')->name}}<b
+                                class="caret"></b></span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a class="dropdown-item" href="javascript:void(0)">Profile</a></li>
@@ -69,28 +73,36 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li class="@if(in_array($currentRoute,$mastersAccountsGroupRouteArray)) active @endif"><a
-                            href="{{ route('master.account-groups.index') }}">Account Group Master</a></li>
-                    <li class="@if(in_array($currentRoute,$mastersAccountsRouteArray)) active @endif"><a
-                            href="{{ route('master.accounts.index') }}">Account Master</a></li>
-                    <li class="@if(in_array($currentRoute,$mastersHsnRouteArray)) active @endif"><a
-                            href="{{ route('master.hsn.index') }}">HSN Master</a></li>
-                    <li class="@if(in_array($currentRoute,$mastersItemsGroupRouteArray)) active @endif"><a
-                            href="{{ route('master.items-group.index') }}">Item Group Master</a></li>
-                    <li class="@if(in_array($currentRoute,$mastersItemsRouteArray)) active @endif"><a
-                            href="{{ route('master.items.index') }}">Item Master</a></li>
-                    <li class="@if(in_array($currentRoute,$mastersUnitsRouteArray)) active @endif"><a
-                            href="{{ route('master.units.index') }}">Unit Master</a></li>
+                    <li class="@if(in_array($currentRoute,$mastersAccountsGroupRouteArray)) active @endif">
+                        <a href="{{ route('master.account-groups.index') }}">Account Group Master</a>
+                    </li>
+                    <li class="@if(in_array($currentRoute,$mastersAccountsRouteArray)) active @endif">
+                        <a href="{{ route('master.accounts.index') }}">Account Master</a>
+                    </li>
+                    <li class="@if(in_array($currentRoute,$mastersHsnRouteArray)) active @endif">
+                        <a href="{{ route('master.hsn.index') }}">HSN Master</a>
+                    </li>
+                    <li class="@if(in_array($currentRoute,$mastersItemsGroupRouteArray)) active @endif">
+                        <a href="{{ route('master.items-group.index') }}">Item Group Master</a>
+                    </li>
+                    <li class="@if(in_array($currentRoute,$mastersItemsRouteArray)) active @endif">
+                        <a href="{{ route('master.items.index') }}">Item Master</a>
+                    </li>
+                    <li class="@if(in_array($currentRoute,$mastersUnitsRouteArray)) active @endif">
+                        <a href="{{ route('master.units.index') }}">Unit Master</a>
+                    </li>
                 </ul>
             </li>
-            <li>
+            <li class="@if(in_array($currentRoute,$transactionsRouteArray)) active @endif">
                 <a href="javascript:void(0)"><i class="fa fa-users"></i>
                     <span class="nav-label">Transactions</span>
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="">Sale</a></li>
-                    <li><a href="">Purchase</a></li>
+                    <li class="@if(in_array($currentRoute,$transactionsPurchaseRouteArray)) active @endif">
+                        <a href="{{ route('transactions.purchases.index') }}">Purchase</a>
+                    </li>
                     <li><a href="">Sale Return</a></li>
                     <li><a href="">Purchase Return</a></li>
                     <li><a href="">Receipt</a></li>
