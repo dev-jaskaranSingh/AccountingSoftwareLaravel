@@ -1,58 +1,93 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <!-- Mainly scripts -->
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="{{ asset('template/js/popper.min.js') }}"></script>
+<script src="{{ asset('template/js/bootstrap.js') }}"></script>
+<script src="{{ asset('template/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+<script src="{{ asset('template/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+
+<!-- Clock picker -->
+<script src="{{ asset('template/js/plugins/clockpicker/clockpicker.js')}}"></script>
 
 <!-- Flot -->
-<script src="js/plugins/flot/jquery.flot.js"></script>
-<script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script src="js/plugins/flot/jquery.flot.spline.js"></script>
-<script src="js/plugins/flot/jquery.flot.resize.js"></script>
-<script src="js/plugins/flot/jquery.flot.pie.js"></script>
-<script src="js/plugins/flot/jquery.flot.symbol.js"></script>
-<script src="js/plugins/flot/jquery.flot.time.js"></script>
-
-<!-- Peity -->
-<script src="js/plugins/peity/jquery.peity.min.js"></script>
-<script src="js/demo/peity-demo.js"></script>
-
-<!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
-
-<!-- jQuery UI -->
-<script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
-
-<!-- Jvectormap -->
-<script src="js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
-<script src="js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<script src="js/plugins/toastr/toastr.min.js"></script>
-<!-- EayPIE -->
-<script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
-
-<!-- Sparkline -->
-<script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
+<script src="{{ asset('template/js/plugins/flot/jquery.flot.js') }}"></script>
+<script src="{{ asset('template/js/plugins/flot/jquery.flot.tooltip.min.js') }}"></script>
+<script src="{{ asset('template/js/plugins/flot/jquery.flot.spline.js') }}"></script>
+<script src="{{ asset('template/js/plugins/flot/jquery.flot.resize.js') }}"></script>
+<script src="{{ asset('template/js/plugins/flot/jquery.flot.pie.js') }}"></script>
+<script src="{{ asset('template/js/plugins/flot/jquery.flot.symbol.js') }}"></script>
+<script src="{{ asset('template/js/plugins/flot/jquery.flot.time.js') }}"></script>
 
 <!-- Data picker -->
-<script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<script src="{{ asset('template/js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
 
-<!-- Sparkline demo data  -->
-<script src="js/demo/sparkline-demo.js"></script>
+<!-- Peity -->
+<script src="{{ asset('template/js/plugins/peity/jquery.peity.min.js') }}"></script>
+<script src="{{ asset('template/js/demo/peity-demo.js') }}"></script>
 
-<script src="js/plugins/dataTables/datatables.min.js"></script>
-<script src="js/plugins/dataTables/dataTables.bootstrap4.min.js"></script>
+<!-- Custom and plugin javascript -->
+<script src="{{ asset('template/js/inspinia.js') }}"></script>
+<script src="{{ asset('template/js/plugins/pace/pace.min.js') }}"></script>
+
+<!-- jQuery UI -->
+{{-- <script src="{{ asset('template/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script> --}}
+
+<!-- Jvectormap -->
+<script src="{{ asset('template/js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js') }}"></script>
+<script src="{{ asset('template/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
+
+<!-- EayPIE -->
+<script src="{{ asset('template/js/plugins/easypiechart/jquery.easypiechart.js') }}"></script>
+
+<!-- Sparkline -->
+<script src="{{ asset('template/js/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
+
+<script src="{{ asset('template/js/plugins/dataTables/datatables.min.js')}}"></script>
+<script src="{{ asset('template/js/plugins/dataTables/dataTables.bootstrap4.min.js')}}"></script>
+
+<script src="{{ asset('template/js/plugins/toastr/toastr.min.js')}}"></script>
+<!-- Jquery Validate -->
+<script src="{{ asset('template/js/plugins/validate/jquery.validate.min.js')}}"></script>
 
 <!-- Select2 -->
-<script src="js/plugins/select2/select2.full.min.js"></script>
+<script src="{{ asset('template/js/plugins/select2/select2.full.min.js')}}"></script>
+
+{{-- Hands On Table--}}
+<script src="{{ asset('js/hot/handsontable.full.min.js') }}"></script>
+<script src="{{ asset('js/tabs-scroll/jquery.scrolling-tabs.min.js') }}"></script>
+<script src="{{ asset('js/hot/chosen.jquery.js') }}"></script>
+<script src="{{ asset('js/hot/handsontable-chosen-editor.js') }}"></script>
+<!-- FooTable -->
+<script src="{{ asset('template/js/plugins/footable/footable.all.min.js')}}"></script>
+
+<!-- Sparkline demo data  -->
+<script src="{{ asset('template/js/demo/sparkline-demo.js') }}"></script>
+
+<script src="{{ asset('template/js/plugins/typehead/bootstrap3-typeahead.min.js') }}"></script>
 
 
+<script src="{{ asset('js/datetime/jquery.datetimepicker.full.min.js') }}" type="text/javascript"></script>
+
+
+<!-- SUMMERNOTE -->
+<script src="{{ asset('template/js/plugins/summernote/summernote-bs4.js')}}"></script>
+
+<script type="text/javascript">
+    window.route = '{{ url('/') }}';
+    window.modal_error = null;
+    @if(session()->has('modal_error'))
+        window.modal_error = '{{ session('modal_error') }}';
+    @endif
+</script>
+<script src="{{ asset('js/validations.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/custom.js?ref='.rand(1111,9999)) }}"></script>
+<script src="{{ asset('js/quick-actions.js') }}" type="text/javascript"></script>
+<!-- iCheck -->
+<script src="{{ asset('template/js/plugins/iCheck/icheck.min.js') }}"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
 
-        $('form').attr('autocomplete','false');
-        $('input').attr('autocomplete','false');
+        $('form').attr('autocomplete', 'false');
+        $('input').attr('autocomplete', 'false');
 
         $('.select2').select2();
 
@@ -63,7 +98,7 @@
             buttons: [
                 {
                     text: 'Create',
-                    action: function(e,dt,node,config){
+                    action: function (e, dt, node, config) {
                         window.location.href = $('.form-link').val();
                     }
                 },
@@ -71,8 +106,9 @@
                 {extend: 'csv'},
                 {extend: 'excel', title: 'ExampleFile'},
                 {extend: 'pdf', title: 'ExampleFile'},
-                {extend: 'print',
-                    customize: function (win){
+                {
+                    extend: 'print',
+                    customize: function (win) {
                         $(win.document.body).addClass('white-bg');
                         $(win.document.body).css('font-size', '10px');
 
@@ -84,7 +120,7 @@
             ]
 
         });
-        
+
         $('.datepicker').datepicker({
             format: 'yyyy-mm-d'
         });
@@ -101,16 +137,37 @@
         };
         @if(session()->has('success'))
         @php
-            $message = explode('|',session('success'));
+            $message = explode('|',session('success'))
         @endphp
-        toastr.success('{{ $message[1] }}','{{ $message[0] }}')
+        toastr.success('{{ $message[1] }}', '{{ $message[0] }}')
         @elseif(session()->has('error'))
         @php
-            $message = explode('|',session('error'));
+            $message = explode('|',session('error'))
         @endphp
-        toastr.error('{{ $message[1] }}','{{ $message[0] }}')
+        toastr.error('{{ $message[1] }}', '{{ $message[0] }}')
         @endif
 
+    });
+    $(document).ready(function () {
+        $('.static-datatable').dataTable();
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        $('.clockpicker').clockpicker();
+        $('.text-editor').summernote({
+            height: 350,
+            // fontSizes: ['8', '9', '10', '11', '12', '14','15','16','17','18','19','20','21','22','23','24','36', '48'],
+            // toolbar: [
+            //     // [groupName, [list of button]]
+            //     ['style', ['bold', 'italic', 'underline', 'clear']],
+            //     ['font', ['strikethrough', 'superscript', 'subscript']],
+            //     // ['fontsize', ['fontsize']],
+            //     ['color', ['color']],
+            //     ['para', ['ul', 'ol', 'paragraph']],
+            //     ['height', ['height']]
+            // ]
+        });
     });
 </script>
 

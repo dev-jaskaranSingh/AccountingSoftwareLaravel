@@ -16,9 +16,17 @@
                         @enderror
                     </div>
                 </div>
+                <hr/>
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="handsontable"></div>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <h3>Total Amount: <span class="total_amount"></span></h3>
+                            </div>
+                        </div>
+                        <div class="hot-container">
+                            <div id="hot-table"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -26,45 +34,25 @@
     </div>
 </div>
 
+{!! Form::hidden('product',json_encode(@$items),['class'=>'products-data']) !!}
+{!! Form::hidden('purchase_items',json_encode(@$purchase_items),['class'=>'purchase-items']) !!}
+{!! Form::hidden('bill_products',null,['class'=>'purchase_products']) !!}
+
+
+<style>
+    .hot-container {
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+    }
+    .address{
+        height: 100px;
+    }
+    .filterHeader input{
+        width: 90%;
+        margin: 0 auto 10px;
+    }
+</style>
 @section('scripts')
-    <script>
-        const data = [];
-
-        const container = document.getElementById('handsontable');
-        const hot = new Handsontable(container, {
-        data: data,
-            colWidths: [140, 126, 192, 100, 100, 90, 90, 110, 97],
-            colHeaders: [
-                "Item",
-                "HSN",
-                "Unit",
-                "Gross WT",
-                "Net WT",
-                "Rate",
-                "Qty",
-                "Amount",
-            ],
-            columns: [
-                { data: 1, type: "text" },
-                { data: 2, type: "text" },
-                { data: 3, type: "text" },
-                { data: 4, type: "numeric"},
-                { data: 5, type: "numeric", className: "htMiddle"},
-                { data: 6, type: "numeric", readOnly: true, className: "star htCenter"},
-                { data: 7, type: "numeric", className: "htMiddle"},
-                { data: 8, type: "numeric", readOnly: true, className: "star htCenter"}
-            ],
-            dropdownMenu: false,
-            hiddenColumns: {
-                indicators: true
-            },
-            contextMenu: true,
-            multiColumnSorting: true,
-            filters: true,
-            rowHeaders: true,
-            manualRowMove: true,
-            licenseKey: "non-commercial-and-evaluation"
-        });
-    </script>
-
+    <script src="{{ asset('js/purchase.js?ref='.rand(1111,9999)) }}" type="text/javascript"></script>
 @endsection

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
+use Modules\Masters\Entities\ItemMaster;
 use Modules\Transactions\DataTables\PurchaseDataTable;
 use Modules\Transactions\Entities\Purchase;
 use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
@@ -30,7 +31,11 @@ class PurchaseController extends Controller
      */
     public function create(): Renderable
     {
-        return view('transactions::purchases.create');
+        $items = array_values(ItemMaster::pluck('name','id')->map(function($value,$key){
+            return ['id'=>$key,'label'=>$value];
+        })->toArray());
+
+        return view('transactions::purchases.create',compact('items'));
     }
 
     /**
