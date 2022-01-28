@@ -1,4 +1,5 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>--}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <!-- Mainly scripts -->
 <script src="{{ asset('template/js/popper.min.js') }}"></script>
 <script src="{{ asset('template/js/bootstrap.js') }}"></script>
@@ -80,7 +81,6 @@
 </script>
 <script src="{{ asset('js/validations.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/custom.js?ref='.rand(1111,9999)) }}"></script>
-<script src="{{ asset('js/quick-actions.js') }}" type="text/javascript"></script>
 <!-- iCheck -->
 <script src="{{ asset('template/js/plugins/iCheck/icheck.min.js') }}"></script>
 <script>
@@ -147,8 +147,7 @@
         toastr.error('{{ $message[1] }}', '{{ $message[0] }}')
         @endif
 
-    });
-    $(document).ready(function () {
+
         $('.static-datatable').dataTable();
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',

@@ -3,12 +3,12 @@
 namespace Modules\Transactions\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Modules\Masters\Entities\ItemMaster;
 use Modules\Transactions\DataTables\PurchaseDataTable;
 use Modules\Transactions\Entities\Purchase;
+use Modules\Transactions\Entities\PurchaseItem;
 use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
 use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
 use Session;
@@ -31,11 +31,11 @@ class PurchaseController extends Controller
      */
     public function create(): Renderable
     {
-        $items = array_values(ItemMaster::pluck('name','id')->map(function($value,$key){
-            return ['id'=>$key,'label'=>$value];
+        $items = array_values(ItemMaster::pluck('name', 'id')->map(function ($value, $key) {
+            return ['id' => $key, 'label' => $value];
         })->toArray());
 
-        return view('transactions::purchases.create',compact('items'));
+        return view('transactions::purchases.create', compact('items'));
     }
 
     /**
@@ -45,8 +45,36 @@ class PurchaseController extends Controller
      */
     public function store(PurchaseSaveRequest $request): RedirectResponse
     {
-        Purchase::create($request->validated());
-        Session::flash("success", "Success|Purchase has been created successfully");
+
+        $purchase_id = Purchase::create($request->validated() + [Purchase::getMaxInvoices() + 1])->id;
+        if ($purchase_id) {
+            $data = collect(json_decode($request->bill_products))->filter(function ($item) {
+                return $item[0] != null;
+            })->map(function ($item) use ($purchase_id) {
+                return [
+                    'purchase_id' => $purchase_id,
+                    'item_id' => $item[0],
+                    'hsn_code' => $item[1],
+                    'gross_wt' => $item[2],
+                    'net_wt' => $item[3],
+                    'rate_gm' => $item[4],
+                    'amount' => $item[5],
+                    'unit' => $item[6],
+                    'unit_id' => $item[7],
+                    'hsn_id' => $item[8],
+                    'created_at' => now(),
+                    'updated_at' => null,
+                ];
+            })->toArray();
+            if (PurchaseItem::insert($data)) {
+                Session::flash("success", "Success|Purchase has been created successfully");
+            } else {
+                Session::flash('error', 'Something went wrong');
+            }
+        }else{
+            Session::flash("error", "Error|Purchase save failed");
+        }
+
         return back();
     }
 
@@ -93,5 +121,9 @@ class PurchaseController extends Controller
         $purchase->delete();
         Session::flash("success", "Success|Purchase has been deleted successfully");
         return back();
+    }
+
+    public  function printPurchase(Purchase $purchase){
+        return view('transactions::purchases.print', ['model' => $purchase]);
     }
 }

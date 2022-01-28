@@ -13,5 +13,8 @@
 
 Route::group(['prefix' => 'transactions','as' => 'transactions.','middleware' => 'admin'],function() {
     Route::get('/', 'TransactionsController@index');
+
+//    Purchase Routes
+    Route::get('/print/{purchase}', 'PurchaseController@printPurchase')->name('purchases.print');
     Route::resource('/purchases', 'PurchaseController');
 });

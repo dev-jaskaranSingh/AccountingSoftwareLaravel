@@ -35,4 +35,12 @@ class ItemMaster extends Model
         return $this->belongsTo(ItemGroupMaster::class, 'item_group_id');
     }
 
+    /**
+     * @return BelongsTo
+     */
+    public function hsn(): BelongsTo
+    {
+        return $this->belongsTo(HsnMaster::class, 'hsn_id');
+    }
+
 }

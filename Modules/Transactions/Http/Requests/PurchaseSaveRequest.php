@@ -11,10 +11,14 @@ class PurchaseSaveRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'account_id' => 'required',
+            'invoice_number' => 'required',
+            'invoice_date' => 'required',
+            'shipped_to' => 'required',
+            'bill_products' => 'required',
         ];
     }
 
@@ -23,7 +27,7 @@ class PurchaseSaveRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }

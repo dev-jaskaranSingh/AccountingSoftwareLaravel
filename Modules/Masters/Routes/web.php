@@ -23,6 +23,8 @@ Route::group(['prefix' => 'masters', 'as' => 'master.','middleware' => 'admin'],
 });
 
 Route::group(['prefix' => 'ajax', 'as' => 'ajax.'], function () {
+    Route::get('/get-item-by-id/{id?}', 'AjaxController@getItemByID')->name('get-item-by-id');
     Route::get('/get-state-by-country', 'AjaxController@getStateByCountry')->name('get-state-by-country');
     Route::get('/get-city-by-state', 'AjaxController@getCityByState')->name('get-city-by-state');
+    Route::get('/get-account-by-id/{id?}', 'AjaxController@getAccountById')->name('get-account-by-id');
 });

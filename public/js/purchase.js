@@ -1,5 +1,36 @@
 $(function () {
     $('.datatable').dataTable();
+
+
+    function ajax_request(url, type, data, callback) {
+        $.ajax({
+            url: url, type: type, data: data, success: function (data) {
+                callback(data);
+            }
+        });
+    }
+
+    $('body').on('change', '.account_id', function () {
+        console.log('change');
+        var account_id = $(this).val();
+        ajax_request(route + '/ajax/get-account-by-id/' + account_id, 'GET', null, function (data) {
+            if(!data.status){
+                toastr.error(data.message, 'Error');
+                return false;
+            }
+            $('.state_code').html(data.account.gst_state_code);
+            $('#shipped_to').val(data.account.address);
+            $('.gst').html(data.account.gstin);
+            $('.billed_to').html(data.account.address);
+            $('.pan').html(data.account.pan);
+            $('.place_of_supply').html(data.account.state.name);
+
+            toastr.success(data.message,'Success');
+        });
+    });
+
+
+    // Handsone Table
     var debounceFn = Handsontable.helper.debounce(function (colIndex, event) {
         var hot = $("#hot-table").handsontable('getInstance');
         var filtersPlugin = hot.getPlugin('filters');
@@ -22,10 +53,8 @@ $(function () {
         }
     };
 
-    // console.log(JSON.parse($('.purchase-items').val()));
+    data = JSON.parse($('.purchase-items').val()) || [];
 
-    data = JSON.parse($('.purchase-items').val());
-    console.log(data);
     var $container = $("#hot-table");
 
     $container.handsontable({
@@ -34,18 +63,16 @@ $(function () {
         filters: true,
         beforeOnCellMouseDown: doNotSelectColumn,
         data: data,
-        colHeaders: true,
-        contextMenu: true,
         startRows: 1,
-        startCols: 11,
-        minRows: 5,
-        colHeaders: ['Product', 'Batch No', 'Expiry', 'P Qty', 'C.P.P', 'Amount', 'C.P.L', 'M.R.P', 'MRP Amount'],
+        startCols: 7,
+        minRows: 10,
+        colHeaders: ['Item', 'HSN Code', 'Gross WT', 'Net WT', 'RATE/GM', 'Amount', 'Units', 'unit_id', 'hsn_id'],
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: ['row_below', 'remove_row', 'copy', 'cut'],
         copyPaste: true,
-        colWidths: [180, 120, 120, 120, 120, 100, 100, 100, 100],
+        colWidths: [180, 150, 120, 120, 120, 100, 100],
         hiddenColumns: {
-            columns: [9], indicators: true
+            columns: [7, 8, 9], indicators: true
         },
         columns: [{
             renderer: customDropdownRenderer, editor: 'chosen', width: 200, chosenOptions: {
@@ -54,7 +81,7 @@ $(function () {
         }, {
             type: 'text'
         }, {
-            type: 'date', dateFormat: 'DD/MM/YYYY',
+            type: 'text',
         }, {
             type: 'numeric',
         }, {
@@ -71,63 +98,65 @@ $(function () {
             type: 'numeric',
         }],
         afterChange: function (change, source) {
-            console.log([change, source])
-            let hotInstance = $("#hot-table").handsontable('getInstance');
-            let totalAmount = 0;
-            if (source === 'loadData') {
-                setTimeout(function () {
-                    let data = hotInstance.getSourceData();
-                    // console.log(data);
-                    data.filter(function (value) {
-                        if (!isNaN(value[5]) && value[5] != null) {
-                            totalAmount += parseInt(value[5]);
-                        }
-                    });
-                    $('.total_amount').html(totalAmount);
-                }, 100);
+            if (change !== null) {
+                let hotInstance = $("#hot-table").handsontable('getInstance');
+                let totalAmount = 0;
+                if (source === 'loadData') {
+                    setTimeout(function () {
+                        let data = hotInstance.getSourceData();
+                        data.filter(function (value) {
+                            if (!isNaN(value[6]) && value[6] != null) {
+                                totalAmount += parseInt(value[6]);
+                            }
+                        });
+                        $('.total_amount').html(totalAmount);
+                    }, 100);
+                }
+                let data = hotInstance.getSourceData();
+                let row = change[0][0];
+                let qty = data[row][3];
+                let price = data[row][4];
+                let userid = 0;
 
-                return;
-            }
-            let data = hotInstance.getSourceData();
-            let row = change[0][0];
-            let qty = data[row][3];
-            let amount = data[row][4];
-            let msp = data[row][7];
-            // console.log(packqty);
-            let userid = 0;
-            if (change[0][1] === 0) {
-
-                userid = data[row][0];
-                if (userid > 0) {
-                    let url = '/pharmacy/stock/purchase/';
-                    $.ajax({
-                        url: route + url + userid, type: 'get', dataType: 'json', success: function (response) {
-                            console.log(response.data.packed_qty);
-                            window.packed_qty = response.data.packed_qty;
-                            data[row][9] = response.data.packed_qty;
-                        }
-                    })
+                if (change[0][1] === 0) {
+                    userid = data[row][0];
+                    if (userid > 0) {
+                        let url = '/ajax/get-item-by-id/';
+                        $.ajax({
+                            url: route + url + userid, type: 'get', dataType: 'json', success: function (response) {
+                                if (!response.status) {
+                                    toastr.error(response.message);
+                                    return;
+                                }
+                                data[row][1] = response.item.hsn.hsn_code;
+                                data[row][6] = response.item.unit.name;
+                                data[row][4] = response.item.sale_price;
+                                data[row][7] = response.item.unit.id;
+                                data[row][8] = response.item.hsn.id;
+                                hotInstance.render();
+                                $('.purchase_products').val(JSON.stringify(hotInstance.getData()));
+                            }
+                        })
+                    }
                 }
-            }
-            if (change[0][1] === 3 || change[0][1] == 4) {
-                if (qty !== undefined && amount !== undefined) {
-                    data[row][5] = qty * amount;
-                    data[row][6] = parseInt(amount / packed_qty);
-                    data.filter(function (value) {
-                        if (!isNaN(value[6])) {
-                            totalAmount += parseInt(value[6]);
-                        }
-                    });
-                    $('.total_amount').html(totalAmount);
+                if (change[0][1] === 3 || change[0][1] === 4) {
+                    console.log(qty, price);
+                    if (qty !== undefined && price !== undefined) {
+                        data[row][5] = parseInt(qty * price);
+                        data.filter(function (value) {
+                            if (!isNaN(value[5])) {
+                                totalAmount += parseInt(value[5]);
+                            }
+                        });
+                        console.log(totalAmount);
+                        hotInstance.render();
+                        $('.total_amount').html(totalAmount);
+                    }
                 }
+                hotInstance.render();
+                hotInstance.loadData(data);
+                $('.purchase_products').val(JSON.stringify(hotInstance.getData()));
             }
-            if (change[0][1] == 7) {
-                if (msp !== undefined && packed_qty !== undefined) {
-                    data[row][8] = parseInt(msp * packed_qty);
-                }
-            }
-            hotInstance.loadData(data);
-            $('.purchase_products').val(JSON.stringify(hotInstance.getData()));
         },
         afterRemoveRow: function () {
             let hotInstance = $("#hot-table").handsontable('getInstance');

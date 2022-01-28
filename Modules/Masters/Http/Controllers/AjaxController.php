@@ -6,6 +6,8 @@ use App\Models\State;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Masters\Entities\AccountMaster;
+use Modules\Masters\Entities\ItemMaster;
 
 class AjaxController extends Controller
 {
@@ -16,7 +18,7 @@ class AjaxController extends Controller
     public function getStateByCountry(Request $request): JsonResponse
     {
         $country_id = $request->country_id;
-        $states = State::where('country_id', $country_id)->get(['id', 'name as text','tin','state_code']);
+        $states = State::where('country_id', $country_id)->get(['id', 'name as text', 'tin', 'state_code']);
         return response()->json(['status' => true, 'states' => $states]);
     }
 
@@ -29,5 +31,33 @@ class AjaxController extends Controller
         $state_id = $request->state_id;
         $cities = State::find($state_id)->cities()->get(['id', 'name as text']);
         return response()->json(['status' => true, 'cities' => $cities]);
+    }
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+
+    public function getItemByID($id = null): JsonResponse
+    {
+        if (is_null($id)) {
+            return response()->json(['status' => false, 'message' => 'Item ID is required'], 422);
+        }
+        $item = ItemMaster::select('id', 'name', 'sale_price', 'unit_id', 'hsn_id')
+                    ->with(['unit:id,name', 'hsn:id,hsn_code'])->find($id);
+        return response()->json(['status' => true, 'item' => $item], 200);
+    }
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getAccountById($id = null): JsonResponse
+    {
+        if (is_null($id)) {
+            return response()->json(['status' => false, 'message' => 'Account ID is required'], 422);
+        }
+        $account = AccountMaster::with(['city:id,name', 'state:id,name', 'country:id,name'])->find($id);
+        return response()->json(['status' => true,'message' => 'Account details fetched successfully!', 'account' => $account], 200);
     }
 }
