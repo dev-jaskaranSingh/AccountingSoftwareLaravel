@@ -44,9 +44,9 @@ class PurchaseController extends Controller
      * @return RedirectResponse
      */
     public function store(PurchaseSaveRequest $request): RedirectResponse
-    {
+    {   
 
-        $purchase_id = Purchase::create($request->validated() + [Purchase::getMaxInvoices() + 1])->id;
+        $purchase_id = Purchase::create($request->validated() + ['invoice_number' => Purchase::getMaxInvoices() + 1])->id;
         if ($purchase_id) {
             $data = collect(json_decode($request->bill_products))->filter(function ($item) {
                 return $item[0] != null;

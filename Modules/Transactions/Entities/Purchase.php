@@ -14,7 +14,7 @@ class Purchase extends Model
     use HasFactory;
 
     protected $table = 'purchases';
-    protected $guarded = ['id'];
+    protected $fillable = ['account_id','invoice_number','invoice_date','shipped_to'];
 
     /**
      * @return int
@@ -60,6 +60,7 @@ class Purchase extends Model
         $digits_length = strlen($no);
         $i = 0;
         $str = array();
+        
         $words = array(0 => '', 1 => 'One', 2 => 'Two',
             3 => 'Three', 4 => 'Four', 5 => 'Five', 6 => 'Six',
             7 => 'Seven', 8 => 'Eight', 9 => 'Nine',
@@ -69,7 +70,9 @@ class Purchase extends Model
             19 => 'Nineteen', 20 => 'Twenty', 30 => 'Thirty',
             40 => 'Forty', 50 => 'Fifty', 60 => 'Sixty',
             70 => 'Seventy', 80 => 'Eighty', 90 => 'Ninety');
+
         $digits = array('', 'Hundred','Thousand','Lakh', 'Crore');
+        
         while( $i < $digits_length ) {
             $divider = ($i == 2) ? 10 : 100;
             $number = floor($no % $divider);
@@ -82,7 +85,7 @@ class Purchase extends Model
             } else $str[] = null;
         }
         $Rupees = implode('', array_reverse($str));
-        $paise = ($decimal > 0) ? "." . ($words[$decimal / 10] . " " . $words[$decimal % 10]) . ' Paise' : '';
+        $paise = ($decimal > 0) ? "." . ($words[$decimal / 10] . " " . $words[$decimal % 10]) . ' Paisa' : '';
         return ($Rupees ? $Rupees . 'Rupees ' : '') . $paise;
     }
 }
