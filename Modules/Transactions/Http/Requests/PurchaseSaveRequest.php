@@ -23,6 +23,16 @@ class PurchaseSaveRequest extends FormRequest
     }
 
     /**
+     * @return string[]
+     */
+    public function messages(): array
+    {
+        return [
+            'account_id.required' => 'Party is required',
+        ];
+    }
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool

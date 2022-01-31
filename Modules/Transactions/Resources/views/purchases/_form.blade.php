@@ -24,8 +24,8 @@
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('account_id','Select Account') !!}
-                        {!! Form::select('account_id',\Modules\Masters\Entities\AccountMaster::whereNotNull('created_at')->pluck('name','id')->prepend('Select Account',null),null,['class'=>'form-control select2 account_id']) !!}
+                        {!! Form::label('account_id','Select Party') !!}
+                        {!! Form::select('account_id',\Modules\Masters\Entities\AccountMaster::whereNotNull('created_at')->pluck('name','id')->prepend('Select Party',null),null,['class'=>'form-control select2 account_id']) !!}
                         @error('account_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -44,14 +44,14 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         <hr/>
-                            <strong>Details</strong>
+                        <strong>Details</strong>
                         <hr/>
                         <div class="row mb-2">
                             <div class="col-md-4">
                                 Billed To:
                             </div>
                             <div class="col-md-8">
-                               <div class="billed_to">-</div>
+                                <div class="billed_to">-</div>
                             </div>
                         </div>
                         <div class="row mb-2">

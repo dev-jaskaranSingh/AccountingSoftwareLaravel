@@ -14,7 +14,7 @@ $(function () {
         console.log('change');
         var account_id = $(this).val();
         ajax_request(route + '/ajax/get-account-by-id/' + account_id, 'GET', null, function (data) {
-            if(!data.status){
+            if (!data.status) {
                 toastr.error(data.message, 'Error');
                 return false;
             }
@@ -25,7 +25,7 @@ $(function () {
             $('.pan').html(data.account.pan);
             $('.place_of_supply').html(data.account.state.name);
 
-            toastr.success(data.message,'Success');
+            toastr.success(data.message, 'Success');
         });
     });
 
@@ -64,15 +64,15 @@ $(function () {
         beforeOnCellMouseDown: doNotSelectColumn,
         data: data,
         startRows: 1,
-        startCols: 7,
-        minRows: 10,
-        colHeaders: ['Item', 'HSN Code', 'Gross WT', 'Net WT', 'RATE/GM', 'Amount', 'Units', 'unit_id', 'hsn_id'],
+        startCols: 9,
+        minRows: 15,
+        colHeaders: ['Items', 'HSN Code', 'GST Min(%)', 'GST Max(%)', 'Gross WT', 'Net WT', 'RATE/GM', 'Amount', 'GST Amount', 'Total', 'Units', 'unit_id', 'hsn_id'],
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: ['row_below', 'remove_row', 'copy', 'cut'],
         copyPaste: true,
-        colWidths: [180, 150, 120, 120, 120, 100, 100],
+        colWidths: [100, 80, 90, 90, 120, 120, 120,120,120, 100, 80],
         hiddenColumns: {
-            columns: [7, 8, 9], indicators: true
+            columns: [11, 12, 13], indicators: true
         },
         columns: [{
             renderer: customDropdownRenderer, editor: 'chosen', width: 200, chosenOptions: {
@@ -96,6 +96,14 @@ $(function () {
             type: 'numeric',
         }, {
             type: 'numeric',
+        },{
+            type: 'numeric',
+        }, {
+            type: 'numeric',
+        }, {
+            type: 'numeric',
+        }, {
+            type: 'numeric',
         }],
         afterChange: function (change, source) {
             if (change !== null) {
@@ -105,17 +113,18 @@ $(function () {
                     setTimeout(function () {
                         let data = hotInstance.getSourceData();
                         data.filter(function (value) {
-                            if (!isNaN(value[6]) && value[6] != null) {
-                                totalAmount += parseInt(value[6]);
+                            if (!isNaN(value[8]) && value[8] != null) {
+                                totalAmount += parseInt(value[8]);
                             }
                         });
                         $('.total_amount').html(totalAmount);
                     }, 100);
                 }
+
                 let data = hotInstance.getSourceData();
                 let row = change[0][0];
-                let qty = data[row][3];
-                let price = data[row][4];
+                let qty = data[row][5];
+                let price = data[row][6];
                 let userid = 0;
 
                 if (change[0][1] === 0) {
@@ -128,27 +137,42 @@ $(function () {
                                     toastr.error(response.message);
                                     return;
                                 }
+                                console.log(response.item.hsn)
                                 data[row][1] = response.item.hsn.hsn_code;
-                                data[row][6] = response.item.unit.name;
-                                data[row][4] = response.item.sale_price;
-                                data[row][7] = response.item.unit.id;
-                                data[row][8] = response.item.hsn.id;
+                                data[row][2] = response.item.hsn.gst_min_percentage;
+                                data[row][3] = response.item.hsn.gst_max_percentage;
+                                data[row][10] = response.item.unit.name;
+                                data[row][6] = response.item.sale_price;
+                                data[row][11] = response.item.unit.id;
+                                data[row][12] = response.item.hsn.id;
+                                window.hsn_min_amount = response.item.hsn.min_amount;
+                                window.gst_min_percentage = response.item.hsn.gst_min_percentage;
+                                window.gst_max_percentage = response.item.hsn.gst_max_percentage;
                                 hotInstance.render();
                                 $('.purchase_products').val(JSON.stringify(hotInstance.getData()));
                             }
                         })
                     }
                 }
-                if (change[0][1] === 3 || change[0][1] === 4) {
-                    console.log(qty, price);
+                if (change[0][1] === 5 || change[0][1] === 6) {
                     if (qty !== undefined && price !== undefined) {
-                        data[row][5] = parseInt(qty * price);
+                        window.amount = parseInt(qty * price);
+                        window.gst_ammount = 0;
+                        data[row][7] = window.amount;
+                        if(data[row][7] < window.hsn_min_amount ){
+                            console.log(window.gst_min_percentage)
+                            window.gst_ammount = (window.amount * window.gst_min_percentage) / 100;
+                        }else{
+                            console.log(window.gst_max_percentage)
+                            window.gst_ammount = (window.amount * window.gst_max_percentage) / 100;
+                        }
+                        data[row][8] = window.gst_ammount;
+                        data[row][9] = amount + window.gst_ammount;
                         data.filter(function (value) {
-                            if (!isNaN(value[5])) {
-                                totalAmount += parseInt(value[5]);
+                            if (!isNaN(value[9])) {
+                                totalAmount += parseInt(value[9]);
                             }
                         });
-                        console.log(totalAmount);
                         hotInstance.render();
                         $('.total_amount').html(totalAmount);
                     }

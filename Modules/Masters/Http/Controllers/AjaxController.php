@@ -44,7 +44,8 @@ class AjaxController extends Controller
             return response()->json(['status' => false, 'message' => 'Item ID is required'], 422);
         }
         $item = ItemMaster::select('id', 'name', 'sale_price', 'unit_id', 'hsn_id')
-                    ->with(['unit:id,name', 'hsn:id,hsn_code'])->find($id);
+            ->with(['unit:id,name', 'hsn'])
+            ->find($id);
         return response()->json(['status' => true, 'item' => $item], 200);
     }
 
@@ -58,6 +59,6 @@ class AjaxController extends Controller
             return response()->json(['status' => false, 'message' => 'Account ID is required'], 422);
         }
         $account = AccountMaster::with(['city:id,name', 'state:id,name', 'country:id,name'])->find($id);
-        return response()->json(['status' => true,'message' => 'Account details fetched successfully!', 'account' => $account], 200);
+        return response()->json(['status' => true, 'message' => 'Account details fetched successfully!', 'account' => $account], 200);
     }
 }
