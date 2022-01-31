@@ -44,9 +44,10 @@ class PurchaseController extends Controller
      * @return RedirectResponse
      */
     public function store(PurchaseSaveRequest $request): RedirectResponse
-    {   
+    {
 
-        $purchase_id = Purchase::create($request->validated() + ['invoice_number' => Purchase::getMaxInvoices() + 1])->id;
+//        $purchase_id = Purchase::create($request->validated() + ['invoice_number' => Purchase::getMaxInvoices() + 1])->id;
+        $purchase_id = 1;
         if ($purchase_id) {
             $data = collect(json_decode($request->bill_products))->filter(function ($item) {
                 return $item[0] != null;
@@ -55,17 +56,18 @@ class PurchaseController extends Controller
                     'purchase_id' => $purchase_id,
                     'item_id' => $item[0],
                     'hsn_code' => $item[1],
-                    'gross_wt' => $item[2],
-                    'net_wt' => $item[3],
-                    'rate_gm' => $item[4],
-                    'amount' => $item[5],
+                    'gross_wt' => $item[4],
+                    'net_wt' => $item[5],
+                    'rate_gm' => $item[6],
+                    'amount' => ($item[5] * $item[6]),
                     'unit' => $item[6],
-                    'unit_id' => $item[7],
-                    'hsn_id' => $item[8],
+                    'unit_id' => $item[11],
+                    'hsn_id' => $item[12],
                     'created_at' => now(),
                     'updated_at' => null,
                 ];
             })->toArray();
+            dd([$request->all(), $data]);
             if (PurchaseItem::insert($data)) {
                 Session::flash("success", "Success|Purchase has been created successfully");
             } else {
