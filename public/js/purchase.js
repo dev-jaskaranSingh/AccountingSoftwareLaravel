@@ -11,7 +11,6 @@ $(function () {
     }
 
     $('body').on('change', '.account_id', function () {
-        console.log('change');
         var account_id = $(this).val();
         ajax_request(route + '/ajax/get-account-by-id/' + account_id, 'GET', null, function (data) {
             if (!data.status) {
@@ -64,47 +63,21 @@ $(function () {
         beforeOnCellMouseDown: doNotSelectColumn,
         data: data,
         startRows: 1,
-        startCols: 9,
+        startCols: 11,
         minRows: 15,
-        colHeaders: ['Items', 'HSN Code', 'GST Min(%)', 'GST Max(%)', 'Gross WT', 'Net WT', 'RATE/GM', 'Amount', 'GST Amount', 'Total', 'Units', 'unit_id', 'hsn_id'],
+        colHeaders: ['Items', 'HSN Code', 'GST Min(%)', 'GST Max(%)', 'Gross WT', 'Net WT', 'RATE/GM', 'Amount','Discount(%)','Discount(₹)','After Discount', 'GST Amount', 'Total', 'Units', 'unit_id', 'hsn_id'],
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: ['row_below', 'remove_row', 'copy', 'cut'],
         copyPaste: true,
-        colWidths: [100, 80, 90, 90, 120, 120, 120,120,120, 100, 80],
+        colWidths: [100, 80, 90, 90, 120, 120, 120, 120, 120, 120, 120, 120, 100, 80],
         hiddenColumns: {
-            columns: [11, 12, 13], indicators: true
+            columns: [13, 14, 15], indicators: true
         },
         columns: [{
             renderer: customDropdownRenderer, editor: 'chosen', width: 200, chosenOptions: {
                 data: JSON.parse($('.products-data').val()) || [],
             }
-        }, {
-            type: 'text'
-        }, {
-            type: 'text',
-        }, {
-            type: 'numeric',
-        }, {
-            type: 'numeric',
-        }, {
-            type: 'numeric',
-        }, {
-            type: 'numeric',
-        }, {
-            type: 'numeric',
-        }, {
-            type: 'numeric',
-        }, {
-            type: 'numeric',
-        },{
-            type: 'numeric',
-        }, {
-            type: 'numeric',
-        }, {
-            type: 'numeric',
-        }, {
-            type: 'numeric',
-        }],
+        }, {type: 'text'}, {type: 'text'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}],
         afterChange: function (change, source) {
             if (change !== null) {
                 let hotInstance = $("#hot-table").handsontable('getInstance');
@@ -137,14 +110,13 @@ $(function () {
                                     toastr.error(response.message);
                                     return;
                                 }
-                                console.log(response.item.hsn)
                                 data[row][1] = response.item.hsn.hsn_code;
                                 data[row][2] = response.item.hsn.gst_min_percentage;
                                 data[row][3] = response.item.hsn.gst_max_percentage;
-                                data[row][10] = response.item.unit.name;
                                 data[row][6] = response.item.sale_price;
-                                data[row][11] = response.item.unit.id;
-                                data[row][12] = response.item.hsn.id;
+                                data[row][12] = response.item.unit.name;
+                                data[row][13] = response.item.unit.id;
+                                data[row][14] = response.item.hsn.id;
                                 window.hsn_min_amount = response.item.hsn.min_amount;
                                 window.gst_min_percentage = response.item.hsn.gst_min_percentage;
                                 window.gst_max_percentage = response.item.hsn.gst_max_percentage;
@@ -154,29 +126,38 @@ $(function () {
                         })
                     }
                 }
-                if (change[0][1] === 5 || change[0][1] === 6) {
+
+                if (change[0][1] === 5 || change[0][1] === 6 || change[0][1] === 8 || change[0][1] === 9) {
                     if (qty !== undefined && price !== undefined) {
                         window.amount = parseInt(qty * price);
                         window.gst_ammount = 0;
                         data[row][7] = window.amount;
-                        if(data[row][7] < window.hsn_min_amount ){
-                            console.log(window.gst_min_percentage)
-                            window.gst_ammount = (window.amount * window.gst_min_percentage) / 100;
-                        }else{
-                            console.log(window.gst_max_percentage)
-                            window.gst_ammount = (window.amount * window.gst_max_percentage) / 100;
+                        if (data[row][7] < window.hsn_min_amount) {
+                            window.gst_ammount = (data[row][10] * window.gst_min_percentage) / 100;
+                        } else {
+                            window.gst_ammount = (data[row][10] * window.gst_max_percentage) / 100;
                         }
-                        data[row][8] = window.gst_ammount;
-                        data[row][9] = amount + window.gst_ammount;
+                        data[row][11] = window.gst_ammount;
+                        data[row][12] = amount + window.gst_ammount;
                         data.filter(function (value) {
                             if (!isNaN(value[9])) {
-                                totalAmount += parseInt(value[9]);
+                                totalAmount += parseInt(value[11]);
                             }
                         });
                         hotInstance.render();
                         $('.total_amount').html(totalAmount);
                     }
                 }
+
+                if(change[0][1] === 8){
+                    if (qty !== undefined && price !== undefined) {
+                        let dicountPercentage = data[row][8];
+                        window.disount_amount = (amount * dicountPercentage) / 100;
+                        data[row][9] = window.disount_amount; //Discount Amount
+                        data[row][10] = amount - disount_amount; //After Discount
+                    }
+                }
+
                 hotInstance.render();
                 hotInstance.loadData(data);
                 $('.purchase_products').val(JSON.stringify(hotInstance.getData()));
