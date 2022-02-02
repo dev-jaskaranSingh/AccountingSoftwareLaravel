@@ -128,11 +128,10 @@
         </div>
     </div>
 </div>
-
 {!! Form::hidden('product',json_encode(@$items),['class'=>'products-data']) !!}
 {!! Form::hidden('purchase_items',json_encode(@$purchase_items),['class'=>'purchase-items']) !!}
 {!! Form::hidden('bill_products',null,['class'=>'purchase_products']) !!}
-
+{!! Form::hidden('company_state_code',Session::get('company')->gst_state_code,['class'=>'company_state_code']) !!}
 
 
 @section('scripts')

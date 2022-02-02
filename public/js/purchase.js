@@ -1,7 +1,8 @@
 $(function () {
     $('.datatable').dataTable();
 
-
+    window.companyStateCode = $('.company_state_code').val();
+    console.log(window.companyStateCode);
     function ajax_request(url, type, data, callback) {
         $.ajax({
             url: url, type: type, data: data, success: function (data) {
@@ -18,7 +19,8 @@ $(function () {
                 return false;
             }
             $('.state_code').html(data.account.gst_state_code);
-            // $('#shipped_to').val(data.account.address);
+            window.stateCode = data.account.gst_state_code;
+                // $('#shipped_to').val(data.account.address);
             $('.gst').html(data.account.gstin);
             $('.billed_to').html(data.account.name);
             $('.pan').html(data.account.pan);
@@ -65,20 +67,24 @@ $(function () {
         startRows: 1,
         startCols: 11,
         minRows: 15,
-        colHeaders: ['Items', 'HSN Code', 'GST Min(%)', 'GST Max(%)', 'Gross WT', 'Net WT', 'RATE/GM', 'Amount','Discount(%)','Discount(₹)','After Discount', 'GST Amount', 'Total', 'Units','unit_id','hsn_id'],
+        colHeaders: ['Items', 'HSN Code', 'GST Min(%)', 'GST Max(%)', 'Gross WT', 'Net WT', 'RATE/GM', 'Amount','Discount(%)','Discount(₹)','After Discount','SGST','CGST','IGST', 'GST Amount', 'Total', 'Units','unit_id','hsn_id'],
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: ['row_below', 'remove_row', 'copy', 'cut'],
         copyPaste: true,
-        colWidths: [100, 80, 90, 90, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120],
+        colWidths: [100, 80, 90, 90, 120, 120, 120, 120, 120, 120, 120, 120,100, 100, 120,100, 120, 120],
         hiddenColumns: {
-            columns: [14,15,16],
+            columns: [],
             indicators: true
         },
         columns: [{
             renderer: customDropdownRenderer, editor: 'chosen', width: 200, chosenOptions: {
                 data: JSON.parse($('.products-data').val()) || [],
             }
-        }, {type: 'text'}, {type: 'text'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'}],
+        }, {type: 'text'}, {type: 'text'}, {type: 'numeric'},
+            {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},
+            {type: 'numeric'}, {type: 'numeric'},{type: 'numeric'},
+            {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},
+            {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'},{type: 'numeric'}],
         afterChange: function (change, source) {
             if (change !== null) {
                 let hotInstance = $("#hot-table").handsontable('getInstance');
@@ -103,6 +109,13 @@ $(function () {
 
                 if (change[0][1] === 0) {
                     userid = data[row][0];
+
+                    if($('.account_id').val() === ''){
+                        toastr.error('Please select party', 'Error');
+                        // hotInstance.setDataAtCell(row, 0, null);
+                        return false;
+                    }
+
                     if (userid > 0) {
                         let url = '/ajax/get-item-by-id/';
                         $.ajax({
@@ -115,9 +128,9 @@ $(function () {
                                 data[row][2] = response.item.hsn.gst_min_percentage;
                                 data[row][3] = response.item.hsn.gst_max_percentage;
                                 data[row][6] = response.item.sale_price;
-                                data[row][13] = response.item.unit.name;
-                                data[row][14] = response.item.unit.id;
-                                data[row][15] = response.item.hsn.id;
+                                data[row][16] = response.item.unit.name;
+                                data[row][17] = response.item.unit.id;
+                                data[row][18] = response.item.hsn.id;
                                 window.hsn_min_amount = response.item.hsn.min_amount;
                                 window.gst_min_percentage = response.item.hsn.gst_min_percentage;
                                 window.gst_max_percentage = response.item.hsn.gst_max_percentage;
@@ -142,14 +155,23 @@ $(function () {
                             } else {
                                 window.gst_ammount = (window.amount * window.gst_max_percentage) / 100;
                             }
-                            data[row][11] = window.gst_ammount;
-                            data[row][12] = amount + window.gst_ammount;
+                            if(window.stateCode === window.companyStateCode){
+                                data[row][11] = window.gst_ammount / 2 ;
+                                data[row][12] = window.gst_ammount/ 2;
+                                data[row][13] = 0;
+                            }else{
+                                data[row][11] = 0 ;
+                                data[row][12] = 0;
+                                data[row][13] = window.gst_ammount;
+                            }
+                            data[row][14] = window.gst_ammount;
+                            data[row][15] = amount + window.gst_ammount;
                         }
 
 
                         data.filter(function (value) {
-                            if (!isNaN(value[12])) {
-                                totalAmount += parseInt(value[11]);
+                            if (!isNaN(value[15])) {
+                                totalAmount += parseInt(value[15]);
                             }
                         });
                         hotInstance.render();
@@ -170,12 +192,21 @@ $(function () {
                         } else {
                             window.gst_ammount = (afterDiscount * window.gst_max_percentage) / 100;
                         }
-                        data[row][11] = window.gst_ammount;
-                        data[row][12] = amount + window.gst_ammount;
+                        if(window.stateCode === window.companyStateCode){
+                            data[row][11] = window.gst_ammount / 2 ;
+                            data[row][12] = window.gst_ammount/ 2;
+                            data[row][13] = 0;
+                        }else{
+                            data[row][11] = 0 ;
+                            data[row][12] = 0;
+                            data[row][13] = window.gst_ammount;
+                        }
+                        data[row][14] = amount + window.gst_ammount;
+                        data[row][15] = amount + window.gst_ammount;
 
                         data.filter(function (value) {
-                            if (!isNaN(value[12])) {
-                                totalAmount += parseInt(value[12]);
+                            if (!isNaN(value[15])) {
+                                totalAmount += parseInt(value[15]);
                             }
                         });
                         hotInstance.render();
