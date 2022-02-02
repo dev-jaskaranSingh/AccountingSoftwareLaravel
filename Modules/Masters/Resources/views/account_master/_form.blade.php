@@ -6,20 +6,20 @@
             </div>
             <div class="ibox-content">
                 <div class="row">
-
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('account_group_id','Select Account Group') !!}
-                        {!! Form::select('account_group_id',\Modules\Masters\Entities\AccountGroup::pluck('name','id'),@$model->account_group_id,['class'=>'select2 form-control select']) !!}
-                        @error('account_group_id')
+                        {!! Form::label('name','Name') !!}
+                        {!! Form::text('name',null,['class'=>'form-control']) !!}
+                        @error('name')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
                         @enderror
                     </div>
+
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('name','Name') !!}
-                        {!! Form::text('name',null,['class'=>'form-control']) !!}
-                        @error('name')
+                        {!! Form::label('account_group_id','Select Account Group') !!}
+                        {!! Form::select('account_group_id',\Modules\Masters\Entities\AccountGroup::pluck('name','id'),@$model->account_group_id,['class'=>'select2 form-control select']) !!}
+                        @error('account_group_id')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>

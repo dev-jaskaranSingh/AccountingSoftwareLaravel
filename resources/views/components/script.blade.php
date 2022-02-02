@@ -84,7 +84,38 @@
 <!-- iCheck -->
 <script src="{{ asset('template/js/plugins/iCheck/icheck.min.js') }}"></script>
 <script>
+
+    function getCurrentFinancialYear(strDocDate) {
+        var startYear = "";
+        var endYear = "";
+        var docDate = new Date(strDocDate);
+        if ((docDate.getMonth() + 1) <= 3) {
+            startYear = docDate.getFullYear() - 1;
+            endYear = docDate.getFullYear();
+        } else {
+            startYear = docDate.getFullYear();
+            endYear = docDate.getFullYear() + 1;
+        }
+        return {startDate : startYear+"-03-01", endDate:  endYear+"-03-31" };
+    }
+
     $(document).ready(function () {
+
+    $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+        maxViewMode: 0,
+        todayBtn: "linked",
+        clearBtn: true,
+        autoclose: true,
+        todayHighlight: true,
+        startDate: getCurrentFinancialYear($('input.datepicker').val()).startDate,
+        endDate: getCurrentFinancialYear($('input.datepicker').val()).endDate
+    });
+
+        $('.datepicker').on('change', function(e){
+            console.log(e);
+            console.log($(this).val());
+        });
 
         $('form').attr('autocomplete', 'false');
         $('input').attr('autocomplete', 'false');
@@ -121,9 +152,7 @@
 
         });
 
-        $('.datepicker').datepicker({
-            format: 'yyyy-mm-d'
-        });
+
 
         toastr.options = {
             closeButton: true,

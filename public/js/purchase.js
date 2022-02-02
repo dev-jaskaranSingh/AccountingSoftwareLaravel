@@ -18,9 +18,9 @@ $(function () {
                 return false;
             }
             $('.state_code').html(data.account.gst_state_code);
-            $('#shipped_to').val(data.account.address);
+            // $('#shipped_to').val(data.account.address);
             $('.gst').html(data.account.gstin);
-            $('.billed_to').html(data.account.address);
+            $('.billed_to').html(data.account.name);
             $('.pan').html(data.account.pan);
             $('.place_of_supply').html(data.account.state.name);
 
@@ -65,19 +65,20 @@ $(function () {
         startRows: 1,
         startCols: 11,
         minRows: 15,
-        colHeaders: ['Items', 'HSN Code', 'GST Min(%)', 'GST Max(%)', 'Gross WT', 'Net WT', 'RATE/GM', 'Amount','Discount(%)','Discount(₹)','After Discount', 'GST Amount', 'Total', 'Units', 'unit_id', 'hsn_id'],
+        colHeaders: ['Items', 'HSN Code', 'GST Min(%)', 'GST Max(%)', 'Gross WT', 'Net WT', 'RATE/GM', 'Amount','Discount(%)','Discount(₹)','After Discount', 'GST Amount', 'Total', 'Units','unit_id','hsn_id'],
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: ['row_below', 'remove_row', 'copy', 'cut'],
         copyPaste: true,
-        colWidths: [100, 80, 90, 90, 120, 120, 120, 120, 120, 120, 120, 120, 100, 80],
+        colWidths: [100, 80, 90, 90, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120],
         hiddenColumns: {
-            columns: [13, 14, 15], indicators: true
+            columns: [14,15,16],
+            indicators: true
         },
         columns: [{
             renderer: customDropdownRenderer, editor: 'chosen', width: 200, chosenOptions: {
                 data: JSON.parse($('.products-data').val()) || [],
             }
-        }, {type: 'text'}, {type: 'text'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}],
+        }, {type: 'text'}, {type: 'text'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'}],
         afterChange: function (change, source) {
             if (change !== null) {
                 let hotInstance = $("#hot-table").handsontable('getInstance');
@@ -114,9 +115,9 @@ $(function () {
                                 data[row][2] = response.item.hsn.gst_min_percentage;
                                 data[row][3] = response.item.hsn.gst_max_percentage;
                                 data[row][6] = response.item.sale_price;
-                                data[row][12] = response.item.unit.name;
-                                data[row][13] = response.item.unit.id;
-                                data[row][14] = response.item.hsn.id;
+                                data[row][13] = response.item.unit.name;
+                                data[row][14] = response.item.unit.id;
+                                data[row][15] = response.item.hsn.id;
                                 window.hsn_min_amount = response.item.hsn.min_amount;
                                 window.gst_min_percentage = response.item.hsn.gst_min_percentage;
                                 window.gst_max_percentage = response.item.hsn.gst_max_percentage;
@@ -127,20 +128,27 @@ $(function () {
                     }
                 }
 
-                if (change[0][1] === 5 || change[0][1] === 6 || change[0][1] === 8 || change[0][1] === 9) {
+                if (change[0][1] === 5 || change[0][1] === 6) {
                     if (qty !== undefined && price !== undefined) {
+                        data[row][8] = 0;
+                        data[row][9] = 0;
+                        data[row][10] = 0;
                         window.amount = parseInt(qty * price);
-                        window.gst_ammount = 0;
                         data[row][7] = window.amount;
-                        if (data[row][7] < window.hsn_min_amount) {
-                            window.gst_ammount = (data[row][10] * window.gst_min_percentage) / 100;
-                        } else {
-                            window.gst_ammount = (data[row][10] * window.gst_max_percentage) / 100;
+                        if(data[row][8] === 0 || data[row][9] === 0 || data[row][10] === 0){
+                            window.gst_ammount = 0;
+                            if (data[row][7] < window.hsn_min_amount) {
+                                window.gst_ammount = (window.amount * window.gst_min_percentage) / 100;
+                            } else {
+                                window.gst_ammount = (window.amount * window.gst_max_percentage) / 100;
+                            }
+                            data[row][11] = window.gst_ammount;
+                            data[row][12] = amount + window.gst_ammount;
                         }
-                        data[row][11] = window.gst_ammount;
-                        data[row][12] = amount + window.gst_ammount;
+
+
                         data.filter(function (value) {
-                            if (!isNaN(value[9])) {
+                            if (!isNaN(value[12])) {
                                 totalAmount += parseInt(value[11]);
                             }
                         });
@@ -153,8 +161,25 @@ $(function () {
                     if (qty !== undefined && price !== undefined) {
                         let dicountPercentage = data[row][8];
                         window.disount_amount = (amount * dicountPercentage) / 100;
-                        data[row][9] = window.disount_amount; //Discount Amount
-                        data[row][10] = amount - disount_amount; //After Discount
+                        data[row][9] = window.disount_amount;
+                        window.afterDiscount = amount - disount_amount //Discount Amount
+                        data[row][10] = window.afterDiscount;
+                        window.gst_ammount = 0;
+                        if (data[row][7] < window.hsn_min_amount) {
+                            window.gst_ammount = (afterDiscount * window.gst_min_percentage) / 100;
+                        } else {
+                            window.gst_ammount = (afterDiscount * window.gst_max_percentage) / 100;
+                        }
+                        data[row][11] = window.gst_ammount;
+                        data[row][12] = amount + window.gst_ammount;
+
+                        data.filter(function (value) {
+                            if (!isNaN(value[12])) {
+                                totalAmount += parseInt(value[12]);
+                            }
+                        });
+                        hotInstance.render();
+                        $('.total_amount').html(totalAmount);
                     }
                 }
 
@@ -168,24 +193,6 @@ $(function () {
             $('.purchase_products').val(JSON.stringify(hotInstance.getData()));
         }
     });
-
-    $('.billno').blur(function () {
-        let elem = $(this);
-        let bill_no = elem.val();
-        $.ajax({
-            url: route + "/pharmacy/stock/purchase/billno",
-            type: "GET",
-            data: {bill_no: bill_no},
-            success: function (response) {
-                if (response.data) {
-                    elem.val(' ');
-                    toastr["error"]("Enter Another Bill Number", "Bill Number Already Exist");
-                }
-            }
-        });
-    });
-
-
 });
 
 function getData() {

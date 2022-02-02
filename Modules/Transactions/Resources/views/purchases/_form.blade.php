@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('invoice_number','Invoice Number') !!}
-                        {!! Form::text('invoice_number',\Modules\Transactions\Entities\Purchase::getMaxInvoices()+1,['class'=>'form-control']) !!}
+                        {!! Form::text('invoice_number',\Modules\Transactions\Entities\Purchase::getMaxInvoices()+1,['class'=>'form-control','readonly' => true]) !!}
                         @error('invoice_number')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -48,7 +48,7 @@
                         <hr/>
                         <div class="row mb-2">
                             <div class="col-md-4">
-                                Billed To:
+                                Party Name
                             </div>
                             <div class="col-md-8">
                                 <div class="billed_to">-</div>
@@ -90,23 +90,23 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 mb-3">
-                                {!! Form::label('invoice_date','Invoice Date') !!}
-                                {!! Form::text('invoice_date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
-                                @error('invoice_date')
+                                {!! Form::label('bill_date','Bill Date') !!}
+                                {!! Form::text('bill_date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                                @error('bill_date')
                                 <span class="help-block text-danger">
                                     {{ $message }}
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-md-12 col-sm-12 mb-3">
-                                {!! Form::label('shipped_to','Shipped To') !!}
-                                {!! Form::textarea('shipped_to',null,['class'=>'form-control','rows'=>4]) !!}
-                                @error('shipped_to')
-                                <span class="help-block text-danger">
-                                {{ $message }}
-                            </span>
-                                @enderror
-                            </div>
+{{--                            <div class="col-md-12 col-sm-12 mb-3">--}}
+{{--                                {!! Form::label('shipped_to','Shipped To') !!}--}}
+{{--                                {!! Form::textarea('shipped_to',null,['class'=>'form-control','rows'=>4]) !!}--}}
+{{--                                @error('shipped_to')--}}
+{{--                                <span class="help-block text-danger">--}}
+{{--                                {{ $message }}--}}
+{{--                            </span>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
                         </div>
                     </div>
 
