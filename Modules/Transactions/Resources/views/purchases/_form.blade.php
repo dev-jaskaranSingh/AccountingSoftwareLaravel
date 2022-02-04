@@ -42,56 +42,21 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-3">
-                        <hr/>
-                        <strong>Details</strong>
-                        <hr/>
-                        <div class="row mb-2">
-                            <div class="col-md-4">
-                                Party Name
-                            </div>
-                            <div class="col-md-8">
-                                <div class="billed_to">-</div>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4">
-                                GST:
-                            </div>
-                            <div class="col-md-8">
-                                <div class="gst">-</div>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4">
-                                PAN:
-                            </div>
-                            <div class="col-md-8">
-                                <div class="pan">-</div>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4">
-                                Place of Supply:
-                            </div>
-                            <div class="col-md-8">
-                                <div class="place_of_supply">-</div>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4">
-                                State Code:
-                            </div>
-                            <div class="col-md-8">
-                                <div class="state_code">-</div>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="col-md-6 col-sm-12 mb-3">--}}
+{{--                        <div class="row mb-2">--}}
+{{--                            <div class="col-md-4">--}}
+{{--                                State Code:--}}
+{{--                                <h2><div class="state_code">-</div></h2>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-8">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="col-md-6 col-sm-12 mb-3">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 mb-3">
                                 {!! Form::label('bill_date','Bill Date') !!}
-                                {!! Form::text('bill_date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                                {!! Form::text('bill_date',now()->format('Y-m-d'),['class'=>'form-control purchaseDatePicker']) !!}
                                 @error('bill_date')
                                 <span class="help-block text-danger">
                                     {{ $message }}
@@ -128,6 +93,7 @@
         </div>
     </div>
 </div>
+@dump(Session::get('company')->gst_state_code)
 {!! Form::hidden('product',json_encode(@$items),['class'=>'products-data']) !!}
 {!! Form::hidden('purchase_items',json_encode(@$purchase_items),['class'=>'purchase-items']) !!}
 {!! Form::hidden('bill_products',null,['class'=>'purchase_products']) !!}

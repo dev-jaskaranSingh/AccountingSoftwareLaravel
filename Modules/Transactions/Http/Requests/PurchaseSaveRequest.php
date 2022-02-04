@@ -3,20 +3,24 @@
 namespace Modules\Transactions\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Session;
 
 class PurchaseSaveRequest extends FormRequest
 {
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
+
     public function rules(): array
-    {
+   {
+       $dates = [Session::get('company')->to_date, Session::get('company')->from_date];
         return [
             'account_id' => 'required',
             'invoice_number' => 'required',
-            'invoice_date' => 'required',
+            'bill_date' => 'required',
             'shipped_to' => 'required',
             'bill_products' => 'required',
         ];

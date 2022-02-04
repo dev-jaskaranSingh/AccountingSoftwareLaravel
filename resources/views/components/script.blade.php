@@ -83,9 +83,15 @@
 <script type="text/javascript" src="{{ asset('js/custom.js?ref='.rand(1111,9999)) }}"></script>
 <!-- iCheck -->
 <script src="{{ asset('template/js/plugins/iCheck/icheck.min.js') }}"></script>
-<script>
+@php
+    $toDate = Session::get('company')->to_date;
+    $fromDate = Session::get('company')->from_date;
 
-    function getCurrentFinancialYear(strDocDate) {
+@endphp
+<script>
+    console.log('{{$toDate}}');
+    console.log('{{$fromDate}}');
+    function getCurrentFinancialYearForPurchase(strDocDate) {
         var startYear = "";
         var endYear = "";
         var docDate = new Date(strDocDate);
@@ -96,20 +102,20 @@
             startYear = docDate.getFullYear();
             endYear = docDate.getFullYear() + 1;
         }
-        return {startDate : startYear+"-03-01", endDate:  endYear+"-03-31" };
+        return {startDate : '{{ $fromDate }}' , endDate:  '{{ $toDate }}' };
     }
 
     $(document).ready(function () {
 
-    $('.datepicker').datepicker({
+    $('.purchaseDatePicker').datepicker({
         format: 'yyyy-mm-dd',
         maxViewMode: 0,
         todayBtn: "linked",
         clearBtn: true,
         autoclose: true,
         todayHighlight: true,
-        startDate: getCurrentFinancialYear($('input.datepicker').val()).startDate,
-        endDate: getCurrentFinancialYear($('input.datepicker').val()).endDate
+        startDate: getCurrentFinancialYearForPurchase($('input.purchaseDatePicker').val()).startDate,
+        endDate: getCurrentFinancialYearForPurchase($('input.purchaseDatePicker').val()).endDate
     });
 
         $('.datepicker').on('change', function(e){
@@ -185,16 +191,6 @@
         $('.clockpicker').clockpicker();
         $('.text-editor').summernote({
             height: 350,
-            // fontSizes: ['8', '9', '10', '11', '12', '14','15','16','17','18','19','20','21','22','23','24','36', '48'],
-            // toolbar: [
-            //     // [groupName, [list of button]]
-            //     ['style', ['bold', 'italic', 'underline', 'clear']],
-            //     ['font', ['strikethrough', 'superscript', 'subscript']],
-            //     // ['fontsize', ['fontsize']],
-            //     ['color', ['color']],
-            //     ['para', ['ul', 'ol', 'paragraph']],
-            //     ['height', ['height']]
-            // ]
         });
     });
 </script>
