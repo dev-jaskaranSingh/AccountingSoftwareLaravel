@@ -80,7 +80,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-12 text-right">
+                            <div class="col-md-4 text-left">
                                 <h3>Total Amount: <span class="total_amount"></span></h3>
                             </div>
                         </div>
@@ -89,16 +89,16 @@
                         </div>
                     </div>
                 </div>
+                <hr/><br/>
             </div>
         </div>
     </div>
 </div>
-@dump(Session::get('company')->gst_state_code)
+
 {!! Form::hidden('product',json_encode(@$items),['class'=>'products-data']) !!}
 {!! Form::hidden('purchase_items',json_encode(@$purchase_items),['class'=>'purchase-items']) !!}
 {!! Form::hidden('bill_products',null,['class'=>'purchase_products']) !!}
 {!! Form::hidden('company_state_code',Session::get('company')->gst_state_code,['class'=>'company_state_code']) !!}
-
 
 @section('scripts')
     <script src="{{ asset('js/purchase.js?ref='.rand(1111,9999)) }}" type="text/javascript"></script>

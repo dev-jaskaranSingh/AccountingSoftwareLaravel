@@ -66,18 +66,18 @@ $(function () {
         data: data,
         startRows: 1,
         startCols: 11,
-        minRows: 15,
+        minRows: 10,
         colHeaders: ['Items', 'HSN Code', 'GST Min(%)', 'GST Max(%)', 'Gross WT','Minus WT', 'Net WT', 'RATE/GM', 'Net Amount','Discount(%)','Discount(₹)','After Discount','SGST','CGST','IGST', 'GST Amount', 'Total', 'Units','unit_id','hsn_id'],
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: ['row_below', 'remove_row', 'copy', 'cut'],
         copyPaste: true,
-        colWidths: [100, 80, 90, 90, 120, 120,120, 120, 120, 120, 120, 120, 120,100, 100, 120,100, 120, 120],
+        colWidths: [80,80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,80, 80, 80],
         hiddenColumns: {
             columns: [2,3],
             indicators: true
         },
         columns: [{
-            renderer: customDropdownRenderer, editor: 'chosen', width: 200, chosenOptions: {
+            renderer: customDropdownRenderer, editor: 'chosen', width: 120, chosenOptions: {
                 data: JSON.parse($('.products-data').val()) || [],
             }
         }, {type: 'text'}, {type: 'text'}, {type: 'numeric'},{type: 'numeric'},
