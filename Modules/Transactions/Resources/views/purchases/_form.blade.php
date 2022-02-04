@@ -1,7 +1,7 @@
 <style>
     .hot-container {
         width: 100%;
-        height: 400px;
+        height: 300px;
         overflow: hidden;
     }
 
@@ -42,16 +42,16 @@
                         @enderror
                     </div>
 
-{{--                    <div class="col-md-6 col-sm-12 mb-3">--}}
-{{--                        <div class="row mb-2">--}}
-{{--                            <div class="col-md-4">--}}
-{{--                                State Code:--}}
-{{--                                <h2><div class="state_code">-</div></h2>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-8">--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="col-md-6 col-sm-12 mb-3">--}}
+                    {{--                        <div class="row mb-2">--}}
+                    {{--                            <div class="col-md-4">--}}
+                    {{--                                State Code:--}}
+                    {{--                                <h2><div class="state_code">-</div></h2>--}}
+                    {{--                            </div>--}}
+                    {{--                            <div class="col-md-8">--}}
+                    {{--                            </div>--}}
+                    {{--                        </div>--}}
+                    {{--                    </div>--}}
                     <div class="col-md-6 col-sm-12 mb-3">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 mb-3">
@@ -63,15 +63,15 @@
                                 </span>
                                 @enderror
                             </div>
-{{--                            <div class="col-md-12 col-sm-12 mb-3">--}}
-{{--                                {!! Form::label('shipped_to','Shipped To') !!}--}}
-{{--                                {!! Form::textarea('shipped_to',null,['class'=>'form-control','rows'=>4]) !!}--}}
-{{--                                @error('shipped_to')--}}
-{{--                                <span class="help-block text-danger">--}}
-{{--                                {{ $message }}--}}
-{{--                            </span>--}}
-{{--                                @enderror--}}
-{{--                            </div>--}}
+                            {{--                            <div class="col-md-12 col-sm-12 mb-3">--}}
+                            {{--                                {!! Form::label('shipped_to','Shipped To') !!}--}}
+                            {{--                                {!! Form::textarea('shipped_to',null,['class'=>'form-control','rows'=>4]) !!}--}}
+                            {{--                                @error('shipped_to')--}}
+                            {{--                                <span class="help-block text-danger">--}}
+                            {{--                                {{ $message }}--}}
+                            {{--                            </span>--}}
+                            {{--                                @enderror--}}
+                            {{--                            </div>--}}
                         </div>
                     </div>
 
@@ -79,17 +79,73 @@
                 <hr/>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 text-left">
-                                <h3>Total Amount: <span class="total_amount"></span></h3>
-                            </div>
-                        </div>
                         <div class="hot-container">
                             <div id="hot-table"></div>
                         </div>
                     </div>
+                    <div class="col-md-12 text-right">
+                        <div class="row">
+                            <div class="col-md-4 offset-8 text-right">
+                                <table border="1" cellpadding="5">
+                                    <tr>
+                                        <th width="180px">Total Amount</th>
+                                        <th width="150px">
+                                            <input class="total_amount" placeholder="0.00" readonly="true"/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th width="180px">Total Discount</th>
+                                        <th width="150px"><input class="total_discount" placeholder="0.00"
+                                                                 readonly="true"></th>
+                                    </tr>
+
+                                    <tr>
+                                        <th width="180px">Total Net</th>
+                                        <th width="150px">
+                                            <input class="total_net_amount" placeholder="0.00" readonly="true">
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th width="180px">CGST</th>
+                                        <th width="150px"><input class="cgst" placeholder="0.00" readonly="true"/></th>
+                                    </tr>
+                                    <tr>
+                                        <th width="180px">SGST</th>
+                                        <th width="150px"><input class="sgst" placeholder="0.00" readonly="true"/></th>
+                                    </tr>
+                                    <tr>
+                                        <th width="180px">IGST</th>
+                                        <th width="150px"><input class="igst" placeholder="0.00" readonly="true"/></th>
+                                    </tr>
+                                    <tr>
+                                        <th width="180px">TCS</th>
+                                        <th width="150px">
+                                            <input type="number" class="tcs" placeholder="0.00"/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th width="180px">Round Off &nbsp;&nbsp;
+                                            <select class="roundOffSelection">
+                                                <option value="plus"> + </option>
+                                                <option value="minus"> - </option>
+                                            </select>
+                                        </th>
+                                        <th width="150px">
+                                            <input type="number" class="roundOffValue" placeholder="0.00"/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th width="180px">Grand Total</th>
+                                        <th width="150px"><input class="grand_total_amount" placeholder="0.00"
+                                                                 readonly="true"/></th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <hr/><br/>
+                <hr/>
+                <br/>
             </div>
         </div>
     </div>

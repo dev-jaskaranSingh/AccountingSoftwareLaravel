@@ -11,6 +11,41 @@ $(function () {
         });
     }
 
+
+    $('body').on('keyup','.roundOffValue',function(){
+        let roundOffType = $('.roundOffSelection').val();
+        let tcs = Number($(this).val());
+        if(tcs > 0 || tcs !== ''){
+            if(window.storeTotalGrandAmount !== undefined){
+                if(roundOffType == '+'){
+                    $('.grand_total_amount').val(window.storeTotalGrandAmount+(tcs/100));
+                }else{
+                    $('.grand_total_amount').val(window.storeTotalGrandAmount-(tcs/100));
+                }
+            }else{
+                $('.grand_total_amount').val(window.storeTotalGrandAmount);
+            }
+        }else{
+            $('.grand_total_amount').val(window.storeTotalGrandAmount);
+        }
+
+    });
+
+
+
+    $('body').on('keyup','.tcs',function(){
+        let tcs = Number($(this).val());
+        if(tcs > 0 || tcs !== ''){
+            if(window.storeTotalGrandAmount !== undefined){
+                $('.grand_total_amount').val((window.storeTotalGrandAmount)+tcs);
+            }else{
+                $('.grand_total_amount').val(window.storeTotalGrandAmount);
+            }
+        }else{
+            $('.grand_total_amount').val(window.storeTotalGrandAmount);
+        }
+    });
+
     $('body').on('change', '.account_id', function () {
         var account_id = $(this).val();
         ajax_request(route + '/ajax/get-account-by-id/' + account_id, 'GET', null, function (data) {
@@ -67,17 +102,18 @@ $(function () {
         startRows: 1,
         startCols: 11,
         minRows: 10,
-        colHeaders: ['Items', 'HSN Code', 'GST Min(%)', 'GST Max(%)', 'Gross WT','Minus WT', 'Net WT', 'RATE/GM', 'Net Amount','Discount(%)','Discount(₹)','After Discount','SGST','CGST','IGST', 'GST Amount', 'Total', 'Units','unit_id','hsn_id'],
+        colHeaders: ['Items', 'HSN', 'GST Min(%)', 'GST Max(%)', 'Gross WT','Minus WT', 'Net WT', 'RATE/GM', 'Amount','Discount(%)','Discount(₹)','Net Amount','SGST','CGST','IGST', 'GST Amount', 'Total', 'Units','unit_id','hsn_id'],
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: ['row_below', 'remove_row', 'copy', 'cut'],
         copyPaste: true,
-        colWidths: [80,80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,80, 80, 80],
+        colWidths: [80,60, 60, 60, 60, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,80, 80, 80],
         hiddenColumns: {
-            columns: [2,3],
+            //
+            columns: [2, 3, 12, 13, 14, 17],
             indicators: true
         },
         columns: [{
-            renderer: customDropdownRenderer, editor: 'chosen', width: 120, chosenOptions: {
+            renderer: customDropdownRenderer, editor: 'chosen', width: 140, chosenOptions: {
                 data: JSON.parse($('.products-data').val()) || [],
             }
         }, {type: 'text'}, {type: 'text'}, {type: 'numeric'},{type: 'numeric'},
@@ -89,17 +125,51 @@ $(function () {
 
             if (change !== null) {
                 let hotInstance = $("#hot-table").handsontable('getInstance');
+                let totalGrandAmount = 0;
+                let cgst = 0;
+                let sgst = 0;
+                let igst = 0;
+                let totalDiscount = 0;
+                let totalGST = 0;
+                let total_net_amount = 0;
                 let totalAmount = 0;
 
                 if (source === 'loadData') {
                     setTimeout(function () {
                         let data = hotInstance.getSourceData();
                         data.filter(function (value) {
-                            if (!isNaN(value[8]) && value[8] != null) {
-                                totalAmount += parseInt(value[8]);
+                            if (!isNaN(value[16])) {
+                                totalGrandAmount += value[16];
+                            }
+                            if(!isNaN(value[8])){
+                                totalAmount += value[8];
+                            }
+                            if(!isNaN(value[11])){
+                                total_net_amount += value[11];
+                            }
+                            if(!isNaN(value[10])){
+                                totalDiscount += value[10];
+                            }
+                            if(!isNaN(value[12])){
+                                sgst += value[12];
+                            }
+                            if(!isNaN(value[13])){
+                                cgst += value[13];
+                            }
+                            if(!isNaN(value[14])){
+                                igst += value[14];
                             }
                         });
-                        $('.total_amount').html(totalAmount);
+                        hotInstance.render();
+                        $('.total_amount').val(totalAmount.toFixed(2));
+                        $('.total_net_amount').val(total_net_amount.toFixed(2));
+                        $('.total_discount').val(totalDiscount.toFixed(2));
+                        $('.sgst').val(sgst.toFixed(2));
+                        $('.cgst').val(cgst.toFixed(2));
+                        $('.igst').val(igst.toFixed(2));
+                        $('.total_gst_amount').val(totalGST.toFixed(2));
+                        window.storeTotalGrandAmount = totalGrandAmount.toFixed(2);
+                        $('.grand_total_amount').val(totalGrandAmount.toFixed(2));
                     }, 100);
                 }
 
@@ -164,7 +234,7 @@ $(function () {
                         data[row][9] = 0;
                         data[row][10] = 0;
                         data[row][11] = 0;
-                        window.amount = parseInt(qty * price);
+                        window.amount = Number(qty * price);
                         data[row][8] = window.amount;
                         if(data[row][9] === 0 || data[row][10] === 0 || data[row][11] === 0){
                             window.gst_ammount = (window.amount * window.gst_min_percentage) / 100;
@@ -185,14 +255,39 @@ $(function () {
                             data[row][16] = amount + window.gst_ammount;
                         }
 
-
                         data.filter(function (value) {
                             if (!isNaN(value[16])) {
-                                totalAmount += parseInt(value[16]);
+                                totalGrandAmount += value[16];
+                            }
+                            if(!isNaN(value[8])){
+                                totalAmount += value[8];
+                            }
+                            if(!isNaN(value[11])){
+                                total_net_amount += value[11];
+                            }
+                            if(!isNaN(value[10])){
+                                totalDiscount += value[10];
+                            }
+                            if(!isNaN(value[12])){
+                                sgst += value[12];
+                            }
+                            if(!isNaN(value[13])){
+                                cgst += value[13];
+                            }
+                            if(!isNaN(value[14])){
+                                igst += value[14];
                             }
                         });
                         hotInstance.render();
-                        $('.total_amount').html(totalAmount);
+                        $('.total_amount').val(totalAmount.toFixed(2));
+                        $('.total_net_amount').val(total_net_amount.toFixed(2));
+                        $('.total_discount').val(totalDiscount.toFixed(2));
+                        $('.sgst').val(sgst.toFixed(2));
+                        $('.cgst').val(cgst.toFixed(2));
+                        $('.igst').val(igst.toFixed(2));
+                        $('.total_gst_amount').val(totalGST.toFixed(2));
+                        window.storeTotalGrandAmount = totalGrandAmount.toFixed(2);
+                        $('.grand_total_amount').val(totalGrandAmount.toFixed(2));
                     }
                 }
 
@@ -220,16 +315,42 @@ $(function () {
                             data[row][13] = 0;
                             data[row][14] = window.gst_ammount;
                         }
-                        data[row][15] = netAmount + window.gst_ammount;
+                        data[row][15] = window.gst_ammount;
                         data[row][16] = netAmount + window.gst_ammount;
 
                         data.filter(function (value) {
                             if (!isNaN(value[16])) {
-                                totalAmount += parseInt(value[16]);
+                                totalGrandAmount += value[16];
+                            }
+                            if(!isNaN(value[8])){
+                                totalAmount += value[8];
+                            }
+                            if(!isNaN(value[11])){
+                                total_net_amount += value[11];
+                            }
+                            if(!isNaN(value[10])){
+                                totalDiscount += value[10];
+                            }
+                            if(!isNaN(value[12])){
+                                sgst += value[12];
+                            }
+                            if(!isNaN(value[13])){
+                                cgst += value[13];
+                            }
+                            if(!isNaN(value[14])){
+                                igst += value[14];
                             }
                         });
                         hotInstance.render();
-                        $('.total_amount').html(totalAmount);
+                        $('.total_amount').val(totalAmount.toFixed(2));
+                        $('.total_net_amount').val(total_net_amount.toFixed(2));
+                        $('.total_discount').val(totalDiscount.toFixed(2));
+                        $('.sgst').val(sgst.toFixed(2));
+                        $('.cgst').val(cgst.toFixed(2));
+                        $('.igst').val(igst.toFixed(2));
+                        $('.total_gst_amount').val(totalGST);
+                        window.storeTotalGrandAmount = totalGrandAmount.toFixed(2);
+                        $('.grand_total_amount').val(totalGrandAmount.toFixed(2));
                     }
                 }
 
