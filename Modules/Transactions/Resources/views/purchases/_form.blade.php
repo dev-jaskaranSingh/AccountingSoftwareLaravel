@@ -90,32 +90,38 @@
                                     <tr>
                                         <th width="180px">Total Amount</th>
                                         <th width="150px">
-                                            <input class="total_amount" placeholder="0.00" readonly="true"/>
+                                            <input type="number" name="total_amount" class="total_amount"
+                                                   placeholder="0.00" readonly="true"/>
                                         </th>
                                     </tr>
                                     <tr>
                                         <th width="180px">Total Discount</th>
-                                        <th width="150px"><input class="total_discount" placeholder="0.00"
+                                        <th width="150px"><input type="number" name="total_discount"
+                                                                 class="total_discount" placeholder="0.00"
                                                                  readonly="true"></th>
                                     </tr>
 
                                     <tr>
                                         <th width="180px">Total Net</th>
                                         <th width="150px">
-                                            <input class="total_net_amount" placeholder="0.00" readonly="true">
+                                            <input type="number" name="total_net_amount" class="total_net_amount"
+                                                   placeholder="0.00" readonly="true">
                                         </th>
                                     </tr>
                                     <tr>
                                         <th width="180px">CGST</th>
-                                        <th width="150px"><input class="cgst" placeholder="0.00" readonly="true"/></th>
+                                        <th width="150px"><input type="number" name="cgst" class="cgst"
+                                                                 placeholder="0.00" readonly="true"/></th>
                                     </tr>
                                     <tr>
                                         <th width="180px">SGST</th>
-                                        <th width="150px"><input class="sgst" placeholder="0.00" readonly="true"/></th>
+                                        <th width="150px"><input type="number" name="sgst" class="sgst"
+                                                                 placeholder="0.00" readonly="true"/></th>
                                     </tr>
                                     <tr>
                                         <th width="180px">IGST</th>
-                                        <th width="150px"><input class="igst" placeholder="0.00" readonly="true"/></th>
+                                        <th width="150px"><input type="number" name="igst" class="igst"
+                                                                 placeholder="0.00" readonly="true"/></th>
                                     </tr>
                                     <tr>
                                         <th width="180px">TCS</th>
@@ -125,19 +131,23 @@
                                     </tr>
                                     <tr>
                                         <th width="180px">Round Off &nbsp;&nbsp;
-                                            <select class="roundOffSelection">
-                                                <option value="plus"> + </option>
-                                                <option value="minus"> - </option>
+                                            <select class="roundOffSelection" name="roundOffSelection">
+                                                <option value="plus"> +</option>
+                                                <option value="minus"> -</option>
                                             </select>
                                         </th>
                                         <th width="150px">
-                                            <input type="number" class="roundOffValue" placeholder="0.00"/>
+                                            <input type="number" class="roundOffValue" name="roundOffValue"
+                                                   placeholder="0.00"/>
                                         </th>
                                     </tr>
                                     <tr>
                                         <th width="180px">Grand Total</th>
-                                        <th width="150px"><input class="grand_total_amount" placeholder="0.00"
-                                                                 readonly="true"/></th>
+                                        <th width="150px">
+                                            <input class="grand_total_amount" name="grand_total_amount"
+                                                   placeholder="0.00" readonly="true"
+                                                   type="number"/>
+                                        </th>
                                     </tr>
                                 </table>
                             </div>

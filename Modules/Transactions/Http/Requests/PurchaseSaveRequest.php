@@ -16,13 +16,22 @@ class PurchaseSaveRequest extends FormRequest
 
     public function rules(): array
    {
-       $dates = [Session::get('company')->to_date, Session::get('company')->from_date];
+
+       $fromDate = Session::get('company')->from_date;
+       $toDate = Session::get('company')->to_date;
         return [
             'account_id' => 'required',
-            'invoice_number' => 'required',
-            'bill_date' => 'required',
-            'shipped_to' => 'required',
+            'bill_date' => 'required|after_or_equal:'.$fromDate.'|before_or_equal:'. $toDate,
             'bill_products' => 'required',
+            'company_state_code' => '',
+            'total_amount' => '',
+            'total_discount' => '',
+            'total_net_amount' => '',
+            'cgst' => '',
+            'sgst' => '',
+            'igst' => '',
+            'grand_total_amount' => '',
+            'tcs' => '',
         ];
     }
 

@@ -17,7 +17,7 @@ $(function () {
         let tcs = Number($(this).val());
         if(tcs > 0 || tcs !== ''){
             if(window.storeTotalGrandAmount !== undefined){
-                if(roundOffType == '+'){
+                if(roundOffType === 'plus'){
                     $('.grand_total_amount').val(window.storeTotalGrandAmount+(tcs/100));
                 }else{
                     $('.grand_total_amount').val(window.storeTotalGrandAmount-(tcs/100));
@@ -106,10 +106,10 @@ $(function () {
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: ['row_below', 'remove_row', 'copy', 'cut'],
         copyPaste: true,
-        colWidths: [80,60, 60, 60, 60, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,80, 80, 80],
+        colWidths: [80,60, 60, 60, 60, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,80, 80, 80,80, 80],
         hiddenColumns: {
             //
-            columns: [2, 3, 12, 13, 14, 17],
+            columns: [2, 3, 12, 13, 14, 17,18,19],
             indicators: true
         },
         columns: [{
@@ -120,7 +120,7 @@ $(function () {
             {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},
             {type: 'numeric'}, {type: 'numeric'},{type: 'numeric'},
             {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},
-            {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'},{type: 'numeric'}],
+            {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'},{type: 'numeric'},{type: 'numeric'},{type: 'numeric'}],
         afterChange: function (change, source) {
 
             if (change !== null) {
@@ -223,11 +223,6 @@ $(function () {
                         data[row][8] = 0;
                     }
                 }
-
-                // if(change[0][1] === 6){
-                //
-                // }
-
 
                 if (change[0][1] === 6 || change[0][1] === 7) {
                     if (qty !== undefined && price !== undefined) {

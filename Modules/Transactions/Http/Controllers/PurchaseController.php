@@ -45,39 +45,32 @@ class PurchaseController extends Controller
      */
     public function store(PurchaseSaveRequest $request): RedirectResponse
     {
-
-//        $purchase_id = Purchase::create($request->validated() + ['invoice_number' => Purchase::getMaxInvoices() + 1])->id;
-        $purchase_id = 1;
+        $purchase_id = Purchase::create($request->validated() + ['invoice_number' => Purchase::getMaxInvoices() + 1])->id;
         if ($purchase_id) {
-            $data = collect(json_decode($request->bill_products))->filter(function ($item) {
-                return $item[0] != null;
-            })->map(function ($item) use ($purchase_id) {
-                return [
-                    'purchase_id' => $purchase_id,
-                    'item_id' => $item[0],
-                    'hsn_code' => $item[1],
-                    'gross_wt' => $item[4],
-                    'net_wt' => $item[5],
-                    'rate_gm' => $item[6],
-                    'amount' => ($item[5] * $item[6]),
-                    'unit' => $item[6],
-                    'unit_id' => $item[11],
-                    'hsn_id' => $item[12],
-                    'created_at' => now(),
-                    'updated_at' => null,
-                ];
-            })->toArray();
-            dd([$request->all(), $data]);
-            if (PurchaseItem::insert($data)) {
+            $purchaseItems = $this->mapPurchaseItemData($request, $purchase_id);
+            if (PurchaseItem::insert($purchaseItems)) {
                 Session::flash("success", "Success|Purchase has been created successfully");
             } else {
                 Session::flash('error', 'Something went wrong');
             }
-        }else{
+        } else {
             Session::flash("error", "Error|Purchase save failed");
         }
-
         return back();
+    }
+
+    /**
+     * @param $request
+     * @param $purchase_id
+     * @return array
+     */
+    public function mapPurchaseItemData($request, $purchase_id): array
+    {
+        return collect(json_decode($request->bill_products))->filter(function ($item) {
+            return $item[0] != null;
+        })->map(function ($item) use ($purchase_id) {
+            return ['purchase_id' => $purchase_id, 'item_id' => $item[0], 'hsn_code' => $item[1], 'gross_wt' => $item[4], 'ting_wt' => $item[5], 'net_wt' => $item[6], 'rate_gm' => $item[7], 'amount' => $item[8], 'discount_percentage' => $item[9], 'discount' => $item[10], 'net_amount' => $item[11], 'cgst' => $item[12], 'sgst' => $item[13], 'igst' => $item[14], 'gst_amount' => $item[15], 'total' => $item[16], 'unit' => $item[17], 'unit_id' => $item[18], 'hsn_id' => $item[19], 'created_at' => now(), 'updated_at' => null];
+        })->toArray();
     }
 
     /**
@@ -125,7 +118,8 @@ class PurchaseController extends Controller
         return back();
     }
 
-    public  function printPurchase(Purchase $purchase){
+    public function printPurchase(Purchase $purchase)
+    {
         return view('transactions::purchases.print', ['model' => $purchase]);
     }
 }
