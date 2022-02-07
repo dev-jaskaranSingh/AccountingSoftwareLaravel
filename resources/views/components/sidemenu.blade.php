@@ -13,7 +13,8 @@
 
     //Transactions Route Array
     $transactionsPurchaseRouteArray = ['transactions.purchases.index', 'transactions.purchases.create', 'transactions.purchases.edit', 'transactions.purchases.show'];
-    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray)
+    $transactionsSalesRouteArray = ['transactions.sales.index', 'transactions.sales.create', 'transactions.sales.edit', 'transactions.sales.show'];
+    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray,$transactionsSalesRouteArray)
 @endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
@@ -99,7 +100,9 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="">Sale</a></li>
+                    <li class="@if(in_array($currentRoute,$transactionsSalesRouteArray)) active @endif">
+                        <a href="{{ route('transactions.sales.index') }}">Sale</a>
+                    </li>
                     <li class="@if(in_array($currentRoute,$transactionsPurchaseRouteArray)) active @endif">
                         <a href="{{ route('transactions.purchases.index') }}">Purchase</a>
                     </li>

@@ -3,8 +3,17 @@
 namespace Modules\Transactions\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Masters\Entities\ItemMaster;
+use Modules\Transactions\DataTables\SalesDataTable;
+use Modules\Transactions\Entities\Purchase;
+use Modules\Transactions\Entities\PurchaseItem;
+use Modules\Transactions\Entities\Sale;
+use Modules\Transactions\Entities\SaleItem;
+use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
+use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
 
 class SaleController extends Controller
 {
@@ -12,68 +21,106 @@ class SaleController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(SalesDataTable $dataTable)
     {
-        return view('transactions::index');
+        return $dataTable->render('transactions::sales.index');
     }
 
     /**
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function create(): Renderable
     {
-        return view('transactions::create');
+        $items = array_values(ItemMaster::pluck('name', 'id')->map(function ($value, $key) {
+            return ['id' => $key, 'label' => $value];
+        })->toArray());
+
+        return view('transactions::sales.create', compact('items'));
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
+     * @param PurchaseSaveRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(PurchaseSaveRequest $request): RedirectResponse
     {
-        //
+        $sale_id = Purchase::create($request->validated() + ['invoice_number' => Sale::getMaxInvoices() + 1])->id;
+        if ($sale_id) {
+            $purchaseItems = $this->mapPurchaseItemData($request, $sale_id);
+            if (SaleItem::insert($purchaseItems)) {
+                Session::flash("success", "Success|Purchase has been created successfully");
+            } else {
+                Session::flash('error', 'Something went wrong');
+            }
+        } else {
+            Session::flash("error", "Error|Purchase save failed");
+        }
+        return back();
+    }
+
+    /**
+     * @param $request
+     * @param $sale_id
+     * @return array
+     */
+    public function mapPurchaseItemData($request, $sale_id): array
+    {
+        return collect(json_decode($request->bill_products))->filter(function ($item) {
+            return $item[0] != null;
+        })->map(function ($item) use ($sale_id) {
+            return ['purchase_id' => $sale_id, 'item_id' => $item[0], 'hsn_code' => $item[1], 'gross_wt' => $item[4], 'ting_wt' => $item[5], 'net_wt' => $item[6], 'rate_gm' => $item[7], 'amount' => $item[8], 'discount_percentage' => $item[9], 'discount' => $item[10], 'net_amount' => $item[11], 'cgst' => $item[12], 'sgst' => $item[13], 'igst' => $item[14], 'gst_amount' => $item[15], 'total' => $item[16], 'unit' => $item[17], 'unit_id' => $item[18], 'hsn_id' => $item[19], 'created_at' => now(), 'updated_at' => null];
+        })->toArray();
     }
 
     /**
      * Show the specified resource.
-     * @param int $id
+     * @param Sale $sale
      * @return Renderable
      */
-    public function show($id)
+    public function show(Sale $sale): Renderable
     {
-        return view('transactions::show');
+        return view('transactions::sales.show', ['model' => $sale]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param int $id
+     * @param Sale $sale
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(Sale $sale): Renderable
     {
-        return view('transactions::edit');
+        return view('transactions::sales.edit', ['model' => $sale]);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
+     * @param PurchaseUpdateRequest $request
+     * @param Sale $sale
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(PurchaseUpdateRequest $request, Sale $sale): RedirectResponse
     {
-        //
+        $sale->update($request->validated());
+        Session::flash("success", "Success|Purchase has been updated successfully");
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
+     * @param Sale $sale
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Sale $sale): RedirectResponse
     {
-        //
+        $sale->delete();
+        Session::flash("success", "Success|Purchase has been deleted successfully");
+        return back();
+    }
+
+    public function printPurchase(Sale $sale)
+    {
+        return view('transactions::sales.print', ['model' => $sale]);
     }
 }
