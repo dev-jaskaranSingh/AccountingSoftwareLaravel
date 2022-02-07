@@ -12,7 +12,7 @@ class SaleItem extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id','sale_id'];
+    protected $guarded = ['id'];
     protected $table = 'sale_items';
     protected static function newFactory()
     {

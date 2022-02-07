@@ -14,6 +14,8 @@ use Modules\Transactions\Entities\Sale;
 use Modules\Transactions\Entities\SaleItem;
 use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
 use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
+use Modules\Transactions\Http\Requests\SaleSaveRequest;
+use Session;
 
 class SaleController extends Controller
 {
@@ -41,15 +43,15 @@ class SaleController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param PurchaseSaveRequest $request
+     * @param SaleSaveRequest $request
      * @return RedirectResponse
      */
-    public function store(PurchaseSaveRequest $request): RedirectResponse
+    public function store(SaleSaveRequest $request): RedirectResponse
     {
-        $sale_id = Purchase::create($request->validated() + ['invoice_number' => Sale::getMaxInvoices() + 1])->id;
-        if ($sale_id) {
-            $purchaseItems = $this->mapPurchaseItemData($request, $sale_id);
-            if (SaleItem::insert($purchaseItems)) {
+        $saleID = Sale::create($request->validated() + ['invoice_number' => Sale::getMaxInvoices() + 1])->id;
+        if ($saleID) {
+            $saleInvoiceItems = $this->mapPurchaseItemData($request, $saleID);
+            if (SaleItem::insert($saleInvoiceItems)) {
                 Session::flash("success", "Success|Purchase has been created successfully");
             } else {
                 Session::flash('error', 'Something went wrong');
@@ -76,20 +78,20 @@ class SaleController extends Controller
 
     /**
      * Show the specified resource.
-     * @param Sale $sale
+     * @param Sale $sales
      * @return Renderable
      */
-    public function show(Sale $sale): Renderable
+    public function show(Sale $sales): Renderable
     {
         return view('transactions::sales.show', ['model' => $sale]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param Sale $sale
+     * @param Sale $sales
      * @return Renderable
      */
-    public function edit(Sale $sale): Renderable
+    public function edit(Sale $sales): Renderable
     {
         return view('transactions::sales.edit', ['model' => $sale]);
     }
@@ -97,30 +99,30 @@ class SaleController extends Controller
     /**
      * Update the specified resource in storage.
      * @param PurchaseUpdateRequest $request
-     * @param Sale $sale
+     * @param Sale $sales
      * @return RedirectResponse
      */
-    public function update(PurchaseUpdateRequest $request, Sale $sale): RedirectResponse
+    public function update(PurchaseUpdateRequest $request, Sale $sales): RedirectResponse
     {
-        $sale->update($request->validated());
+        $sales->update($request->validated());
         Session::flash("success", "Success|Purchase has been updated successfully");
         return back();
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param Sale $sale
+     * @param Sale $sales
      * @return RedirectResponse
      */
-    public function destroy(Sale $sale): RedirectResponse
+    public function destroy(Sale $sales): RedirectResponse
     {
-        $sale->delete();
+        $sales->delete();
         Session::flash("success", "Success|Purchase has been deleted successfully");
         return back();
     }
 
-    public function printPurchase(Sale $sale)
+    public function printPurchase(Sale $sales)
     {
-        return view('transactions::sales.print', ['model' => $sale]);
+        return view('transactions::sales.print', ['model' => $sales]);
     }
 }

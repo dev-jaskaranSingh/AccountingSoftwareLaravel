@@ -1,5 +1,5 @@
-@php($model = $model->load('purchaseItems.item','account.state'))
-    <!DOCTYPE html>
+@php($model = $model->load('saleItems.item','account.state'))
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -163,17 +163,17 @@
                 <tr>
                     <th width="25%">BILLED TO</th>
                     <td>:</td>
-                    <td>{{ $model->account->address }}</td>
+                    <td>{{ $model->account?->address }}</td>
                 </tr>
                 <tr>
                     <th width="25%">GSTIN</th>
                     <td>:</td>
-                    <td>{{ $model->account->gstin ?? '-' }}</td>
+                    <td>{{ $model->account?->gstin ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th width="25%">PAN</th>
                     <td>:</td>
-                    <td>{{ $model->account->pan }}</td>
+                    <td>{{ $model->account?->pan }}</td>
                 </tr>
             </table>
         </div>
@@ -192,12 +192,12 @@
                 <tr>
                     <th width="25%">PLACE OF SUPPLY</th>
                     <td>:</td>
-                    <td>{{ $model->account->state->name }}</td>
+                    <td>{{ $model->account?->state->name }}</td>
                 </tr>
                 <tr>
                     <th width="25%">STATE CODE</th>
                     <td>:</td>
-                    <td>{{ $model->account->state->tin }}</td>
+                    <td>{{ $model->account?->state->tin }}</td>
                 </tr>
                 <tr>
                     <th width="25%">SHIPPED TO</th>
@@ -222,7 +222,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($model->purchaseItems as $key => $purchaseItem)
+    @foreach($model->saleItems as $key => $purchaseItem)
         <tr>
             <td>{{++$key}}</td>
             <td>{{ $purchaseItem->item->name }}</td>
@@ -262,16 +262,16 @@
         <td style="line-height: 40px !important;"></td>
         <td style="line-height: 40px !important;"><b>GRAND TOTAL :</b></td>
         <td style="line-height: 40px !important;"></td>
-        <td style="line-height: 40px !important;">{{round($model->purchaseItems->sum('gross_wt',2))}}</td>
-        <td style="line-height: 40px !important;">{{round($model->purchaseItems->sum('net_wt',2))}}</td>
+        <td style="line-height: 40px !important;">{{round($model->saleItems->sum('gross_wt',2))}}</td>
+        <td style="line-height: 40px !important;">{{round($model->saleItems->sum('net_wt',2))}}</td>
         <td style="line-height: 40px !important;"></td>
-        <td style="line-height: 40px !important;"><strong>₹ {{$model->purchaseItems->sum('amount')}}</strong></td>
+        <td style="line-height: 40px !important;"><strong>₹ {{$model->saleItems->sum('amount')}}</strong></td>
         <td style="line-height: 40px !important;">GM</td>
     </tr>
     <tr>
         <td style="line-height: 60px !important;"></td>
         <td style="line-height: 60px !important;" colspan="1"><b>TOTAL AMOUNT IN WORDS:</b></td>
-        <td style="line-height: 60px !important;" colspan="6"><b>{{\Modules\Transactions\Entities\Purchase::getIndianCurrency($model->purchaseItems->sum('amount'))}}</b></td>
+        <td style="line-height: 60px !important;" colspan="6"><b>{{\Modules\Transactions\Entities\Purchase::getIndianCurrency($model->saleItems->sum('amount'))}}</b></td>
     </tr>
     <tr>
         <td></td>

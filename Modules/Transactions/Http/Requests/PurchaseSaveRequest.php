@@ -16,7 +16,6 @@ class PurchaseSaveRequest extends FormRequest
 
     public function rules(): array
    {
-
        $fromDate = Session::get('company')->from_date;
        $toDate = Session::get('company')->to_date;
         return [
