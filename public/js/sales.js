@@ -11,6 +11,7 @@ $(function () {
         });
     }
 
+
     $('body').on('keyup','.roundOffValue',function(){
         let roundOffType = $('.roundOffSelection').val();
         let tcs = Number($(this).val());
@@ -30,7 +31,8 @@ $(function () {
 
     });
 
-    //Addition of TCS in net amount
+
+
     $('body').on('keyup','.tcs',function(){
         let tcs = Number($(this).val());
         if(tcs > 0 || tcs !== ''){
@@ -44,7 +46,6 @@ $(function () {
         }
     });
 
-    //Make Ajax request to get acount details
     $('body').on('change', '.account_id', function () {
         var account_id = $(this).val();
         ajax_request(route + '/ajax/get-account-by-id/' + account_id, 'GET', null, function (data) {
@@ -54,7 +55,7 @@ $(function () {
             }
             // $('.state_code').html(data.account.gst_state_code);
             window.stateCode = data.account.gst_state_code;
-                // $('#shipped_to').val(data.account.address);
+            $('#shipped_to').val(data.account.address);
             // $('.gst').html(data.account.gstin);
             // $('.billed_to').html(data.account.name);
             // $('.pan').html(data.account.pan);
@@ -121,7 +122,6 @@ $(function () {
             {type: 'numeric'}, {type: 'numeric'}, {type: 'numeric'},
             {type: 'numeric'},{type: 'numeric'}, {type: 'numeric'},{type: 'numeric'},{type: 'numeric'},{type: 'numeric'}],
         afterChange: function (change, source) {
-
 
             if (change !== null) {
                 let hotInstance = $("#hot-table").handsontable('getInstance');
@@ -236,28 +236,30 @@ $(function () {
 
                 if (change[0][1] === 6 || change[0][1] === 7) {
                     if (qty !== undefined && price !== undefined) {
-                        data[row][9] = 0;
-                        data[row][10] = 0;
-                        data[row][11] = 0;
+                        if(data[row][9] === undefined || data[row][9] === ''){
+                            data[row][9] = 0;
+                        }
+                        if(data[row][10] === undefined || data[row][10] === ''){
+                            data[row][10] = 0;
+                        }
+                        if(data[row][11] === undefined || data[row][11] === ''){
+                            data[row][11] = 0;
+                        }
                         window.amount = Number(qty * price);
                         data[row][8] = window.amount;
                         if(data[row][9] === 0 || data[row][10] === 0 || data[row][11] === 0){
-                            window.gst_amount = (window.amount * window.gst_min_percentage) / 100;
-                            // if (data[row][8] < window.hsn_min_amount) {
-                            // } else {
-                            //     window.gst_amount = (window.amount * window.gst_max_percentage) / 100;
-                            // }
+                            window.gst_ammount = (window.amount * window.gst_min_percentage) / 100;
                             if(window.stateCode === window.companyStateCode){
-                                data[row][12] = window.gst_amount / 2;
-                                data[row][13] = window.gst_amount / 2;
+                                data[row][12] = window.gst_ammount / 2;
+                                data[row][13] = window.gst_ammount / 2;
                                 data[row][14] = 0;
                             }else{
                                 data[row][12] = 0 ;
                                 data[row][13] = 0;
-                                data[row][14] = window.gst_amount;
+                                data[row][14] = window.gst_ammount;
                             }
-                            data[row][15] = window.gst_amount;
-                            data[row][16] = amount + window.gst_amount;
+                            data[row][15] = window.gst_ammount;
+                            data[row][16] = amount + window.gst_ammount;
                         }
 
                         data.filter(function (value) {
@@ -306,22 +308,22 @@ $(function () {
                         data[row][10] = window.disount_amount;
                         window.afterDiscount = netAmount - disount_amount //Discount Amount
                         data[row][11] = window.afterDiscount;
-                        window.gst_amount = (afterDiscount * window.gst_min_percentage) / 100;
+                        window.gst_ammount = (afterDiscount * window.gst_min_percentage) / 100;
                         // if (data[row][8] < window.hsn_min_amount) {
                         // } else {
-                        //     window.gst_amount = (afterDiscount * window.gst_max_percentage) / 100;
+                        //     window.gst_ammount = (afterDiscount * window.gst_max_percentage) / 100;
                         // }
                         if(window.stateCode === window.companyStateCode){
-                            data[row][12] = window.gst_amount / 2 ;
-                            data[row][13] = window.gst_amount/ 2;
+                            data[row][12] = window.gst_ammount / 2 ;
+                            data[row][13] = window.gst_ammount/ 2;
                             data[row][14] = 0;
                         }else{
                             data[row][12] = 0 ;
                             data[row][13] = 0;
-                            data[row][14] = window.gst_amount;
+                            data[row][14] = window.gst_ammount;
                         }
-                        data[row][15] = window.gst_amount;
-                        data[row][16] = netAmount + window.gst_amount;
+                        data[row][15] = window.gst_ammount;
+                        data[row][16] = netAmount + window.gst_ammount;
 
                         data.filter(function (value) {
                             if (!isNaN(value[16])) {
