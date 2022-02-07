@@ -18,15 +18,15 @@ $(function () {
         if(tcs > 0 || tcs !== ''){
             if(window.storeTotalGrandAmount !== undefined){
                 if(roundOffType === 'plus'){
-                    $('.grand_total_amount').val(window.storeTotalGrandAmount+(tcs/100));
+                    $('.grand_total_amount').val(Number(window.storeTotalGrandAmount)+(tcs/100));
                 }else{
-                    $('.grand_total_amount').val(window.storeTotalGrandAmount-(tcs/100));
+                    $('.grand_total_amount').val(Number(window.storeTotalGrandAmount)-(tcs/100));
                 }
             }else{
-                $('.grand_total_amount').val(window.storeTotalGrandAmount);
+                $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
             }
         }else{
-            $('.grand_total_amount').val(window.storeTotalGrandAmount);
+            $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
         }
 
     });
@@ -37,12 +37,12 @@ $(function () {
         let tcs = Number($(this).val());
         if(tcs > 0 || tcs !== ''){
             if(window.storeTotalGrandAmount !== undefined){
-                $('.grand_total_amount').val((window.storeTotalGrandAmount)+tcs);
+                $('.grand_total_amount').val((Number(window.storeTotalGrandAmount)+tcs).toFixed(2));
             }else{
-                $('.grand_total_amount').val(window.storeTotalGrandAmount);
+                $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
             }
         }else{
-            $('.grand_total_amount').val(window.storeTotalGrandAmount);
+            $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
         }
     });
 
