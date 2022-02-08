@@ -83,7 +83,7 @@ class SaleController extends Controller
      */
     public function show(Sale $sales): Renderable
     {
-        return view('transactions::sales.show', ['model' => $sale]);
+        return view('transactions::sales.show', ['model' => $sales]);
     }
 
     /**
@@ -93,7 +93,7 @@ class SaleController extends Controller
      */
     public function edit(Sale $sales): Renderable
     {
-        return view('transactions::sales.edit', ['model' => $sale]);
+        return view('transactions::sales.edit', ['model' => $sales]);
     }
 
     /**
