@@ -81,19 +81,19 @@ class SaleController extends Controller
      * @param Sale $sales
      * @return Renderable
      */
-    public function show(Sale $sales): Renderable
+    public function show(Sale $sale): Renderable
     {
-        return view('transactions::sales.show', ['model' => $sales]);
+        return view('transactions::sales.show', ['model' => $sale]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param Sale $sales
+     * @param Sale $sale
      * @return Renderable
      */
-    public function edit(Sale $sales): Renderable
+    public function edit(Sale $sale): Renderable
     {
-        return view('transactions::sales.edit', ['model' => $sales]);
+        return view('transactions::sales.edit', ['model' => $sale]);
     }
 
     /**
@@ -102,7 +102,7 @@ class SaleController extends Controller
      * @param Sale $sales
      * @return RedirectResponse
      */
-    public function update(PurchaseUpdateRequest $request, Sale $sales): RedirectResponse
+    public function update(PurchaseUpdateRequest $request, Sale $sale): RedirectResponse
     {
         $sales->update($request->validated());
         Session::flash("success", "Success|Purchase has been updated successfully");
@@ -114,11 +114,11 @@ class SaleController extends Controller
      * @param Sale $sales
      * @return RedirectResponse
      */
-    public function destroy(Sale $sales): RedirectResponse
+    public function destroy(Sale $sale): RedirectResponse
     {
         dump("Sales destroy");
-        dd($sales);
-        $sales->delete();
+        dd($sale);
+        $sale->delete();
         Session::flash("success", "Success|Purchase has been deleted successfully");
         return back();
     }
