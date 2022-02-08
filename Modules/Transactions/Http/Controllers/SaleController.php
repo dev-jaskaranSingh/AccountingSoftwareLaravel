@@ -116,6 +116,8 @@ class SaleController extends Controller
      */
     public function destroy(Sale $sales): RedirectResponse
     {
+        dump("Sales destroy");
+        dd($sales);
         $sales->delete();
         Session::flash("success", "Success|Purchase has been deleted successfully");
         return back();
