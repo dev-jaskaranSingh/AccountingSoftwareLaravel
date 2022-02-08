@@ -72,7 +72,7 @@ class SaleController extends Controller
         return collect(json_decode($request->bill_products))->filter(function ($item) {
             return $item[0] != null;
         })->map(function ($item) use ($sale_id) {
-            return ['purchase_id' => $sale_id, 'item_id' => $item[0], 'hsn_code' => $item[1], 'gross_wt' => $item[4], 'ting_wt' => $item[5], 'net_wt' => $item[6], 'rate_gm' => $item[7], 'amount' => $item[8], 'discount_percentage' => $item[9], 'discount' => $item[10], 'net_amount' => $item[11], 'cgst' => $item[12], 'sgst' => $item[13], 'igst' => $item[14], 'gst_amount' => $item[15], 'total' => $item[16], 'unit' => $item[17], 'unit_id' => $item[18], 'hsn_id' => $item[19], 'created_at' => now(), 'updated_at' => null];
+            return ['sale_id' => $sale_id, 'item_id' => $item[0], 'hsn_code' => $item[1], 'gross_wt' => $item[4], 'ting_wt' => $item[5], 'net_wt' => $item[6], 'rate_gm' => $item[7], 'amount' => $item[8], 'discount_percentage' => $item[9], 'discount' => $item[10], 'net_amount' => $item[11], 'cgst' => $item[12], 'sgst' => $item[13], 'igst' => $item[14], 'gst_amount' => $item[15], 'total' => $item[16], 'unit' => $item[17], 'unit_id' => $item[18], 'hsn_id' => $item[19], 'created_at' => now(), 'updated_at' => null];
         })->toArray();
     }
 
