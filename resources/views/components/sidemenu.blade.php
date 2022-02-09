@@ -101,11 +101,11 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li class="@if(in_array($currentRoute,$transactionsSalesRouteArray)) active @endif">
-                        <a href="{{ route('transactions.sales.index') }}">Sale</a>
-                    </li>
                     <li class="@if(in_array($currentRoute,$transactionsPurchaseRouteArray)) active @endif">
                         <a href="{{ route('transactions.purchases.index') }}">Purchase</a>
+                    </li>
+                    <li class="@if(in_array($currentRoute,$transactionsSalesRouteArray)) active @endif">
+                        <a href="{{ route('transactions.sales.index') }}">Sale</a>
                     </li>
                     <li><a href="">Sale Return</a></li>
                     <li><a href="">Purchase Return</a></li>

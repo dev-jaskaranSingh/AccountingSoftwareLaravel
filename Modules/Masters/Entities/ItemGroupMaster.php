@@ -2,6 +2,7 @@
 
 namespace Modules\Masters\Entities;
 
+use App\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,12 +13,23 @@ class ItemGroupMaster extends Model
     use HasFactory;
 
     protected $table = 'items_group_master';
-    protected $fillable = ['name','is_primary'];
+    protected $fillable = ['name', 'is_primary'];
 
     protected static function newFactory()
     {
         return ItemGroupMasterFactory::new();
     }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
+
     public function setIsPrimaryAttribute($value)
     {
         $this->attributes['is_primary'] = ($value == 'on') ? 0 : 1;

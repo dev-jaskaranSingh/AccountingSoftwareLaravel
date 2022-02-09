@@ -16811,11 +16811,11 @@
      
 }
 
-    namespace Facade\Ignition\Facades { 
+    namespace Spatie\LaravelIgnition\Facades { 
             /**
-     * Class Flare.
+     * 
      *
-     * @see \Facade\FlareClient\Flare
+     * @see \Spatie\FlareClient\Flare
      */ 
         class Flare {
                     /**
@@ -16823,9 +16823,59 @@
          *
          * @static 
          */ 
-        public static function register($apiKey, $apiSecret = null, $contextDetector = null, $container = null)
+        public static function make($apiKey = null, $contextDetector = null)
         {
-                        return \Facade\FlareClient\Flare::register($apiKey, $apiSecret, $contextDetector, $container);
+                        return \Spatie\FlareClient\Flare::make($apiKey, $contextDetector);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setApiToken($apiToken)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->setApiToken($apiToken);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function apiTokenSet()
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->apiTokenSet();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setBaseUrl($baseUrl)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->setBaseUrl($baseUrl);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setStage($stage)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->setStage($stage);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendReportsImmediately()
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->sendReportsImmediately();
         }
                     /**
          * 
@@ -16834,7 +16884,7 @@
          */ 
         public static function determineVersionUsing($determineVersionCallable)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->determineVersionUsing($determineVersionCallable);
         }
                     /**
@@ -16844,7 +16894,7 @@
          */ 
         public static function reportErrorLevels($reportErrorLevels)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->reportErrorLevels($reportErrorLevels);
         }
                     /**
@@ -16854,29 +16904,49 @@
          */ 
         public static function filterExceptionsUsing($filterExceptionsCallable)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->filterExceptionsUsing($filterExceptionsCallable);
         }
                     /**
          * 
          *
-         * @return null|string 
          * @static 
          */ 
         public static function version()
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->version();
+        }
+                    /**
+         * 
+         *
+         * @return \Spatie\FlareClient\array<int, FlareMiddleware|class-string<FlareMiddleware>>
+         * @static 
+         */ 
+        public static function getMiddleware()
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->getMiddleware();
         }
                     /**
          * 
          *
          * @static 
          */ 
-        public static function getMiddleware()
+        public static function setContextProviderDetector($contextDetector)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
-                        return $instance->getMiddleware();
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->setContextProviderDetector($contextDetector);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setContainer($container)
+        {
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->setContainer($container);
         }
                     /**
          * 
@@ -16885,7 +16955,7 @@
          */ 
         public static function registerFlareHandlers()
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->registerFlareHandlers();
         }
                     /**
@@ -16895,7 +16965,7 @@
          */ 
         public static function registerExceptionHandler()
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->registerExceptionHandler();
         }
                     /**
@@ -16905,37 +16975,44 @@
          */ 
         public static function registerErrorHandler()
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->registerErrorHandler();
         }
                     /**
          * 
          *
+         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|\Spatie\FlareClient\array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware> $middleware
+         * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
-        public static function registerMiddleware($callable)
+        public static function registerMiddleware($middleware)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
-                        return $instance->registerMiddleware($callable);
+                        /** @var \Spatie\FlareClient\Flare $instance */
+                        return $instance->registerMiddleware($middleware);
         }
                     /**
          * 
          *
+         * @return \Spatie\FlareClient\array<int,FlareMiddleware|\Spatie\FlareClient\class-string<FlareMiddleware>> 
          * @static 
          */ 
         public static function getMiddlewares()
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->getMiddlewares();
         }
                     /**
          * 
          *
+         * @param string $name
+         * @param string $messageLevel
+         * @param \Spatie\FlareClient\array<int,  mixed> $metaData
+         * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
         public static function glow($name, $messageLevel = 'info', $metaData = [])
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->glow($name, $messageLevel, $metaData);
         }
                     /**
@@ -16945,17 +17022,18 @@
          */ 
         public static function handleException($throwable)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->handleException($throwable);
         }
                     /**
          * 
          *
+         * @return mixed 
          * @static 
          */ 
         public static function handleError($code, $message, $file = '', $line = 0)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->handleError($code, $message, $file, $line);
         }
                     /**
@@ -16965,7 +17043,7 @@
          */ 
         public static function applicationPath($applicationPath)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->applicationPath($applicationPath);
         }
                     /**
@@ -16975,7 +17053,7 @@
          */ 
         public static function report($throwable, $callback = null)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->report($throwable, $callback);
         }
                     /**
@@ -16985,7 +17063,7 @@
          */ 
         public static function reportMessage($message, $logLevel, $callback = null)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->reportMessage($message, $logLevel, $callback);
         }
                     /**
@@ -16995,7 +17073,7 @@
          */ 
         public static function sendTestReport($throwable)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->sendTestReport($throwable);
         }
                     /**
@@ -17005,7 +17083,7 @@
          */ 
         public static function reset()
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->reset();
         }
                     /**
@@ -17015,17 +17093,19 @@
          */ 
         public static function anonymizeIp()
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->anonymizeIp();
         }
                     /**
          * 
          *
+         * @param \Spatie\FlareClient\array<int,  string> $fieldNames
+         * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
         public static function censorRequestBodyFields($fieldNames)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->censorRequestBodyFields($fieldNames);
         }
                     /**
@@ -17035,7 +17115,7 @@
          */ 
         public static function createReport($throwable)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->createReport($throwable);
         }
                     /**
@@ -17045,7 +17125,7 @@
          */ 
         public static function createReportFromMessage($message, $logLevel)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->createReportFromMessage($message, $logLevel);
         }
                     /**
@@ -17055,7 +17135,7 @@
          */ 
         public static function stage($stage)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->stage($stage);
         }
                     /**
@@ -17065,17 +17145,20 @@
          */ 
         public static function messageLevel($messageLevel)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->messageLevel($messageLevel);
         }
                     /**
          * 
          *
+         * @param string $groupName
+         * @param mixed $default
+         * @return \Spatie\FlareClient\array<int, mixed>
          * @static 
          */ 
         public static function getGroup($groupName = 'context', $default = [])
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->getGroup($groupName, $default);
         }
                     /**
@@ -17085,17 +17168,20 @@
          */ 
         public static function context($key, $value)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->context($key, $value);
         }
                     /**
          * 
          *
+         * @param string $groupName
+         * @param \Spatie\FlareClient\array<string,  mixed> $properties
+         * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
         public static function group($groupName, $properties)
         {
-                        /** @var \Facade\FlareClient\Flare $instance */
+                        /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->group($groupName, $properties);
         }
          
@@ -24102,7 +24188,7 @@ namespace  {
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
             class PDF extends \Barryvdh\DomPDF\Facade {}
             class Datatables extends \Yajra\Datatables\Facades\Datatables {}
-            class Flare extends \Facade\Ignition\Facades\Flare {}
+            class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
             class Clockwork extends \Clockwork\Support\Laravel\Facade {}
             class Agent extends \Jenssegers\Agent\Facades\Agent {}
             class Form extends \Collective\Html\FormFacade {}

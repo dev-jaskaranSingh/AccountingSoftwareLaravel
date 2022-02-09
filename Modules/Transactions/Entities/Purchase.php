@@ -2,6 +2,7 @@
 
 namespace Modules\Transactions\Entities;
 
+use App\Scopes\CompanyScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,17 @@ class Purchase extends Model
 
     protected $table = 'purchases';
     protected $guarded = ['id'];
+
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new CompanyScope);
+    }
 
     /**
      * @return int
