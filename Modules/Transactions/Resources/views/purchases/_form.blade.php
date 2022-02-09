@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('invoice_number','Invoice Number') !!}
-                        {!! Form::text('invoice_number',\Modules\Transactions\Entities\Purchase::getMaxInvoices()+1,['class'=>'form-control','readonly' => true]) !!}
+                        {!! Form::text('invoice_number',null,['class'=>'form-control']) !!}
                         @error('invoice_number')
                         <span class="help-block text-danger">
                             {{ $message }}
