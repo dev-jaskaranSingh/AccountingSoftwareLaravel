@@ -14,8 +14,8 @@ class SaleSaveRequest extends FormRequest
      */
     public function rules(): array
     {
-        $fromDate = Session::get('company')->from_date;
-        $toDate = Session::get('company')->to_date;
+        $fromDate = authCompany()->from_date;
+        $toDate = authCompany()->to_date;
 
         return [
             'account_id' => 'required',
@@ -42,8 +42,8 @@ class SaleSaveRequest extends FormRequest
         return [
             'account_id.required' => 'Party is required',
             'bill_date.required' => 'Bill date is required',
-            'bill_date.after_or_equal' => 'Bill date should be greater than or equal to '.Session::get('company')->from_date,
-            'bill_date.before_or_equal' => 'Bill date should be less than or equal to '.Session::get('company')->to_date,
+            'bill_date.after_or_equal' => 'Bill date should be greater than or equal to '.authCompany()->from_date,
+            'bill_date.before_or_equal' => 'Bill date should be less than or equal to '.authCompany()->to_date,
             'bill_products.required' => 'Bill products are required',
         ];
     }

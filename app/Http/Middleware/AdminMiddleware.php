@@ -20,7 +20,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::guard('admin')->check() && !is_null(Session::get('company'))) {
+        if (Auth::guard('admin')->check() && !is_null(authCompany())) {
             return $next($request);
         } else {
             return redirect()->route('admin.login');

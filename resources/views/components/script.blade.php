@@ -84,8 +84,8 @@
 <!-- iCheck -->
 <script src="{{ asset('template/js/plugins/iCheck/icheck.min.js') }}"></script>
 @php
-    $toDate = Session::get('company')->to_date;
-    $fromDate = Session::get('company')->from_date;
+    $toDate = authCompany()->to_date;
+    $fromDate = authCompany()->from_date;
 
 @endphp
 <script>

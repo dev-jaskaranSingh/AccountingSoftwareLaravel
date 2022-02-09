@@ -16,8 +16,8 @@ class PurchaseSaveRequest extends FormRequest
 
     public function rules(): array
    {
-       $fromDate = Session::get('company')->from_date;
-       $toDate = Session::get('company')->to_date;
+       $fromDate = authCompany()->from_date;
+       $toDate = authCompany()->to_date;
         return [
             'account_id' => 'required',
             'bill_date' => 'required|after_or_equal:'.$fromDate.'|before_or_equal:'. $toDate,

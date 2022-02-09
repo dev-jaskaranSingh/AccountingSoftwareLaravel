@@ -15,16 +15,17 @@
     $transactionsPurchaseRouteArray = ['transactions.purchases.index', 'transactions.purchases.create', 'transactions.purchases.edit', 'transactions.purchases.show'];
     $transactionsSalesRouteArray = ['transactions.sales.index', 'transactions.sales.create', 'transactions.sales.edit', 'transactions.sales.show'];
     $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray,$transactionsSalesRouteArray)
+
 @endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <img alt="image" class="rounded-circle" src="{{Session::get('company')->logo}}" width="60"/>
+                    <img alt="image" class="rounded-circle" src="{{authCompany()->logo}}" width="60"/>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="block m-t-xs font-bold">{{$activeUser->name}}</span>
-                        <span class="text-muted text-xs block">{{Session::get('company')->name}}<b
+                        <span class="text-muted text-xs block">{{authCompany()->name}}<b
                                 class="caret"></b></span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
