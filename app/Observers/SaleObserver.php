@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 
-use Modules\Transactions\Entities\Sale;
+use Modules\Transactions\Entities\StockMaster;
 
 class SaleObserver
 {
@@ -11,19 +11,19 @@ class SaleObserver
     /**
      * Handle the Product "created" event.
      *
-     * @param Sale $sale
+     * @param StockMaster $sale
      * @return void
      */
-    public function creating(Sale $sale)
+    public function creating(StockMaster $sale)
     {
         $sale->company_id = authCompany()->id;
     }
 
     /**
-     * @param Sale $sale
+     * @param StockMaster $sale
      * @return void
      */
-    public function updating(Sale $sale)
+    public function updating(StockMaster $sale)
     {
         $sale->company_id = authCompany()->id;
     }

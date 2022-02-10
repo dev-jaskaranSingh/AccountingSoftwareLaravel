@@ -24,7 +24,7 @@ class SaleItem extends Model
      */
     public function sale(): BelongsTo
     {
-        return $this->belongsTo(Sale::class, 'sale_id');
+        return $this->belongsTo(StockMaster::class, 'sale_id');
     }
 
     /**

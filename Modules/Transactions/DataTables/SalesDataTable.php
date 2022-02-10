@@ -4,7 +4,7 @@ namespace Modules\Transactions\DataTables;
 
 
 use Modules\Transactions\Entities\Purchase;
-use Modules\Transactions\Entities\Sale;
+use Modules\Transactions\Entities\StockMaster;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -35,10 +35,10 @@ class SalesDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param Sale $model
+     * @param StockMaster $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Sale $model): \Illuminate\Database\Eloquent\Builder
+    public function query(StockMaster $model): \Illuminate\Database\Eloquent\Builder
     {
         return $model->newQuery()->with('account');
     }

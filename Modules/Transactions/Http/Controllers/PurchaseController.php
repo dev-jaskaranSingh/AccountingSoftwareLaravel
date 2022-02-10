@@ -11,6 +11,7 @@ use Modules\Transactions\Entities\Purchase;
 use Modules\Transactions\Entities\PurchaseItem;
 use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
 use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
+use Modules\Transactions\Services\PurchaseServices;
 use Session;
 
 class PurchaseController extends Controller
@@ -45,11 +46,11 @@ class PurchaseController extends Controller
      */
     public function store(PurchaseSaveRequest $request): RedirectResponse
     {
-        $purchase_id = Purchase::create($request->validated() + ['invoice_number' => Purchase::getMaxInvoices() + 1])->id;
+        $purchase_id = Purchase::create($request->validated())->id;
         if ($purchase_id) {
-            $purchaseItems = $this->mapPurchaseItemData($request, $purchase_id,$request->bill_date,$request->account_id);
+            $purchaseItems = $this->mapPurchaseItemData($request, $purchase_id, $request->bill_date, $request->account_id, $request->invoice_number);
             if (PurchaseItem::insert($purchaseItems)) {
-                Session::flash("success", "Success|Purchase has been created successfully");
+                PurchaseServices::saveStockMaster($purchaseItems, 'purchase', $purchase_id, $request->bill_date, $request->account_id, $request->invoice_number);
             } else {
                 Session::flash('error', 'Something went wrong');
             }
@@ -71,10 +72,13 @@ class PurchaseController extends Controller
         })->map(function ($item) use ($purchase_id, $bill_date, $account_id) {
             return [
                 'purchase_id' => $purchase_id,
-                'account_id' => $account_id,
-                'bill_date' => $bill_date,
-                'company_id' =>  authCompany()->id,
                 'item_id' => $item[0],
+                'bill_date' => $bill_date,
+                'account_id' => $account_id,
+                'company_id' => authCompany()->id,
+                'unit_id' => $item[18],
+                'unit' => $item[17],
+                'hsn_id' => $item[19],
                 'hsn_code' => $item[1],
                 'gross_wt' => $item[4],
                 'ting_wt' => $item[5],
@@ -89,9 +93,6 @@ class PurchaseController extends Controller
                 'igst' => $item[14],
                 'gst_amount' => $item[15],
                 'total' => $item[16],
-                'unit' => $item[17],
-                'unit_id' => $item[18],
-                'hsn_id' => $item[19],
                 'created_at' => now(),
                 'updated_at' => null
             ];

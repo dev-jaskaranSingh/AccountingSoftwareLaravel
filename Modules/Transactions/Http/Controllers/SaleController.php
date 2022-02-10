@@ -10,7 +10,7 @@ use Modules\Masters\Entities\ItemMaster;
 use Modules\Transactions\DataTables\SalesDataTable;
 use Modules\Transactions\Entities\Purchase;
 use Modules\Transactions\Entities\PurchaseItem;
-use Modules\Transactions\Entities\Sale;
+use Modules\Transactions\Entities\StockMaster;
 use Modules\Transactions\Entities\SaleItem;
 use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
 use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
@@ -48,7 +48,7 @@ class SaleController extends Controller
      */
     public function store(SaleSaveRequest $request): RedirectResponse
     {
-        $saleID = Sale::create($request->validated() + ['invoice_number' => Sale::getMaxInvoices() + 1])->id;
+        $saleID = StockMaster::create($request->validated() + ['invoice_number' => StockMaster::getMaxInvoices() + 1])->id;
         if ($saleID) {
             $saleInvoiceItems = $this->mapPurchaseItemData($request, $saleID);
             if (SaleItem::insert($saleInvoiceItems)) {
@@ -78,20 +78,20 @@ class SaleController extends Controller
 
     /**
      * Show the specified resource.
-     * @param Sale $sales
+     * @param StockMaster $sales
      * @return Renderable
      */
-    public function show(Sale $sale): Renderable
+    public function show(StockMaster $sale): Renderable
     {
         return view('transactions::sales.show', ['model' => $sale]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param Sale $sale
+     * @param StockMaster $sale
      * @return Renderable
      */
-    public function edit(Sale $sale): Renderable
+    public function edit(StockMaster $sale): Renderable
     {
         return view('transactions::sales.edit', ['model' => $sale]);
     }
@@ -99,10 +99,10 @@ class SaleController extends Controller
     /**
      * Update the specified resource in storage.
      * @param PurchaseUpdateRequest $request
-     * @param Sale $sales
+     * @param StockMaster $sales
      * @return RedirectResponse
      */
-    public function update(PurchaseUpdateRequest $request, Sale $sale): RedirectResponse
+    public function update(PurchaseUpdateRequest $request, StockMaster $sale): RedirectResponse
     {
         $sales->update($request->validated());
         Session::flash("success", "Success|Purchase has been updated successfully");
@@ -111,10 +111,10 @@ class SaleController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param Sale $sales
+     * @param StockMaster $sales
      * @return RedirectResponse
      */
-    public function destroy(Sale $sale): RedirectResponse
+    public function destroy(StockMaster $sale): RedirectResponse
     {
         dump("Sales destroy");
         dd($sale);
@@ -123,7 +123,7 @@ class SaleController extends Controller
         return back();
     }
 
-    public function printPurchase(Sale $sales)
+    public function printPurchase(StockMaster $sales)
     {
         return view('transactions::sales.print', ['model' => $sales]);
     }

@@ -15,7 +15,7 @@ use Modules\Masters\Entities\HsnMaster;
 use Modules\Masters\Entities\ItemGroupMaster;
 use Modules\Masters\Entities\ItemMaster;
 use Modules\Transactions\Entities\Purchase;
-use Modules\Transactions\Entities\Sale;
+use Modules\Transactions\Entities\StockMaster;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -37,7 +37,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Sale::observe(SaleObserver::class);
+        StockMaster::observe(SaleObserver::class);
         Purchase::observe(PurchaseObserver::class);
         ItemMaster::observe(ItemMasterObserver::class);
         ItemGroupMaster::observe(ItemGroupMasterObserver::class);
