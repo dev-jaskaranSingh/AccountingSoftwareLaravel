@@ -47,7 +47,7 @@ class PurchaseController extends Controller
     {
         $purchase_id = Purchase::create($request->validated() + ['invoice_number' => Purchase::getMaxInvoices() + 1])->id;
         if ($purchase_id) {
-            $purchaseItems = $this->mapPurchaseItemData($request, $purchase_id);
+            $purchaseItems = $this->mapPurchaseItemData($request, $purchase_id,$request->bill_date,$request->account_id);
             if (PurchaseItem::insert($purchaseItems)) {
                 Session::flash("success", "Success|Purchase has been created successfully");
             } else {
@@ -64,12 +64,37 @@ class PurchaseController extends Controller
      * @param $purchase_id
      * @return array
      */
-    public function mapPurchaseItemData($request, $purchase_id): array
+    public function mapPurchaseItemData($request, $purchase_id, $bill_date, $account_id): array
     {
         return collect(json_decode($request->bill_products))->filter(function ($item) {
             return $item[0] != null;
-        })->map(function ($item) use ($purchase_id) {
-            return ['purchase_id' => $purchase_id, 'item_id' => $item[0], 'hsn_code' => $item[1], 'gross_wt' => $item[4], 'ting_wt' => $item[5], 'net_wt' => $item[6], 'rate_gm' => $item[7], 'amount' => $item[8], 'discount_percentage' => $item[9], 'discount' => $item[10], 'net_amount' => $item[11], 'cgst' => $item[12], 'sgst' => $item[13], 'igst' => $item[14], 'gst_amount' => $item[15], 'total' => $item[16], 'unit' => $item[17], 'unit_id' => $item[18], 'hsn_id' => $item[19], 'created_at' => now(), 'updated_at' => null];
+        })->map(function ($item) use ($purchase_id, $bill_date, $account_id) {
+            return [
+                'purchase_id' => $purchase_id,
+                'account_id' => $account_id,
+                'bill_date' => $bill_date,
+                'company_id' =>  authCompany()->id,
+                'item_id' => $item[0],
+                'hsn_code' => $item[1],
+                'gross_wt' => $item[4],
+                'ting_wt' => $item[5],
+                'net_wt' => $item[6],
+                'rate_gm' => $item[7],
+                'amount' => $item[8],
+                'discount_percentage' => $item[9],
+                'discount' => $item[10],
+                'net_amount' => $item[11],
+                'cgst' => $item[12],
+                'sgst' => $item[13],
+                'igst' => $item[14],
+                'gst_amount' => $item[15],
+                'total' => $item[16],
+                'unit' => $item[17],
+                'unit_id' => $item[18],
+                'hsn_id' => $item[19],
+                'created_at' => now(),
+                'updated_at' => null
+            ];
         })->toArray();
     }
 

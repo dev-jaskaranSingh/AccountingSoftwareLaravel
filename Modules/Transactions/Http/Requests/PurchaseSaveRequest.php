@@ -29,8 +29,10 @@ class PurchaseSaveRequest extends FormRequest
             'cgst' => '',
             'sgst' => '',
             'igst' => '',
-            'grand_total_amount' => '',
             'tcs' => '',
+            'round_off_type' => '',
+            'round_off_value' => '',
+            'grand_total_amount' => ''
         ];
     }
 

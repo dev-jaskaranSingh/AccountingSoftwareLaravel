@@ -131,13 +131,13 @@
                                     </tr>
                                     <tr>
                                         <th width="180px">Round Off &nbsp;&nbsp;
-                                            <select class="roundOffSelection" name="roundOffSelection">
+                                            <select class="roundOffSelection" name="round_off_type">
                                                 <option value="plus"> +</option>
                                                 <option value="minus"> -</option>
                                             </select>
                                         </th>
                                         <th width="150px">
-                                            <input type="number" class="roundOffValue" name="roundOffValue"
+                                            <input type="number" class="roundOffValue" name="round_off_value"
                                                    placeholder="0.00"/>
                                         </th>
                                     </tr>
