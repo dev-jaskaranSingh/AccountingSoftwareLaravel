@@ -2,17 +2,20 @@
 
 namespace Modules\Transactions\Http\Controllers;
 
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Masters\Entities\ItemMaster;
 use Modules\Transactions\DataTables\PurchaseDataTable;
 use Modules\Transactions\Entities\Purchase;
 use Modules\Transactions\Entities\PurchaseItem;
 use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
 use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
-use Modules\Transactions\Services\PurchaseServices;
+use Modules\Transactions\Services\FinanceLedgerServices;
 use Session;
+use Throwable;
 
 class PurchaseController extends Controller
 {
@@ -43,18 +46,20 @@ class PurchaseController extends Controller
      * Store a newly created resource in storage.
      * @param PurchaseSaveRequest $request
      * @return RedirectResponse
+     * @throws Throwable
      */
     public function store(PurchaseSaveRequest $request): RedirectResponse
     {
-        $purchase_id = Purchase::create($request->validated())->id;
-        if ($purchase_id) {
-            $purchaseItems = $this->mapPurchaseItemData($request, $purchase_id, $request->bill_date, $request->account_id, $request->invoice_number);
-            if (PurchaseItem::insert($purchaseItems)) {
-                PurchaseServices::saveStockMaster($purchaseItems, 'purchase', $purchase_id, $request->bill_date, $request->account_id, $request->invoice_number);
-            } else {
-                Session::flash('error', 'Something went wrong');
-            }
-        } else {
+        try {
+            DB::beginTransaction();
+            $purchase = Purchase::create($request->validated());
+            $purchaseItems = $this->mapPurchaseItemData($request, $request->bill_date, $request->account_id, $request->invoice_number);
+            $status = $purchase->purchaseItems()->createMany($purchaseItems);
+//            $purchase->ledger()->create($request->ledger);
+            DB::commit();
+            Session::flash("success", "Success|Purchase saved Successfully");
+        } catch (Exception $exception) {
+            DB::rollBack();
             Session::flash("error", "Error|Purchase save failed");
         }
         return back();
@@ -62,41 +67,13 @@ class PurchaseController extends Controller
 
     /**
      * @param $request
-     * @param $purchase_id
+     * @param $bill_date
+     * @param $account_id
      * @return array
      */
-    public function mapPurchaseItemData($request, $purchase_id, $bill_date, $account_id): array
+    public function mapPurchaseItemData($request, $bill_date, $account_id): array
     {
-        return collect(json_decode($request->bill_products))->filter(function ($item) {
-            return $item[0] != null;
-        })->map(function ($item) use ($purchase_id, $bill_date, $account_id) {
-            return [
-                'purchase_id' => $purchase_id,
-                'item_id' => $item[0],
-                'bill_date' => $bill_date,
-                'account_id' => $account_id,
-                'company_id' => authCompany()->id,
-                'unit_id' => $item[18],
-                'unit' => $item[17],
-                'hsn_id' => $item[19],
-                'hsn_code' => $item[1],
-                'gross_wt' => $item[4],
-                'ting_wt' => $item[5],
-                'net_wt' => $item[6],
-                'rate_gm' => $item[7],
-                'amount' => $item[8],
-                'discount_percentage' => $item[9],
-                'discount' => $item[10],
-                'net_amount' => $item[11],
-                'cgst' => $item[12],
-                'sgst' => $item[13],
-                'igst' => $item[14],
-                'gst_amount' => $item[15],
-                'total' => $item[16],
-                'created_at' => now(),
-                'updated_at' => null
-            ];
-        })->toArray();
+        return collect(json_decode($request->bill_products))->filter(fn($item) => $item[0] != null)->map(fn($item) => ['item_id' => $item[0], 'bill_date' => $bill_date, 'account_id' => $account_id, 'company_id' => authCompany()->id, 'unit_id' => $item[18], 'unit' => $item[17], 'hsn_id' => $item[19], 'hsn_code' => $item[1], 'gross_wt' => $item[4], 'ting_wt' => $item[5], 'net_wt' => $item[6], 'rate_gm' => $item[7], 'amount' => $item[8], 'discount_percentage' => $item[9], 'discount' => $item[10], 'net_amount' => $item[11], 'cgst' => $item[12], 'sgst' => $item[13], 'igst' => $item[14], 'gst_amount' => $item[15], 'total' => $item[16], 'created_at' => now(), 'updated_at' => null])->toArray();
     }
 
     /**

@@ -271,7 +271,7 @@
     <tr>
         <td style="line-height: 60px !important;"></td>
         <td style="line-height: 60px !important;" colspan="1"><b>TOTAL AMOUNT IN WORDS:</b></td>
-        <td style="line-height: 60px !important;" colspan="6"><b>{{\Modules\Transactions\Entities\Purchase::getIndianCurrency($model->purchaseItems->sum('amount'))}}</b></td>
+        <td style="line-height: 60px !important;" colspan="6"><b>{{getIndianCurrency($model->purchaseItems->sum('amount'))}}</b></td>
     </tr>
     <tr>
         <td></td>
