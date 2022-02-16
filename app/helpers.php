@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Contracts\Auth\Authenticatable;
+
 /**
  * @param $model
  * @return int
@@ -47,6 +49,15 @@ function getIndianCurrency(float $number): string
 /**
  * @return mixed
  */
-function authCompany(){
+function authCompany(): mixed
+{
     return Session::get('company');
+}
+
+/**
+ * @return Authenticatable|null
+ */
+function authUser(): ?Authenticatable
+{
+    return Auth::guard('admin', 'user')->user();
 }

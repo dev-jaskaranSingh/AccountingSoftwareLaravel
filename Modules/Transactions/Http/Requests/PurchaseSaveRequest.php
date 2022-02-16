@@ -7,6 +7,7 @@ use Session;
 
 class PurchaseSaveRequest extends FormRequest
 {
+    private mixed $account_id;
 
     /**
      * Get the validation rules that apply to the request.

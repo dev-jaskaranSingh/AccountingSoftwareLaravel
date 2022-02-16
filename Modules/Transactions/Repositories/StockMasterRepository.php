@@ -11,7 +11,6 @@ class StockMasterRepository
      * @return void
      */
     public static function save($stockMasterData)   {
-//    dd($stockMasterData->toArray());
         return StockMaster::insert($stockMasterData->toArray());
     }
 }

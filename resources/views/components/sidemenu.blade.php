@@ -1,6 +1,6 @@
 @php
     $currentRoute = Route::currentRouteName();
-    $activeUser = Auth::guard('admin','user')->user();
+    $activeUser = authUser();
 
     //Master Route Array
     $mastersAccountsGroupRouteArray= ['master.account-groups.index', 'master.account-groups.create', 'master.account-groups.edit', 'master.account-groups.show'];
