@@ -1,6 +1,8 @@
 <?php
 
 namespace Modules\Transactions\Repositories;
+use FinanceLedger;
+
 
 class FinanceLedgerRepository
 {

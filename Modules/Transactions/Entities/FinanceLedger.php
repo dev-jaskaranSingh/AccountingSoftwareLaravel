@@ -10,6 +10,7 @@ class FinanceLedger extends Model
 {
     use HasFactory;
 
+    protected $table = 'finance_ledger';
     protected $guarded = ['id'];
 
     protected static function newFactory()

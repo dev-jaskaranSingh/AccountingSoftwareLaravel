@@ -66,10 +66,8 @@ class PurchaseController extends Controller
             $savedPurchaseItems = $purchaseModel->purchaseItems()->createMany($purchaseItems);
 
             // Save Finance Ledger
-
             FinanceLedgerServices::saveFinanceLedger('purchase',$purchaseModel, $request);
             //$purchase->ledger()->create($request->ledger);
-
             // Save Stock
             PurchaseServices::saveStockMaster($savedPurchaseItems, 'purchase', $purchaseModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
             DB::commit();
@@ -77,6 +75,7 @@ class PurchaseController extends Controller
         } catch (Exception $exception) {
             DB::rollBack();
             Session::flash("error", "Error|Purchase save failed");
+            dd($exception);
         }
         return back();
     }

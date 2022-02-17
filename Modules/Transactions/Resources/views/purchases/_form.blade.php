@@ -126,7 +126,7 @@
                                     <tr>
                                         <th width="180px">TCS</th>
                                         <th width="150px">
-                                            <input type="number" class="tcs" placeholder="0.00"/>
+                                            <input type="number" name="tcs" class="tcs" placeholder="0.00"/>
                                         </th>
                                     </tr>
                                     <tr>
