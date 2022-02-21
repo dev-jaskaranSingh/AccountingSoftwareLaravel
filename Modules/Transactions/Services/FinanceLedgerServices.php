@@ -4,12 +4,11 @@ namespace Modules\Transactions\Services;
 
 use Modules\Masters\Entities\AccountMaster;
 use Modules\Transactions\Entities\FinanceLedger;
-use Modules\Transactions\Repositories\FinanceLedgerRepository;
 
 class FinanceLedgerServices
 {
 
-    public static function saveFinanceLedger($type, $purchaseModel, $request)
+    public static function savePurchaseInFinanceLedger($type, $purchaseModel, $request)
     {
         $PURCHASE_ID = 19;
         $CGST_INPUT_ID = 20;
@@ -17,14 +16,12 @@ class FinanceLedgerServices
         $IGST_INPUT_ID = 22;
         $ROUND_OFF = 23;
         $TCS_INPUT = 2;
+        $insertArray = [];
 
-        $financeLedgerModel = FinanceLedger::orderBy('id', 'desc')->first();
-        $lastInsertedId = is_null($financeLedgerModel) ? 1 : $financeLedgerModel->id;
         $accountMasterModel = AccountMaster::with('accountGroup')
             ->whereNull('created_at')
-            ->whereIn('id', [$CGST_INPUT_ID, $SGST_INPUT_ID, $IGST_INPUT_ID, $ROUND_OFF, $PURCHASE_ID])
+            ->whereIn('id', [$CGST_INPUT_ID, $SGST_INPUT_ID, $IGST_INPUT_ID, $ROUND_OFF, $PURCHASE_ID, $TCS_INPUT])
             ->get();
-
 
         $partyPurchaseInsertArray = [
             'bill_id' => $purchaseModel->id,
@@ -35,16 +32,16 @@ class FinanceLedgerServices
             'narration' => '',
             'bill_type' => $type,
             'account_id' => $purchaseModel->account_id,
+            'account_id2' => $PURCHASE_ID,
             'account_name' => $purchaseModel->account->name,
-            'account_group_id' => $purchaseModel->account->account_group_id,
-            'account_group_name' => $purchaseModel->account->accountGroup->name,
-            'first_transaction_no' => $lastInsertedId,
+            'first_transaction_no' => 0,
             'created_by' => authUser()->id,
         ];
 
         $purchaseDebitInsertModel = FinanceLedger::create($partyPurchaseInsertArray);
 
-        $purchaseInsertArray = [
+        $purchaseAccountModel = $accountMasterModel->find($PURCHASE_ID);
+        $insertArray[] = [
             'bill_id' => $purchaseModel->id,
             'bill_number' => $purchaseModel->invoice_number,
             'bill_date' => $purchaseModel->bill_date,
@@ -52,24 +49,20 @@ class FinanceLedgerServices
             'credit' => 0,
             'narration' => '',
             'bill_type' => $type,
-            'account_id' => $purchaseModel->account_id,
-            'account_name' => $purchaseModel->account->name,
-            'account_group_id' => $purchaseModel->account->account_group_id,
-            'account_group_name' => $purchaseModel->account->accountGroup->name,
+            'account_id' => $PURCHASE_ID,
+            'account_id2' =>  $purchaseModel->account_id,
+            'account_name' => $purchaseAccountModel->name,
             'first_transaction_no' => $purchaseDebitInsertModel->id,
             'created_by' => authUser()->id,
+            'created_at' => now(),
+            'updated_at' => null
         ];
 
-        FinanceLedger::create($purchaseInsertArray);
 
-        $accountMasterModel = AccountMaster::with('accountGroup')
-            ->whereNull('created_at')
-            ->whereIn('id', [$CGST_INPUT_ID, $SGST_INPUT_ID, $IGST_INPUT_ID, $ROUND_OFF, $PURCHASE_ID])
-            ->get();
 
         if ($purchaseModel->igst > 0) {
-            $accountDetailsModel = $accountMasterModel->find($IGST_INPUT_ID);
-            $purchaseCreditInsertArray = [
+            $IgstAcountModel = $accountMasterModel->find($IGST_INPUT_ID);
+            $insertArray[] = [
                 'bill_id' => $purchaseModel->id,
                 'bill_number' => $purchaseModel->invoice_number,
                 'bill_date' => $purchaseModel->bill_date,
@@ -77,57 +70,54 @@ class FinanceLedgerServices
                 'credit' => 0,
                 'narration' => '',
                 'bill_type' => $type,
-                'account_id' => $accountDetailsModel->id,
-                'account_name' => $accountDetailsModel->name,
-                'account_group_id' => $accountDetailsModel->account_group_id,
-                'account_group_name' => $accountDetailsModel->accountGroup->name,
+                'account_id' => $IGST_INPUT_ID,
+                'account_id2' => $purchaseModel->account_id,
+                'account_name' => $IgstAcountModel->name,
                 'first_transaction_no' => $purchaseDebitInsertModel->id,
                 'created_by' => authUser()->id,
+                'created_at' => now(),
+                'updated_at' => null
             ];
-            FinanceLedger::create($purchaseCreditInsertArray);
-        } else if ($purchaseModel->cgst > 0) {
 
+        } else if ($purchaseModel->cgst > 0) {
             $accountCGSTModel = $accountMasterModel->find($CGST_INPUT_ID);
             $accountSGSTModel = $accountMasterModel->find($SGST_INPUT_ID);
-            $CGST_AND_IGST_insertArray = [
-                array('bill_id' => $purchaseModel->id,
-                    'bill_number' => $purchaseModel->invoice_number,
-                    'bill_date' => $purchaseModel->bill_date,
-                    'debit' => $purchaseModel->cgst,
-                    'credit' => 0,
-                    'narration' => '',
-                    'bill_type' => $type,
-                    'account_id' => $accountCGSTModel->id,
-                    'account_name' => $accountCGSTModel->name,
-                    'account_group_id' => $accountCGSTModel->account_group_id,
-                    'account_group_name' => $accountCGSTModel->accountGroup->name,
-                    'first_transaction_no' => $purchaseDebitInsertModel->id,
-                    'created_by' => authUser()->id,
-                    'created_at' => now(),
-                    'updated_at' => null),
-                array('bill_id' => $purchaseModel->id,
-                    'bill_number' => $purchaseModel->invoice_number,
-                    'bill_date' => $purchaseModel->bill_date,
-                    'debit' => $purchaseModel->sgst,
-                    'credit' => 0,
-                    'narration' => '',
-                    'bill_type' => $type,
-                    'account_id' => $accountSGSTModel->id,
-                    'account_name' => $accountSGSTModel->name,
-                    'account_group_id' => $accountSGSTModel->account_group_id,
-                    'account_group_name' => $accountSGSTModel->accountGroup->name,
-                    'first_transaction_no' => $purchaseDebitInsertModel->id,
-                    'created_by' => authUser()->id,
-                    'created_at' => now(),
-                    'updated_at' => null)
+            $insertArray[] = ['bill_id' => $purchaseModel->id,
+                'bill_number' => $purchaseModel->invoice_number,
+                'bill_date' => $purchaseModel->bill_date,
+                'debit' => $purchaseModel->cgst,
+                'credit' => 0,
+                'narration' => '',
+                'bill_type' => $type,
+                'account_id' => $accountCGSTModel->id,
+                'account_id2' => $purchaseModel->account_id,
+                'account_name' => $accountCGSTModel->name,
+                'first_transaction_no' => $purchaseDebitInsertModel->id,
+                'created_by' => authUser()->id,
+                'created_at' => now(),
+                'updated_at' => null
             ];
-
-            FinanceLedger::insert($CGST_AND_IGST_insertArray);
+            $insertArray[] = [
+                'bill_id' => $purchaseModel->id,
+                'bill_number' => $purchaseModel->invoice_number,
+                'bill_date' => $purchaseModel->bill_date,
+                'debit' => $purchaseModel->sgst,
+                'credit' => 0,
+                'narration' => '',
+                'bill_type' => $type,
+                'account_id' => $accountSGSTModel->id,
+                'account_id2' => '',
+                'account_name' => $accountSGSTModel->name,
+                'first_transaction_no' => $purchaseDebitInsertModel->id,
+                'created_by' => authUser()->id,
+                'created_at' => now(),
+                'updated_at' => null
+            ];
         }
 
-        if(!is_null($purchaseModel->round_off_value)){
+        if (!is_null($purchaseModel->round_off_value)) {
             $accountROUNDOFFModel = $accountMasterModel->find($ROUND_OFF);
-            $purchaseRoundOffInsertArray = [
+            $insertArray[] = [
                 'bill_id' => $purchaseModel->id,
                 'bill_number' => $purchaseModel->invoice_number,
                 'bill_date' => $purchaseModel->bill_date,
@@ -135,34 +125,36 @@ class FinanceLedgerServices
                 'credit' => $purchaseModel->round_off_value,
                 'narration' => '',
                 'bill_type' => $type,
-                'account_id' => $accountROUNDOFFModel->id,
+                'account_id' => $ROUND_OFF,
+                'account_id2' => $purchaseModel->account_id,
                 'account_name' => $accountROUNDOFFModel->name,
-                'account_group_id' => $accountROUNDOFFModel->account_group_id,
-                'account_group_name' => $accountROUNDOFFModel->accountGroup->name,
                 'first_transaction_no' => $purchaseDebitInsertModel->id,
                 'created_by' => authUser()->id,
+                'created_at' => now(),
+                'updated_at' => null
             ];
-            FinanceLedger::create($purchaseRoundOffInsertArray);
         }
 
-        if(!is_null($purchaseModel->tcs)){
+        if (!is_null($purchaseModel->tcs)) {
             $TcsModel = $accountMasterModel->find($TCS_INPUT);
-            $purchaseTCSInsertArray = [
+            $insertArray[] = [
                 'bill_id' => $purchaseModel->id,
                 'bill_number' => $purchaseModel->invoice_number,
                 'bill_date' => $purchaseModel->bill_date,
                 'debit' => 0,
-                'credit' => $purchaseModel->total_net_amount,
+                'credit' => $purchaseModel->tcs,
                 'narration' => '',
                 'bill_type' => $type,
-                'account_id' => $TcsModel->id,
+                'account_id' => $TCS_INPUT,
+                'account_id2' => $purchaseModel->account_id,
                 'account_name' => $TcsModel->name,
-                'account_group_id' => $TcsModel->account_group_id,
-                'account_group_name' => $TcsModel->accountGroup->name,
                 'first_transaction_no' => $purchaseDebitInsertModel->id,
                 'created_by' => authUser()->id,
+                'created_at' => now(),
+                'updated_at' => null
             ];
-            FinanceLedger::create($purchaseTCSInsertArray);
+            $purchaseDebitInsertModel->update(['first_transaction_no' => $purchaseDebitInsertModel->id]);
+            return FinanceLedger::insert($insertArray);
         }
     }
 }
