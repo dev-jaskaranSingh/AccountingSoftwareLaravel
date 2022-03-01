@@ -41,6 +41,7 @@ class FinanceLedgerServices
         $purchaseDebitInsertModel = FinanceLedger::create($partyPurchaseInsertArray);
 
         $purchaseAccountModel = $accountMasterModel->find($PURCHASE_ID);
+        
         $insertArray[] = [
             'bill_id' => $purchaseModel->id,
             'bill_number' => $purchaseModel->invoice_number,
@@ -66,7 +67,7 @@ class FinanceLedgerServices
                 'bill_id' => $purchaseModel->id,
                 'bill_number' => $purchaseModel->invoice_number,
                 'bill_date' => $purchaseModel->bill_date,
-                'debit' => $purchaseModel->total_net_amount,
+                'debit' => $purchaseModel->igst,
                 'credit' => 0,
                 'narration' => '',
                 'bill_type' => $type,

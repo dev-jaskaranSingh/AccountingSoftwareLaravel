@@ -232,6 +232,57 @@ $(function () {
                     if(data[row][11] === undefined || data[row][11] === ''){
                         data[row][11] = 0;
                     }
+
+                    window.amount = Number(qty * price);
+                    data[row][8] = window.amount;
+                    if(data[row][9] === 0 || data[row][10] === 0 || data[row][11] === 0){
+                        window.gst_amount = (window.amount * window.gst_min_percentage) / 100;
+                        if(window.stateCode === window.companyStateCode){
+                            data[row][12] = window.gst_amount / 2;
+                            data[row][13] = window.gst_amount / 2;
+                            data[row][14] = 0;
+                        }else{
+                            data[row][12] = 0 ;
+                            data[row][13] = 0;
+                            data[row][14] = window.gst_amount;
+                        }
+                        data[row][15] = window.gst_amount;
+                        data[row][16] = amount + window.gst_amount;
+                    }
+
+                    data.filter(function (value) {
+                        if (!isNaN(value[16])) {
+                            totalGrandAmount += value[16];
+                        }
+                        if(!isNaN(value[8])){
+                            totalAmount += value[8];
+                        }
+                        if(!isNaN(value[11])){
+                            total_net_amount += value[11];
+                        }
+                        if(!isNaN(value[10])){
+                            totalDiscount += value[10];
+                        }
+                        if(!isNaN(value[12])){
+                            sgst += value[12];
+                        }
+                        if(!isNaN(value[13])){
+                            cgst += value[13];
+                        }
+                        if(!isNaN(value[14])){
+                            igst += value[14];
+                        }
+                    });
+                    hotInstance.render();
+                    $('.total_amount').val(totalAmount.toFixed(2));
+                    $('.total_net_amount').val(total_net_amount.toFixed(2));
+                    $('.total_discount').val(totalDiscount.toFixed(2));
+                    $('.sgst').val(sgst.toFixed(2));
+                    $('.cgst').val(cgst.toFixed(2));
+                    $('.igst').val(igst.toFixed(2));
+                    $('.total_gst_amount').val(totalGST.toFixed(2));
+                    window.storeTotalGrandAmount = totalGrandAmount.toFixed(2);
+                    $('.grand_total_amount').val(totalGrandAmount.toFixed(2));
                 }
 
                 if (change[0][1] === 6 || change[0][1] === 7) {
@@ -243,10 +294,6 @@ $(function () {
                         data[row][8] = window.amount;
                         if(data[row][9] === 0 || data[row][10] === 0 || data[row][11] === 0){
                             window.gst_amount = (window.amount * window.gst_min_percentage) / 100;
-                            // if (data[row][8] < window.hsn_min_amount) {
-                            // } else {
-                            //     window.gst_amount = (window.amount * window.gst_max_percentage) / 100;
-                            // }
                             if(window.stateCode === window.companyStateCode){
                                 data[row][12] = window.gst_amount / 2;
                                 data[row][13] = window.gst_amount / 2;
@@ -307,10 +354,7 @@ $(function () {
                         window.afterDiscount = netAmount - disount_amount //Discount Amount
                         data[row][11] = window.afterDiscount;
                         window.gst_amount = (afterDiscount * window.gst_min_percentage) / 100;
-                        // if (data[row][8] < window.hsn_min_amount) {
-                        // } else {
-                        //     window.gst_amount = (afterDiscount * window.gst_max_percentage) / 100;
-                        // }
+
                         if(window.stateCode === window.companyStateCode){
                             data[row][12] = window.gst_amount / 2 ;
                             data[row][13] = window.gst_amount/ 2;
@@ -321,7 +365,7 @@ $(function () {
                             data[row][14] = window.gst_amount;
                         }
                         data[row][15] = window.gst_amount;
-                        data[row][16] = netAmount + window.gst_amount;
+                        data[row][16] = window.afterDiscount + window.gst_amount;
 
                         data.filter(function (value) {
                             if (!isNaN(value[16])) {
