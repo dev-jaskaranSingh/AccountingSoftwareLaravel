@@ -8,7 +8,13 @@ use Modules\Transactions\Entities\FinanceLedger;
 class FinanceLedgerServices
 {
 
-    public static function savePurchaseInFinanceLedger($type, $purchaseModel, $request)
+    /**
+     * @param $type
+     * @param $purchaseModel
+     * @param $request
+     * @return mixed
+     */
+    public static function savePurchaseInFinanceLedger($type, $purchaseModel, $request): mixed
     {
         $PURCHASE_ID = 19;
         $CGST_INPUT_ID = 20;
@@ -51,7 +57,7 @@ class FinanceLedgerServices
             'narration' => '',
             'bill_type' => $type,
             'account_id' => $PURCHASE_ID,
-            'account_id2' =>  $purchaseModel->account_id,
+            'account_id2' => $purchaseModel->account_id,
             'account_name' => $purchaseAccountModel->name,
             'first_transaction_no' => $purchaseDebitInsertModel->id,
             'created_by' => authUser()->id,
@@ -78,8 +84,7 @@ class FinanceLedgerServices
                 'updated_at' => null
             ];
 
-        }
-        else if ($purchaseModel->cgst > 0) {
+        } else if ($purchaseModel->cgst > 0) {
             $accountCGSTModel = $accountMasterModel->find($CGST_INPUT_ID);
             $accountSGSTModel = $accountMasterModel->find($SGST_INPUT_ID);
             $insertArray[] = ['bill_id' => $purchaseModel->id,
@@ -156,6 +161,61 @@ class FinanceLedgerServices
         }
 
         $purchaseDebitInsertModel->update(['first_transaction_no' => $purchaseDebitInsertModel->id]);
+        return FinanceLedger::insert($insertArray);
+    }
+
+    /**
+     * @param $request
+     * @param $type
+     * @return mixed
+     */
+    public static function saveReceiptInFinanceLedger($request, $type): mixed
+    {
+        $firstTransactionNo  = FinanceLedger::latest()->value('id')+1;
+        $insertArray = [];
+        $accountMasterModel = AccountMaster::with('accountGroup')
+            ->whereIn('id', [$request->first_account_id,$request->second_account_id])
+            ->get();
+
+        $insertArray[] = [
+            'bill_id' => rand(5,200),
+            'bill_number' => rand(5,200),
+            'bill_date' => $request->instrument_date,
+            'debit' => $request->amount,
+            'credit' => 0,
+            'narration' => $request->narration,
+            'bill_type' => $type,
+            'account_id' => $request->first_account_id,
+            'account_id2' => $accountMasterModel->find($request->first_account_id)->accountGroup->id,
+            'account_name' => $accountMasterModel->find($request->first_account_id)->name,
+            'first_transaction_no' => $firstTransactionNo,
+            'instr_type' => $request->instr_type,
+            'instrument_no' => $request->instrument_no,
+            'instrument_date' => $request->instrument_date,
+            'created_by' => authUser()->id,
+            'created_at' => now(),
+            'updated_at' => null
+        ];
+
+        $insertArray[] = [
+            'bill_id' => rand(5,200),
+            'bill_number' => rand(5,200),
+            'bill_date' => $request->instrument_date,
+            'debit' => 0,
+            'credit' => $request->amount,
+            'narration' => $request->narration,
+            'bill_type' => $type,
+            'account_id' => $request->second_account_id,
+            'account_id2' => $accountMasterModel->find($request->second_account_id)->accountGroup->id,
+            'account_name' => $accountMasterModel->find($request->second_account_id)->name,
+            'first_transaction_no' => $firstTransactionNo,
+            'instr_type' => $request->instr_type,
+            'instrument_no' => $request->instrument_no,
+            'instrument_date' => $request->instrument_date,
+            'created_by' => authUser()->id,
+            'created_at' => now(),
+            'updated_at' => null
+        ];
         return FinanceLedger::insert($insertArray);
     }
 }

@@ -47,7 +47,8 @@
             "Modules\\": "Modules/"
         },
         "files": [
-            "app/helpers.php"
+            "app/Helpers/helpers.php",
+            "app/Helpers/receipt_helpers.php"
         ]
     },
     "autoload-dev": {

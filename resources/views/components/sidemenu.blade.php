@@ -14,7 +14,8 @@
     //Transactions Route Array
     $transactionsPurchaseRouteArray = ['transactions.purchases.index', 'transactions.purchases.create', 'transactions.purchases.edit', 'transactions.purchases.show'];
     $transactionsSalesRouteArray = ['transactions.sales.index', 'transactions.sales.create', 'transactions.sales.edit', 'transactions.sales.show'];
-    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray,$transactionsSalesRouteArray)
+    $transactionsReceiptsRouteArray = ['transactions.receipts.index', 'transactions.receipts.create', 'transactions.receipts.edit', 'transactions.receipts.show'];
+    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray,$transactionsSalesRouteArray,$transactionsReceiptsRouteArray)
 
 @endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
@@ -109,7 +110,11 @@
                     </li>
                     <li><a href="">Sale Return</a></li>
                     <li><a href="">Purchase Return</a></li>
-                    <li><a href="">Receipt</a></li>
+
+                    <li class="@if(in_array($currentRoute,$transactionsReceiptsRouteArray)) active @endif">
+                        <a href="{{ route('transactions.receipts.index') }}">Receipt</a>
+                    </li>
+
                     <li><a href="">Payment</a></li>
                     <li><a href="">Journal</a></li>
                     <li><a href="">Contra</a></li>
