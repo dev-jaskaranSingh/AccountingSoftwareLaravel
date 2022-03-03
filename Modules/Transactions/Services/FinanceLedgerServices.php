@@ -59,8 +59,6 @@ class FinanceLedgerServices
             'updated_at' => null
         ];
 
-
-
         if ($purchaseModel->igst > 0) {
             $IgstAcountModel = $accountMasterModel->find($IGST_INPUT_ID);
             $insertArray[] = [
@@ -80,7 +78,8 @@ class FinanceLedgerServices
                 'updated_at' => null
             ];
 
-        } else if ($purchaseModel->cgst > 0) {
+        }
+        else if ($purchaseModel->cgst > 0) {
             $accountCGSTModel = $accountMasterModel->find($CGST_INPUT_ID);
             $accountSGSTModel = $accountMasterModel->find($SGST_INPUT_ID);
             $insertArray[] = ['bill_id' => $purchaseModel->id,
@@ -154,8 +153,9 @@ class FinanceLedgerServices
                 'created_at' => now(),
                 'updated_at' => null
             ];
-            $purchaseDebitInsertModel->update(['first_transaction_no' => $purchaseDebitInsertModel->id]);
-            return FinanceLedger::insert($insertArray);
         }
+
+        $purchaseDebitInsertModel->update(['first_transaction_no' => $purchaseDebitInsertModel->id]);
+        return FinanceLedger::insert($insertArray);
     }
 }

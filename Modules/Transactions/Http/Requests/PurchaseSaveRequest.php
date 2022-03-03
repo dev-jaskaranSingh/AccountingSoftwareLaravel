@@ -22,6 +22,7 @@ class PurchaseSaveRequest extends FormRequest
         return [
             'account_id' => 'required',
             'bill_date' => 'required|after_or_equal:'.$fromDate.'|before_or_equal:'. $toDate,
+            'purchase_date' => 'required|after_or_equal:'.$fromDate.'|before_or_equal:'. $toDate,
             'bill_products' => 'required',
             'invoice_number' => '',
             'company_state_code' => '',

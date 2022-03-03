@@ -38,6 +38,14 @@ class Purchase extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function ledgerEntries(): HasMany
+    {
+        return $this->hasMany(FinanceLedger::class, 'bill_id', 'id');
+    }
+
+    /**
      * @return BelongsTo
      */
     public function account(): BelongsTo

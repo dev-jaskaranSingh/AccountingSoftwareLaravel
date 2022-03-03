@@ -41,40 +41,24 @@
                         </span>
                         @enderror
                     </div>
-
-                    {{--                    <div class="col-md-6 col-sm-12 mb-3">--}}
-                    {{--                        <div class="row mb-2">--}}
-                    {{--                            <div class="col-md-4">--}}
-                    {{--                                State Code:--}}
-                    {{--                                <h2><div class="state_code">-</div></h2>--}}
-                    {{--                            </div>--}}
-                    {{--                            <div class="col-md-8">--}}
-                    {{--                            </div>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
                     <div class="col-md-6 col-sm-12 mb-3">
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 mb-3">
-                                {!! Form::label('bill_date','Bill Date') !!}
-                                {!! Form::text('bill_date',now()->format('Y-m-d'),['class'=>'form-control purchaseDatePicker']) !!}
-                                @error('bill_date')
-                                <span class="help-block text-danger">
-                                    {{ $message }}
-                                </span>
-                                @enderror
-                            </div>
-                            {{--                            <div class="col-md-12 col-sm-12 mb-3">--}}
-                            {{--                                {!! Form::label('shipped_to','Shipped To') !!}--}}
-                            {{--                                {!! Form::textarea('shipped_to',null,['class'=>'form-control','rows'=>4]) !!}--}}
-                            {{--                                @error('shipped_to')--}}
-                            {{--                                <span class="help-block text-danger">--}}
-                            {{--                                {{ $message }}--}}
-                            {{--                            </span>--}}
-                            {{--                                @enderror--}}
-                            {{--                            </div>--}}
-                        </div>
+                        {!! Form::label('bill_date','Bill Date') !!}
+                        {!! Form::text('bill_date',now()->format('Y-m-d'),['class'=>'form-control purchaseDatePicker']) !!}
+                        @error('bill_date')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
                     </div>
-
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('purchase_date','Purchase Date') !!}
+                        {!! Form::text('purchase_date',now()->format('Y-m-d'),['class'=>'form-control purchaseDatePicker']) !!}
+                        @error('purchase_date')
+                        <span class="help-block text-danger">
+                        {{ $message }}
+                    </span>
+                        @enderror
+                    </div>
                 </div>
                 <hr/>
                 <div class="row">

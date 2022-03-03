@@ -88,8 +88,7 @@ $(function () {
         }
     };
 
-    data = JSON.parse($('.purchase-items').val()) || [];
-
+    var purcahseItemsJson = JSON.parse($('.purchase-items').val()) || [];
     var $container = $("#hot-table");
 
     $container.handsontable({
@@ -97,7 +96,7 @@ $(function () {
         className: 'as-you-type-demo',
         filters: true,
         beforeOnCellMouseDown: doNotSelectColumn,
-        data: data,
+        data: JSON.parse(purcahseItemsJson),
         startRows: 1,
         startCols: 11,
         minRows: 10,
