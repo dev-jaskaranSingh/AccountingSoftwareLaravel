@@ -2,7 +2,7 @@
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Edit Payment</h2>
+            <h2>Create Payment</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="javascript:void(0)">Home</a>
@@ -11,7 +11,7 @@
                     <a>Payment</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Edit</strong>
+                    <strong>Create</strong>
                 </li>
             </ol>
         </div>
@@ -20,10 +20,10 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::model($model,['method'=>'PUT','route'=>['transactions.payments.update',$model->id]]) !!}
-            @include('transactions::payments._form')
-        {!! Form::submit('Update',['class'=>'btn btn-primary']) !!}
-        <a href="{{ route('transactions.payments.index') }}" class="btn btn-danger">Cancel</a>
+        {!! Form::open(['route' => 'transactions.payment.store']) !!}
+        @include('transactions::payments._form')
+        {!! Form::submit('Create',['class'=>'btn btn-primary']) !!}
+        <a href="{{ route('transactions.payment.index') }}" class="btn btn-danger">Cancel</a>
         {!! Form::close() !!}
     </div>
 @endsection

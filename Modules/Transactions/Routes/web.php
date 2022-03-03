@@ -23,4 +23,7 @@ Route::group(['prefix' => 'transactions','as' => 'transactions.','middleware' =>
 
     //Receipts
     Route::resource('/receipts', 'ReceiptController');
+
+    //Payments
+    Route::resource('/payment', 'PaymentController');
 });

@@ -2,19 +2,27 @@
 
 namespace Modules\Transactions\Http\Controllers;
 
+use DB;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Transactions\DataTables\PaymentDataTable;
+use Modules\Transactions\Http\Requests\ReceiptSaveRequest;
+use Modules\Transactions\Services\FinanceLedgerServices;
+use Session;
+use Throwable;
 
 class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     * @param PaymentDataTable $dataTable
+     * @return mixed
      */
-    public function index()
+    public function index(PaymentDataTable $dataTable): mixed
     {
-        return view('transactions::index');
+        return $dataTable->render('transactions::payments.index');
     }
 
     /**
@@ -23,17 +31,28 @@ class PaymentController extends Controller
      */
     public function create()
     {
-        return view('transactions::create');
+        return view('transactions::payments.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
+     * @param ReceiptSaveRequest $request
+     * @return RedirectResponse
+     * @throws Throwable
      */
-    public function store(Request $request)
+    public function store(ReceiptSaveRequest $request): RedirectResponse
     {
-        //
+        try {
+            DB::beginTransaction();
+            FinanceLedgerServices::savePaymentInFinanceLedger($request, 'Payment');
+            DB::commit();
+            Session::flash("success", "Success|Receipt has been updated successfully");
+        } catch (Throwable $e) {
+            DB::rollBack();
+            dd(['error' => $e->getMessage()]);
+        } finally {
+            return back();
+        }
     }
 
     /**
