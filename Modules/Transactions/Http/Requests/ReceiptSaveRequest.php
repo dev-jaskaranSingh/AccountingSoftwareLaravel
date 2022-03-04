@@ -14,12 +14,14 @@ class ReceiptSaveRequest extends FormRequest
      */
     public function rules(): array
     {
+        $fromDate = authCompany()->from_date;
+        $toDate = authCompany()->to_date;
         return [
             'first_account_id' => 'required',
             'second_account_id' => 'required',
             'instr_type' => 'required',
-            'instrument_no' => 'required',
-            'instrument_date' => 'required',
+            'instrument_no' => '',
+            'instrument_date' => 'required|after_or_equal:'.$fromDate.'|before_or_equal:'. $toDate,
             'amount' => 'required',
             'narration' => ''
         ];
