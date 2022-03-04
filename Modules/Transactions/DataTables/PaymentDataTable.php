@@ -3,7 +3,7 @@
 namespace Modules\Transactions\DataTables;
 
 
-use Modules\Transactions\Entities\Receipt;
+use Modules\Transactions\Entities\FinanceLedger;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -31,12 +31,12 @@ class PaymentDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param Receipt $model
+     * @param FinanceLedger $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Receipt $model): \Illuminate\Database\Eloquent\Builder
+    public function query(FinanceLedger $model): \Illuminate\Database\Eloquent\Builder
     {
-        return $model->newQuery();
+        return $model->newQuery()->where('bill_type','Payment');
     }
 
     /**
@@ -56,7 +56,19 @@ class PaymentDataTable extends DataTable
      */
     protected function getColumns(): array
     {
-        return [Column::make('id'),  Column::make('amount')->title('Amount'), Column::make('created_at')->title('Created At'), Column::computed('action')->exportable(false)->printable(false)->width('150px')->addClass('text-center'),];
+        return [Column::make('id'),
+            Column::make('bill_type'),
+            Column::make('account_name'),
+            Column::make('instr_type'),
+            Column::make('instrument_no'),
+            Column::make('instrument_date'),
+            Column::make('created_at')
+                ->title('Created At'),
+            Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width('150px')
+                ->addClass('text-center'),];
     }
 
     /**
@@ -66,6 +78,6 @@ class PaymentDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Receipt_' . date('YmdHis');
+        return 'FinanceLedger_' . date('YmdHis');
     }
 }
