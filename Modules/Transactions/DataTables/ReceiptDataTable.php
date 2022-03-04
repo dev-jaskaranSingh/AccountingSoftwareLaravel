@@ -58,11 +58,13 @@ class ReceiptDataTable extends DataTable
     {
         return [
             Column::make('id'),
-            Column::make('bill_type'),
             Column::make('account_name'),
+            Column::make('bill_type'),
             Column::make('instr_type'),
             Column::make('instrument_no'),
             Column::make('instrument_date'),
+            Column::make('credit')->title('Credit Amount'),
+            Column::make('debit')->title('Debit Amount'),
             Column::make('created_at')->title('Created At'),
             Column::computed('action')
                 ->exportable(false)

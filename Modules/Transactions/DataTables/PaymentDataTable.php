@@ -62,6 +62,8 @@ class PaymentDataTable extends DataTable
             Column::make('instr_type'),
             Column::make('instrument_no'),
             Column::make('instrument_date'),
+            Column::make('credit')->title('Credit Amount'),
+            Column::make('debit')->title('Debit Amount'),
             Column::make('created_at')
                 ->title('Created At'),
             Column::computed('action')
