@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Transactions\DataTables\PaymentDataTable;
+use Modules\Transactions\Entities\FinanceLedger;
 use Modules\Transactions\Http\Requests\ReceiptSaveRequest;
 use Modules\Transactions\Services\FinanceLedgerServices;
 use Session;
@@ -88,11 +89,13 @@ class PaymentController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
+     * @param $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy($id): Renderable
     {
-        //
+        FinanceLedger::where('first_transaction_no',$id)->delete();
+        Session::flash("success", "Success|Payment Entry deleted successfully");
+        return back();
     }
 }

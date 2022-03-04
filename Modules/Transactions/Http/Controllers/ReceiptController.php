@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use JetBrains\PhpStorm\NoReturn;
 use Modules\Transactions\DataTables\ReceiptDataTable;
+use Modules\Transactions\Entities\FinanceLedger;
 use Modules\Transactions\Http\Requests\ReceiptSaveRequest;
 use Modules\Transactions\Services\FinanceLedgerServices;
 use Session;
@@ -63,7 +64,7 @@ class ReceiptController extends Controller
      */
     public function show($receipt): Renderable
     {
-        return view('transactions::receipts.show',['model' => $receipt]);
+        return view('transactions::receipts.show', ['model' => $receipt]);
     }
 
     /**
@@ -92,7 +93,10 @@ class ReceiptController extends Controller
      * @param $receipt
      * @return void
      */
-    public function destroy($receipt)
+    public function destroy($id)
     {
+        FinanceLedger::where('first_transaction_no', $id)->delete();
+        Session::flash("success", "Success|Payment Entry deleted successfully");
+        return back();
     }
 }
