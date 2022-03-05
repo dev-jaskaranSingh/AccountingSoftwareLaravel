@@ -61,9 +61,9 @@ class PaymentController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function show($id)
+    public function show(FinanceLedger $payment)
     {
-        return view('transactions::show');
+        return view('transactions::payments.view',['model' => $payment]);
     }
 
     /**
@@ -71,9 +71,9 @@ class PaymentController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(FinanceLedger $payment)
     {
-        return view('transactions::edit');
+        return view('transactions::payments.edit',['model' => $payment]);
     }
 
     /**
@@ -82,7 +82,7 @@ class PaymentController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(ReceiptSaveRequest $request, $id)
     {
         //
     }

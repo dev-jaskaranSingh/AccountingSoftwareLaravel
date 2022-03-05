@@ -21,7 +21,7 @@ class PaymentDataTable extends DataTable
     public function dataTable($query): DataTableAbstract
     {
         return datatables()->eloquent($query)->editColumn('action', function ($model) {
-            return view('transactions::receipts._action', compact('model'));
+            return view('transactions::payments._action', compact('model'));
         })->editColumn('created_at', function ($model) {
             if (is_null($model->created_at)) return null;
             return $model->created_at->format('d-m-Y h:i:s A');
