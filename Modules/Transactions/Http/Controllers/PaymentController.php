@@ -5,7 +5,6 @@ namespace Modules\Transactions\Http\Controllers;
 use DB;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Transactions\DataTables\PaymentDataTable;
 use Modules\Transactions\Entities\FinanceLedger;
@@ -30,7 +29,7 @@ class PaymentController extends Controller
      * Show the form for creating a new resource.
      * @return Renderable
      */
-    public function create()
+    public function create(): Renderable
     {
         return view('transactions::payments.create');
     }
@@ -58,43 +57,55 @@ class PaymentController extends Controller
 
     /**
      * Show the specified resource.
-     * @param int $id
+     * @param FinanceLedger $payment
      * @return Renderable
      */
-    public function show(FinanceLedger $payment)
+    public function show(FinanceLedger $payment): Renderable
     {
-        return view('transactions::payments.view',['model' => $payment]);
+        return view('transactions::payments.view', ['model' => $payment]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param int $id
+     * @param FinanceLedger $payment
      * @return Renderable
      */
-    public function edit(FinanceLedger $payment)
+    public function edit(FinanceLedger $payment): Renderable
     {
-        return view('transactions::payments.edit',['model' => $payment]);
+        return view('transactions::payments.edit', ['model' => $payment]);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
+     * @param ReceiptSaveRequest $request
+     * @param $firstTransactionNo
+     * @return RedirectResponse
+     * @throws Throwable
      */
-    public function update(ReceiptSaveRequest $request, $id)
+    public function update(ReceiptSaveRequest $request, $firstTransactionNo): RedirectResponse
     {
-        //
+        try {
+            DB::beginTransaction();
+            $this->destroy($firstTransactionNo);
+            FinanceLedgerServices::savePaymentInFinanceLedger($request, 'Payment');
+            Session::flash("success", "Success|Receipt has been updated successfully");
+        } catch (Throwable $e) {
+            DB::rollBack();
+            dd(['error' => $e->getMessage()]);
+        } finally {
+            DB::commit();
+            return redirect()->route('transactions.payments.index');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      * @param $id
-     * @return Renderable
+     * @return RedirectResponse
      */
-    public function destroy($id): Renderable
+    public function destroy($id): RedirectResponse
     {
-        FinanceLedger::where('first_transaction_no',$id)->delete();
+        FinanceLedger::where('first_transaction_no', $id)->delete();
         Session::flash("success", "Success|Payment Entry deleted successfully");
         return back();
     }

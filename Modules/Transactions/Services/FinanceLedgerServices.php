@@ -179,7 +179,7 @@ class FinanceLedgerServices
         $bill_number = FinanceLedgerRepository::getMaxBillNumberByBillType($type);
         $insertArray[] = [
             'bill_id' => null,
-            'bill_number' => $bill_number + 1,
+            'bill_number' => $request->bill_number ?? ($bill_number + 1),
             'bill_date' => $request->instrument_date,
             'debit' => $request->amount,
             'credit' => 0,
@@ -199,7 +199,7 @@ class FinanceLedgerServices
 
         $insertArray[] = [
             'bill_id' => null,
-            'bill_number' => $bill_number + 1,
+            'bill_number' => $request->bill_number ?? ($bill_number + 1),
             'bill_date' => $request->instrument_date,
             'debit' => 0,
             'credit' => $request->amount,
@@ -248,7 +248,7 @@ class FinanceLedgerServices
 
         $insertArray[] = [
             'bill_id' => null,
-            'bill_number' => $bill_number + 1,
+            'bill_number' => $request->bill_number ?? ($bill_number + 1),
             'bill_date' => $request->instrument_date,
             'debit' => 0,
             'credit' => $request->amount,
@@ -268,7 +268,7 @@ class FinanceLedgerServices
 
         $insertArray[] = [
             'bill_id' => null,
-            'bill_number' => $bill_number + 1,
+            'bill_number' => $request->bill_number ?? ($bill_number + 1),
             'bill_date' => $request->instrument_date,
             'debit' => $request->amount,
             'credit' => 0,
@@ -288,5 +288,4 @@ class FinanceLedgerServices
 
         return self::saveAndUpdateFinaceLedger($insertArray);
     }
-
 }

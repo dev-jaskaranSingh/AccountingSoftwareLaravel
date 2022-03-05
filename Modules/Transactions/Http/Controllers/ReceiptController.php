@@ -5,9 +5,7 @@ namespace Modules\Transactions\Http\Controllers;
 use DB;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use JetBrains\PhpStorm\NoReturn;
 use Modules\Transactions\DataTables\ReceiptDataTable;
 use Modules\Transactions\Entities\FinanceLedger;
 use Modules\Transactions\Http\Requests\ReceiptSaveRequest;
@@ -69,31 +67,43 @@ class ReceiptController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * @param $receipt
+     * @param FinanceLedger $receipt
      * @return Renderable
      */
-    public function edit($receipt): Renderable
+    public function edit(FinanceLedger $receipt): Renderable
     {
-        return view('transactions::receipts.edit');
+        return view('transactions::receipts.edit', ['model' => $receipt]);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int receipt
-     * @return Renderable
+     * @param ReceiptSaveRequest $request
+     * @param $firstTransactionNo
+     * @return RedirectResponse
+     * @throws Throwable
      */
-    #[NoReturn] public function update(Request $request, $receipt): Renderable
+    public function update(ReceiptSaveRequest $request, $firstTransactionNo): RedirectResponse
     {
-        dd($request->all(), $receipt);
+        try {
+            DB::beginTransaction();
+            $this->destroy($firstTransactionNo);
+            FinanceLedgerServices::saveReceiptInFinanceLedger($request, 'Receipt');
+            Session::flash("success", "Success|Receipts has been updated successfully");
+        } catch (Throwable $e) {
+            DB::rollBack();
+            dd(['error' => $e->getMessage()]);
+        } finally {
+            DB::commit();
+            return redirect()->route('transactions.receipts.index');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param $receipt
-     * @return void
+     * @param $id
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         FinanceLedger::where('first_transaction_no', $id)->delete();
         Session::flash("success", "Success|Payment Entry deleted successfully");

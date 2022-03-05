@@ -44,6 +44,10 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('first_account_id','First Account') !!}
 
+                        @isset($model)
+                            {!! Form::hidden('bill_number',$model->bill_number) !!}
+                        @endisset
+
                         {!! Form::select('first_account_id',getFirstAccountsList(),$firstAccountId,['class'=>'form-control select2 first_account_id']) !!}
                         @error('first_account_id')
                         <span class="help-block text-danger">

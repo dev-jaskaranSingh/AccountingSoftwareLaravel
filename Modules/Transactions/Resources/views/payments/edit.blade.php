@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::model($model,['method'=>'PUT','route'=>['transactions.payments.update',$model->id]]) !!}
+        {!! Form::model($model,['method'=>'PUT','route'=>['transactions.payments.update',$model->first_transaction_no]]) !!}
             @include('transactions::payments._form')
         {!! Form::submit('Update',['class'=>'btn btn-primary']) !!}
         <a href="{{ route('transactions.payments.index') }}" class="btn btn-danger">Cancel</a>
