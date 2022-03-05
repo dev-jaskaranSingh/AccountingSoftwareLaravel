@@ -59,7 +59,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('second_account_id','Second Account') !!}
-                        {!! Form::select('second_account_id',getSecondAccountsList(),$secondAccountId,['class'=>'form-control select2 second_account_id']) !!}
+                        {!! Form::select('second_account_id',getFirstAccountsList(),$secondAccountId,['class'=>'form-control select2 second_account_id']) !!}
                         @error('second_account_id')
                         <span class="help-block text-danger">
                             {{ $message }}
