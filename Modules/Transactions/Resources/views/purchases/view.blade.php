@@ -5,7 +5,7 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Purchase Details</h5>
+                        <h5>{!! getCurrentRouteTitle() !!} Details</h5>
                     </div>
                     <div class="ibox-content">
                         <table class="table table-striped">

@@ -16,7 +16,8 @@
     $transactionsSalesRouteArray = ['transactions.sales.index', 'transactions.sales.create', 'transactions.sales.edit', 'transactions.sales.show'];
     $transactionsReceiptsRouteArray = ['transactions.receipts.index', 'transactions.receipts.create', 'transactions.receipts.edit', 'transactions.receipts.show'];
     $transactionsPaymentRouteArray = ['transactions.payments.index', 'transactions.payments.create', 'transactions.payments.edit', 'transactions.payments.show'];
-    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray,$transactionsSalesRouteArray,$transactionsReceiptsRouteArray,$transactionsPaymentRouteArray)
+    $transactionsContraRouteArray = ['transactions.contra.index', 'transactions.contra.create', 'transactions.contra.edit', 'transactions.contra.show'];
+    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray,$transactionsSalesRouteArray,$transactionsReceiptsRouteArray,$transactionsPaymentRouteArray,$transactionsContraRouteArray)
 
 @endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
@@ -118,8 +119,10 @@
                     <li  class="@if(in_array($currentRoute,$transactionsPaymentRouteArray)) active @endif">
                         <a href="{{ route('transactions.payments.index') }}">Payment</a>
                     </li>
+                    <li class="@if(in_array($currentRoute,$transactionsContraRouteArray)) active @endif">
+                        <a href="{{ route('transactions.contra.index') }}">Contra</a>
+                    </li>
                     <li><a href="javascript:void(0)">Journal</a></li>
-                    <li><a href="javascript:void(0)">Contra</a></li>
                     <li><a href="javascript:void(0)">Stock In</a></li>
                     <li><a href="javascript:void(0)">Stock Out</a></li>
                 </ul>

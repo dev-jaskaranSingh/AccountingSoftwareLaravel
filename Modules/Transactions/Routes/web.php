@@ -27,4 +27,7 @@ Route::group(['prefix' => 'transactions','as' => 'transactions.','middleware' =>
 
 //  Payments Routes
     Route::resource('/payments', 'PaymentController');
+
+//  Payments Routes
+    Route::resource('/contra', 'ContraController');
 });

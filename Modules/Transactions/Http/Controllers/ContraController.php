@@ -13,7 +13,7 @@ use Modules\Transactions\Services\FinanceLedgerServices;
 use Session;
 use Throwable;
 
-class PaymentController extends Controller
+class ContraController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class PaymentController extends Controller
      */
     public function index(ContraDataTable $dataTable): mixed
     {
-        return $dataTable->render('transactions::payments.index');
+        return $dataTable->render('transactions::contra.index');
     }
 
     /**
@@ -31,7 +31,7 @@ class PaymentController extends Controller
      */
     public function create(): Renderable
     {
-        return view('transactions::payments.create');
+        return view('transactions::contra.create');
     }
 
     /**
@@ -44,7 +44,7 @@ class PaymentController extends Controller
     {
         try {
             DB::beginTransaction();
-            FinanceLedgerServices::savePaymentInFinanceLedger($request, 'Payment');
+            FinanceLedgerServices::saveReceiptInFinanceLedger($request, 'Contra');
             DB::commit();
             Session::flash("success", "Success|Receipt has been updated successfully");
         } catch (Throwable $e) {
@@ -57,22 +57,22 @@ class PaymentController extends Controller
 
     /**
      * Show the specified resource.
-     * @param FinanceLedger $payment
+     * @param $contra
      * @return Renderable
      */
-    public function show(FinanceLedger $payment): Renderable
+    public function show($contra): Renderable
     {
-        return view('transactions::payments.view', ['model' => $payment]);
+        return view('transactions::contra.show', ['model' => $contra]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param FinanceLedger $payment
+     * @param FinanceLedger $contra
      * @return Renderable
      */
-    public function edit(FinanceLedger $payment): Renderable
+    public function edit(FinanceLedger $contra): Renderable
     {
-        return view('transactions::payments.edit', ['model' => $payment]);
+        return view('transactions::contra.edit', ['model' => $contra]);
     }
 
     /**
@@ -87,25 +87,25 @@ class PaymentController extends Controller
         try {
             DB::beginTransaction();
             $this->destroy($firstTransactionNo);
-            FinanceLedgerServices::savePaymentInFinanceLedger($request, 'Payment');
-            Session::flash("success", "Success|Receipt has been updated successfully");
+            FinanceLedgerServices::saveReceiptInFinanceLedger($request, 'Contra');
+            Session::flash("success", "Success|Contra has been updated successfully");
         } catch (Throwable $e) {
             DB::rollBack();
             dd(['error' => $e->getMessage()]);
         } finally {
             DB::commit();
-            return redirect()->route('transactions.payments.index');
+            return redirect()->route('transactions.receipts.index');
         }
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param $id
+     * @param $firstTransactionNumber
      * @return RedirectResponse
      */
-    public function destroy($id): RedirectResponse
+    public function destroy($firstTransactionNumber): RedirectResponse
     {
-        FinanceLedger::where('first_transaction_no', $id)->delete();
+        FinanceLedger::where('first_transaction_no', $firstTransactionNumber)->delete();
         Session::flash("success", "Success|Payment Entry deleted successfully");
         return back();
     }

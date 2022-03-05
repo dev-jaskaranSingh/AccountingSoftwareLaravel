@@ -61,3 +61,7 @@ function authUser(): ?Authenticatable
 {
     return Auth::guard('admin', 'user')->user();
 }
+
+function getCurrentRouteTitle():string{
+    return ucfirst(explode('.',request()->route()->getName())[1]);
+}
