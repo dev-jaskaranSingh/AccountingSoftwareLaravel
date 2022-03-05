@@ -62,7 +62,7 @@ class ContraController extends Controller
      */
     public function show($contra): Renderable
     {
-        return view('transactions::contra.show', ['model' => $contra]);
+        return view('transactions::contra.view', ['model' => $contra]);
     }
 
     /**

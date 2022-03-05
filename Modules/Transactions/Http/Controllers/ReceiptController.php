@@ -62,7 +62,7 @@ class ReceiptController extends Controller
      */
     public function show($receipt): Renderable
     {
-        return view('transactions::receipts.show', ['model' => $receipt]);
+        return view('transactions::receipts.view', ['model' => $receipt]);
     }
 
     /**
