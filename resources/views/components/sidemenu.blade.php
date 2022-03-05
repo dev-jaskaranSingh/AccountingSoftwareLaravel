@@ -15,8 +15,9 @@
     $transactionsPurchaseRouteArray = ['transactions.purchases.index', 'transactions.purchases.create', 'transactions.purchases.edit', 'transactions.purchases.show'];
     $transactionsSalesRouteArray = ['transactions.sales.index', 'transactions.sales.create', 'transactions.sales.edit', 'transactions.sales.show'];
     $transactionsReceiptsRouteArray = ['transactions.receipts.index', 'transactions.receipts.create', 'transactions.receipts.edit', 'transactions.receipts.show'];
-    $transactionsPaymentRouteArray = ['transactions.payment.index', 'transactions.payment.create', 'transactions.payment.edit', 'transactions.payment.show'];
-    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray,$transactionsSalesRouteArray,$transactionsReceiptsRouteArray)
+    $transactionsPaymentRouteArray = ['transactions.payments.index', 'transactions.payments.create', 'transactions.payments.edit', 'transactions.payments.show'];
+    $transactionsContraRouteArray = ['transactions.contra.index', 'transactions.contra.create', 'transactions.contra.edit', 'transactions.contra.show'];
+    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray,$transactionsSalesRouteArray,$transactionsReceiptsRouteArray,$transactionsPaymentRouteArray,$transactionsContraRouteArray)
 
 @endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
@@ -109,20 +110,21 @@
                     <li class="@if(in_array($currentRoute,$transactionsSalesRouteArray)) active @endif">
                         <a href="{{ route('transactions.sales.index') }}">Sale</a>
                     </li>
-                    <li><a href="">Sale Return</a></li>
-                    <li><a href="">Purchase Return</a></li>
+                    <li><a href="javascript:void(0)">Sale Return</a></li>
+                    <li><a href="javascript:void(0)">Purchase Return</a></li>
 
                     <li class="@if(in_array($currentRoute,$transactionsReceiptsRouteArray)) active @endif">
                         <a href="{{ route('transactions.receipts.index') }}">Receipt</a>
                     </li>
-
                     <li  class="@if(in_array($currentRoute,$transactionsPaymentRouteArray)) active @endif">
-                        <a href="{{ route('transactions.payment.index') }}">Payment</a>
+                        <a href="{{ route('transactions.payments.index') }}">Payment</a>
                     </li>
-                    <li><a href="">Journal</a></li>
-                    <li><a href="">Contra</a></li>
-                    <li><a href="">Stock In</a></li>
-                    <li><a href="">Stock Out</a></li>
+                    <li class="@if(in_array($currentRoute,$transactionsContraRouteArray)) active @endif">
+                        <a href="{{ route('transactions.contra.index') }}">Contra</a>
+                    </li>
+                    <li><a href="javascript:void(0)">Journal</a></li>
+                    <li><a href="javascript:void(0)">Stock In</a></li>
+                    <li><a href="javascript:void(0)">Stock Out</a></li>
                 </ul>
             </li>
             <li>
@@ -131,12 +133,12 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="">Trail Balance</a></li>
-                    <li><a href="">Ledger Report</a></li>
-                    <li><a href="">Sale Register</a></li>
-                    <li><a href="">Purchase Register</a></li>
-                    <li><a href="">Sale Return</a></li>
-                    <li><a href="">Purchase Return</a></li>
+                    <li><a href="javascript:void(0)">Trail Balance</a></li>
+                    <li><a href="javascript:void(0)">Ledger Report</a></li>
+                    <li><a href="javascript:void(0)">Sale Register</a></li>
+                    <li><a href="javascript:void(0)">Purchase Register</a></li>
+                    <li><a href="javascript:void(0)">Sale Return</a></li>
+                    <li><a href="javascript:void(0)">Purchase Return</a></li>
                 </ul>
             </li>
         </ul>

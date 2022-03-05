@@ -2,13 +2,13 @@
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Edit Payment</h2>
+            <h2>Edit {!! getCurrentRouteTitle() !!}</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="javascript:void(0)">Home</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a>Payment</a>
+                    <a>{!! getCurrentRouteTitle() !!}</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>Edit</strong>
@@ -20,10 +20,10 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::model($model,['method'=>'PUT','route'=>['transactions.payments.update',$model->id]]) !!}
-            @include('transactions::payments._form')
+        {!! Form::model($model,['method'=>'PUT','route'=>['transactions.receipts.update',$model->first_transaction_no]]) !!}
+            @include('transactions::receipts._form')
         {!! Form::submit('Update',['class'=>'btn btn-primary']) !!}
-        <a href="{{ route('transactions.payments.index') }}" class="btn btn-danger">Cancel</a>
+        <a href="{{ route('transactions.receipts.index') }}" class="btn btn-danger">Cancel</a>
         {!! Form::close() !!}
     </div>
 @endsection
