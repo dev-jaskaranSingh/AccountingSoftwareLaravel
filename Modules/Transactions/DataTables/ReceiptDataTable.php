@@ -21,11 +21,11 @@ class ReceiptDataTable extends DataTable
     public function dataTable($query): DataTableAbstract
     {
         return datatables()->eloquent($query)->editColumn('action', function ($model) {
-                return view('transactions::receipts._action', compact('model'));
-            })->editColumn('created_at', function ($model) {
-                if (is_null($model->created_at)) return null;
-                return $model->created_at->format('d-m-Y h:i:s A');
-            })->rawColumns(['action']);
+            return view('transactions::receipts._action', compact('model'));
+        })->editColumn('created_at', function ($model) {
+            if (is_null($model->created_at)) return null;
+            return $model->created_at->format('d-m-Y h:i:s A');
+        })->rawColumns(['action']);
     }
 
     /**
@@ -36,7 +36,9 @@ class ReceiptDataTable extends DataTable
      */
     public function query(FinanceLedger $model): \Illuminate\Database\Eloquent\Builder
     {
-        return $model->newQuery()->where('bill_type','Receipt');
+        return $model->newQuery()
+            ->where('bill_type', 'Receipt')
+            ->orderBy('id', 'desc');
     }
 
     /**

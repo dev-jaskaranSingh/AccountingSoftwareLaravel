@@ -36,7 +36,9 @@ class PaymentDataTable extends DataTable
      */
     public function query(FinanceLedger $model): \Illuminate\Database\Eloquent\Builder
     {
-        return $model->newQuery()->where('bill_type','Payment');
+        return $model->newQuery()
+            ->where('bill_type','Payment')
+            ->orderBy('id', 'desc');
     }
 
     /**
