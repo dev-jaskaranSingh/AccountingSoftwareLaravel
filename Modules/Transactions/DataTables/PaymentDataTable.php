@@ -21,11 +21,11 @@ class PaymentDataTable extends DataTable
     public function dataTable($query): DataTableAbstract
     {
         return datatables()->eloquent($query)->editColumn('action', function ($model) {
-                return view('transactions::receipts._action', compact('model'));
-            })->editColumn('created_at', function ($model) {
-                if (is_null($model->created_at)) return null;
-                return $model->created_at->format('d-m-Y h:i:s A');
-            })->rawColumns(['action']);
+            return view('transactions::receipts._action', compact('model'));
+        })->editColumn('created_at', function ($model) {
+            if (is_null($model->created_at)) return null;
+            return $model->created_at->format('d-m-Y h:i:s A');
+        })->rawColumns(['action']);
     }
 
     /**
@@ -37,7 +37,7 @@ class PaymentDataTable extends DataTable
     public function query(FinanceLedger $model): \Illuminate\Database\Eloquent\Builder
     {
         return $model->newQuery()
-            ->where('bill_type','Payment')
+            ->where('bill_type', 'Payment')
             ->orderBy('id', 'desc');
     }
 
@@ -60,6 +60,7 @@ class PaymentDataTable extends DataTable
     {
         return [Column::make('id'),
             Column::make('bill_type'),
+            Column::make('bill_number'),
             Column::make('account_name'),
             Column::make('instr_type'),
             Column::make('instrument_no'),

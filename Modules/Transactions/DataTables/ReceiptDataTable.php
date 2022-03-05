@@ -61,6 +61,7 @@ class ReceiptDataTable extends DataTable
         return [
             Column::make('id'),
             Column::make('account_name'),
+            Column::make('bill_number'),
             Column::make('bill_type'),
             Column::make('instr_type'),
             Column::make('instrument_no'),

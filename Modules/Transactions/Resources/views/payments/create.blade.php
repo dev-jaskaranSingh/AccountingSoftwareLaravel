@@ -20,10 +20,10 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::open(['route' => 'transactions.payment.store']) !!}
+        {!! Form::open(['route' => 'transactions.payments.store']) !!}
         @include('transactions::payments._form')
         {!! Form::submit('Create',['class'=>'btn btn-primary']) !!}
-        <a href="{{ route('transactions.payment.index') }}" class="btn btn-danger">Cancel</a>
+        <a href="{{ route('transactions.payments.index') }}" class="btn btn-danger">Cancel</a>
         {!! Form::close() !!}
     </div>
 @endsection

@@ -18,12 +18,13 @@ Route::group(['prefix' => 'transactions','as' => 'transactions.','middleware' =>
     Route::get('purchases/print/{purchase}', 'PurchaseController@printPurchase')->name('purchases.print');
     Route::resource('/purchases', 'PurchaseController');
 
+//  Sale Routes
     Route::get('sales/print/{sales}', 'SaleController@printPurchase')->name('sales.print');
     Route::resource('/sales', 'SaleController');
 
-    //Receipts
+//  Receipt Routes
     Route::resource('/receipts', 'ReceiptController');
 
-    //Payments
-    Route::resource('/payment', 'PaymentController');
+//  Payments Routes
+    Route::resource('/payments', 'PaymentController');
 });
