@@ -6,7 +6,7 @@ use DB;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
-use Modules\Transactions\DataTables\ContraDataTable;
+use Modules\Transactions\DataTables\PaymentDataTable;
 use Modules\Transactions\Entities\FinanceLedger;
 use Modules\Transactions\Http\Requests\ReceiptSaveRequest;
 use Modules\Transactions\Services\FinanceLedgerServices;
@@ -17,10 +17,10 @@ class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @param ContraDataTable $dataTable
+     * @param PaymentDataTable $dataTable
      * @return mixed
      */
-    public function index(ContraDataTable $dataTable): mixed
+    public function index(PaymentDataTable $dataTable): mixed
     {
         return $dataTable->render('transactions::payments.index');
     }
