@@ -28,12 +28,12 @@ function getInstrTypeList(): array
 {
     return [
         'chq no' => 'chq no',
-        'RTGS' => 'RTGS',
         'CARD' => 'CARD',
+        'CASH' => 'CASH',
+        'DD' => 'DD',
         'MTRF' => 'MTRF',
         'NEFT' => 'NEFT',
-        'DD' => 'DD',
+        'RTGS' => 'RTGS',
         'TRF' => 'TRF',
-        'CASH' => 'CASH',
     ];
 }
