@@ -30,8 +30,6 @@ class AccountMasterDataTable extends DataTable
             })->editColumn('account_group_id', function ($model) {
                 if (is_null($model->accountGroup)) return null;
                 return $model->accountGroup->name;
-            })->editColumn('id', function ($model) {
-                return $model->id - 5;
             })->editColumn('account_type', function ($model) {
                 return ucfirst($model->account_type);
             })
