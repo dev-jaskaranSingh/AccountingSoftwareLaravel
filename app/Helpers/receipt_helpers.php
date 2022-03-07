@@ -27,7 +27,7 @@ function getSecondAccountsList(): mixed
 function getInstrTypeList(): array
 {
     return [
-        'chq no' => 'chq no',
+        'Chq No' => 'Chq No',
         'CARD' => 'CARD',
         'CASH' => 'CASH',
         'DD' => 'DD',
