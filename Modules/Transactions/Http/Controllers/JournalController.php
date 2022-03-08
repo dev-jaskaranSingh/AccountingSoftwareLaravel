@@ -5,16 +5,18 @@ namespace Modules\Transactions\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Transactions\DataTables\JournalDataTable;
 
 class JournalController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     * @param JournalDataTable $dataTable
+     * @return mixed
      */
-    public function index()
+    public function index(JournalDataTable $dataTable): mixed
     {
-        return view('transactions::index');
+        return $dataTable->render('transactions::journal.index');
     }
 
     /**
@@ -23,17 +25,17 @@ class JournalController extends Controller
      */
     public function create()
     {
-        return view('transactions::create');
+        return view('transactions::journal.create');
     }
 
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return Renderable
+     * @return void
      */
     public function store(Request $request)
     {
-        //
+        dd(json_decode($request->all()['journalFormValues']));
     }
 
     /**

@@ -40,33 +40,30 @@
             <div class="ibox-title">
                 <h5>Create Receipts <small>Receipts create form</small></h5>
             </div>
+                @isset($model)
+                    {!! Form::hidden('bill_number',$model->bill_number) !!}
+                @endisset
             <div class="ibox-content">
                 <div class="row">
-                    <div class="col-md-6 col-sm-12 mb-3">
-
-                        @isset($model)
-                            {!! Form::hidden('bill_number',$model->bill_number) !!}
-                        @endisset
-
-                        {!! Form::label('first_account_id','First Account') !!}
-                        {!! Form::select('first_account_id',getFirstAccountsList(),$firstAccountId,['class'=>'form-control select2 first_account_id']) !!}
-                        @error('first_account_id')
+                    <div class="col-md-4 col-sm-12 mb-2">
+                        {!! Form::label('creditOrDebit','Credit/Debit') !!}
+                        {!! Form::select('creditOrDebit',['credit' => 'Credit','debit' => 'Debit' ],null,['class'=>'form-control select2']) !!}
+                        @error('creditOrDebit')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
                         @enderror
                     </div>
-
-                    <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('second_account_id','Second Account') !!}
-                        {!! Form::select('second_account_id',getFirstAccountsList(),$secondAccountId,['class'=>'form-control select2 second_account_id']) !!}
+                    <div class="col-md-4 col-sm-12 mb-2">
+                        {!! Form::label('account_id','Select Account') !!}
+                        {!! Form::select('account_id',getAccountsList(),$secondAccountId,['class'=>'form-control select2 second_account_id']) !!}
                         @error('second_account_id')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
                         @enderror
                     </div>
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-4 col-sm-12 mb-2">
                         {!! Form::label('instr_type','Second Account') !!}
                         {!! Form::select('instr_type',getInstrTypeList(),null,['class'=>'form-control select2 instr_type']) !!}
                         @error('instr_type')
@@ -76,7 +73,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-4 col-sm-12 mb-2">
                         {!! Form::label('instrument_no','Instrument Number') !!}
                         {!! Form::text('instrument_no',null,['class'=>'form-control']) !!}
                         @error('instrument_no')
@@ -86,7 +83,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-4 col-sm-12 mb-2">
                         {!! Form::label('instrument_date','Instrument Date') !!}
                         {!! Form::text('instrument_date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
                         @error('instrument_date')
@@ -96,7 +93,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-4 col-sm-12 mb-2">
                         {!! Form::label('amount','Amount') !!}
                         {!! Form::text('amount',$amount,['class'=>'form-control']) !!}
                         @error('amount')
@@ -109,7 +106,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         {!! Form::label('narration','Narration') !!}
-                        {!! Form::textarea('narration',null,['class'=>'form-control']) !!}
+                        {!! Form::textarea('narration',null,['class'=>'form-control', 'rows' => '3']) !!}
                         @error('narration')
                         <span class="help-block text-danger">
                             {{ $message }}
