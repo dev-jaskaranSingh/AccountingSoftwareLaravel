@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Transactions\DataTables\JournalDataTable;
+use Modules\Transactions\Entities\FinanceLedger;
 use Modules\Transactions\Services\FinanceLedgerServices;
 use Session;
 use Throwable;
@@ -88,11 +89,13 @@ class JournalController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
+     * @param $id
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
-        //
+        FinanceLedger::where('first_transaction_no', $id)->delete();
+        Session::flash("success", "Success|Payment Entry deleted successfully");
+        return back();
     }
 }

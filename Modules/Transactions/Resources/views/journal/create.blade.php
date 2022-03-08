@@ -126,9 +126,53 @@
 
 
         $('.addJournalButton').on('click', (function (e) {
+
             console.clear();
             e.preventDefault();
             e.stopPropagation();
+
+            if (creditOrDebit.val() == '') {
+                creditOrDebit.addClass('is-invalid');
+                toastr.error('Please select a credit or debit','Error');
+                return false;
+            } else {
+                creditOrDebit.removeClass('is-invalid');
+            }
+
+
+            if (account_id.val() == '') {
+                account_id.addClass('is-invalid');
+                toastr.error('Please select an account','Error');
+                return false;
+            } else {
+                account_id.removeClass('is-invalid');
+            }
+
+            if (instr_type.val() == '') {
+                instr_type.addClass('is-invalid');
+                toastr.error('Please select an instrument type','Error');
+                return false;
+            } else {
+                instr_type.removeClass('is-invalid');
+            }
+
+            if (instrument_date.val() == '') {
+                instrument_date.addClass('is-invalid');
+                toastr.error('Please select an instrument date','Error');
+                return false;
+            } else {
+                instrument_date.removeClass('is-invalid');
+            }
+
+            if (amount.val() == '') {
+                amount.addClass('is-invalid');
+                toastr.error('Please enter an amount','Error');
+                return false;
+            } else {
+                amount.removeClass('is-invalid');
+            }
+
+
 
             let getInstrTypeList = $('input[name=getInstrTypeList]').val();
             let getFirstAccountsList = $('input[name=getFirstAccountsList]').val();
