@@ -2,10 +2,15 @@
 
 namespace Modules\Transactions\Http\Controllers;
 
+use DB;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Transactions\DataTables\JournalDataTable;
+use Modules\Transactions\Services\FinanceLedgerServices;
+use Session;
+use Throwable;
 
 class JournalController extends Controller
 {
@@ -31,11 +36,23 @@ class JournalController extends Controller
     /**
      * Store a newly created resource in storage.
      * @param Request $request
-     * @return void
+     * @return RedirectResponse
+     * @throws Throwable
      */
     public function store(Request $request)
     {
-        dd(json_decode($request->all()['journalFormValues']));
+        try {
+            DB::beginTransaction();
+            $journalFormValues = json_decode($request->journalFormValues, true);
+            FinanceLedgerServices::saveJournalInFinanceLedger($journalFormValues, 'Journal');
+            DB::commit();
+            Session::flash("success", "Success|Receipt has been updated successfully");
+        } catch (Throwable $e) {
+            DB::rollBack();
+            dd(['error' => $e->getMessage()]);
+        } finally {
+            return back();
+        }
     }
 
     /**

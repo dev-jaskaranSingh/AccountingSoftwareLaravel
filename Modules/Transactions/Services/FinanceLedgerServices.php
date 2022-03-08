@@ -264,4 +264,58 @@ class FinanceLedgerServices
         FinanceLedger::create($insertArray2nd);
         return FinanceLedger::find($lastInserted->id)->update(['first_transaction_no' => $lastInserted->id]);
     }
+
+    /**
+     * @param $journalFormValues
+     * @param $type
+     * @return void
+     */
+    public static function saveJournalInFinanceLedger($journalFormValues, $type){
+        $accountIdsArray = collect($journalFormValues)->map(fn($value, $key) => $value['account_id'] ?? null)->toArray();
+        $accountMasterModel = AccountMaster::with('accountGroup')
+            ->whereIn('id', $accountIdsArray)
+            ->get();
+
+        $bill_number = FinanceLedgerRepository::getMaxBillNumberByBillType($type);
+        $insertArray = [
+            'bill_id' => null,
+            'bill_number' => ($bill_number + 1),
+            'bill_date' => $journalFormValues[0]['instrument_date'],
+            'debit' => $journalFormValues[0]['debit'],
+            'credit' => $journalFormValues[0]['credit'],
+            'narration' => $journalFormValues[0]['narration'],
+            'bill_type' => $type,
+            'account_id' => $journalFormValues[0]['account_id'],
+            'account_id2' => $journalFormValues[0]['account_id'],
+            'account_name' => $accountMasterModel->find($journalFormValues[0]['account_id'])->name,
+            'first_transaction_no' => null,
+            'instr_type' => $journalFormValues[0]['instr_type'],
+            'instrument_no' => $journalFormValues[0]['instrument_no'],
+            'instrument_date' => $journalFormValues[0]['instrument_date'],
+            'created_by' => authUser()->id,
+        ];
+
+        $lastInserted = FinanceLedger::create($insertArray);
+        foreach($journalFormValues as $key => $value){
+            $insertNewArray = [
+                'bill_id' => null,
+                'bill_number' => ($bill_number + 1),
+                'bill_date' => $value['instrument_date'],
+                'debit' => $value['debit'],
+                'credit' => $value['credit'] ,
+                'narration' => $value['narration'],
+                'bill_type' => $type,
+                'account_id' => $value['account_id'],
+                'account_id2' => $value['account_id'],
+                'account_name' => $accountMasterModel->find($value['account_id'])->name,
+                'first_transaction_no' => $lastInserted->id,
+                'instr_type' => $value['instr_type'],
+                'instrument_no' => $value['instrument_no'],
+                'instrument_date' => $value['instrument_date'],
+                'created_by' => authUser()->id,
+            ];
+            FinanceLedger::create($insertNewArray);
+        }
+        return FinanceLedger::find($lastInserted->id)->update(['first_transaction_no' => $lastInserted->id]);
+    }
 }
