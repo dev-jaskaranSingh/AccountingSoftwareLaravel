@@ -28,6 +28,9 @@ Route::group(['prefix' => 'transactions','as' => 'transactions.','middleware' =>
 //  Payments Routes
     Route::resource('/payments', 'PaymentController');
 
-//  Payments Routes
+//  Contra Routes
     Route::resource('/contra', 'ContraController');
+
+//  Journal Routes
+    Route::resource('/journal', 'JournalController');
 });

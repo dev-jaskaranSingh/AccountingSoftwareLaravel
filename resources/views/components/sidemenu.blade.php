@@ -17,7 +17,17 @@
     $transactionsReceiptsRouteArray = ['transactions.receipts.index', 'transactions.receipts.create', 'transactions.receipts.edit', 'transactions.receipts.show'];
     $transactionsPaymentRouteArray = ['transactions.payments.index', 'transactions.payments.create', 'transactions.payments.edit', 'transactions.payments.show'];
     $transactionsContraRouteArray = ['transactions.contra.index', 'transactions.contra.create', 'transactions.contra.edit', 'transactions.contra.show'];
-    $transactionsRouteArray = array_merge($transactionsPurchaseRouteArray,$transactionsSalesRouteArray,$transactionsReceiptsRouteArray,$transactionsPaymentRouteArray,$transactionsContraRouteArray)
+    $transactionsJournalRouteArray = ['transactions.journal.index', 'transactions.journal.create', 'transactions.journal.edit', 'transactions.journal.show'];
+
+    //Final Route Array
+    $transactionsRouteArray = array_merge(
+        $transactionsPurchaseRouteArray,
+        $transactionsSalesRouteArray,
+        $transactionsReceiptsRouteArray,
+        $transactionsPaymentRouteArray,
+        $transactionsContraRouteArray,
+        $transactionsJournalRouteArray
+    )
 
 @endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
@@ -116,13 +126,15 @@
                     <li class="@if(in_array($currentRoute,$transactionsReceiptsRouteArray)) active @endif">
                         <a href="{{ route('transactions.receipts.index') }}">Receipt</a>
                     </li>
-                    <li  class="@if(in_array($currentRoute,$transactionsPaymentRouteArray)) active @endif">
+                    <li class="@if(in_array($currentRoute,$transactionsPaymentRouteArray)) active @endif">
                         <a href="{{ route('transactions.payments.index') }}">Payment</a>
                     </li>
                     <li class="@if(in_array($currentRoute,$transactionsContraRouteArray)) active @endif">
                         <a href="{{ route('transactions.contra.index') }}">Contra</a>
                     </li>
-                    <li><a href="javascript:void(0)">Journal</a></li>
+                    <li class="@if(in_array($currentRoute,$transactionsJournalRouteArray)) active @endif">
+                        <a href="{{ route('transactions.journal.index') }}">Journal</a>
+                    </li>
                     <li><a href="javascript:void(0)">Stock In</a></li>
                     <li><a href="javascript:void(0)">Stock Out</a></li>
                 </ul>
