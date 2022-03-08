@@ -47,7 +47,7 @@ class JournalController extends Controller
             $journalFormValues = json_decode($request->journalFormValues, true);
             FinanceLedgerServices::saveJournalInFinanceLedger($journalFormValues, 'Journal');
             DB::commit();
-            Session::flash("success", "Success|Receipt has been updated successfully");
+            Session::flash("success", "Success|Journal has been updated successfully");
         } catch (Throwable $e) {
             DB::rollBack();
             dd(['error' => $e->getMessage()]);
@@ -95,7 +95,7 @@ class JournalController extends Controller
     public function destroy($id): RedirectResponse
     {
         FinanceLedger::where('first_transaction_no', $id)->delete();
-        Session::flash("success", "Success|Payment Entry deleted successfully");
+        Session::flash("success", "Success|Journal Entry deleted successfully");
         return back();
     }
 }

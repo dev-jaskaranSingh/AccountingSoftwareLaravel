@@ -296,6 +296,7 @@ class FinanceLedgerServices
         ];
 
         $lastInserted = FinanceLedger::create($insertArray);
+        unset($journalFormValues[0]);
         foreach($journalFormValues as $key => $value){
             $insertNewArray = [
                 'bill_id' => null,
