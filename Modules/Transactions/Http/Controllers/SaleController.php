@@ -2,6 +2,7 @@
 
 namespace Modules\Transactions\Http\Controllers;
 
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
@@ -15,7 +16,6 @@ use Modules\Transactions\Http\Requests\SaleSaveRequest;
 use Modules\Transactions\Http\Requests\SaleUpdateRequest;
 use Modules\Transactions\Services\SaleServices;
 use Session;
-use Exception;
 use Throwable;
 
 class SaleController extends Controller
@@ -58,7 +58,7 @@ class SaleController extends Controller
             $filteredSaleItemsJson = $this->filteredSaleItemsArray($request->bill_products)->toJson();
 
             //Save Sale bill
-            $saleModel = Sale::create($request->validated() + ['bill_products_json' => $filteredSaleItemsJson]);
+            $saleModel = Sale::create($request->validated() + ['bill_products_json' => $filteredSaleItemsJson, 'invoice_number' => getSalesMaxInvoices() + 1]);
 
             //Manipulate Sale bill items
             $saleItems = $this->mapSaleItemData($request->bill_products, $request->bill_date, $request->account_id, $request->invoice_number);

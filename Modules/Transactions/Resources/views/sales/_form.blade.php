@@ -33,9 +33,9 @@
                         @enderror
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
+                        {{-- $invoiceNumber = str_pad($invoiceNumber, 2, '0', STR_PAD_LEFT);--}}
                         @php
                             $invoiceNumber = getSalesMaxInvoices()+1;
-                            $invoiceNumber = str_pad($invoiceNumber, 2, '0', STR_PAD_LEFT);
                             $fromYear = \Carbon\Carbon::parse(authCompany()->from_date)->format('y');
                             $toYear = \Carbon\Carbon::parse(authCompany()->to_date)->format('y');
                             $finalInvoice = 'SB/'.$fromYear.'-'.$toYear.'/'.$invoiceNumber;

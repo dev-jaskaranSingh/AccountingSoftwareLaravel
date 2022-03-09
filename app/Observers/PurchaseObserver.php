@@ -26,4 +26,13 @@ class PurchaseObserver
     {
         $purchase->company_id = authCompany()->id;
     }
+
+    /**
+     * @param Purchase $purchase
+     * @return void
+     */
+    public function saving(Purchase $purchase)
+    {
+        $purchase->company_id = authCompany()->id;
+    }
 }
