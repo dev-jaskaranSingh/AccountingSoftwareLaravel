@@ -15,6 +15,7 @@ use Modules\Transactions\Http\Requests\SaleSaveRequest;
 use Modules\Transactions\Http\Requests\SaleUpdateRequest;
 use Modules\Transactions\Services\SaleServices;
 use Session;
+use Exception;
 use Throwable;
 
 class SaleController extends Controller
