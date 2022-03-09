@@ -37,7 +37,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        StockMaster::observe(SaleObserver::class);
+        Sale::observe(SaleObserver::class);
         Purchase::observe(PurchaseObserver::class);
         ItemMaster::observe(ItemMasterObserver::class);
         ItemGroupMaster::observe(ItemGroupMasterObserver::class);
