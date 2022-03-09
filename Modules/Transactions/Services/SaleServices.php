@@ -171,7 +171,7 @@ class SaleServices
         $insertData = $saleItems->map(fn($item) => [
             'account_id' => $account_id,
             'item_id' => $item['item_id'],
-            'invoice_id' => $item['purchase_id'],
+            'invoice_id' => $item['sale_id'],
             'invoice_number' => $invoice_number,
             'bill_date' => $bill_date,
             'unit_id' => $item['unit_id'],
