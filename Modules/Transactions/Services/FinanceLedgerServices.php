@@ -268,9 +268,9 @@ class FinanceLedgerServices
     /**
      * @param $journalFormValues
      * @param $type
-     * @return void
+     * @return mixed
      */
-    public static function saveJournalInFinanceLedger($journalFormValues, $type){
+    public static function saveJournalInFinanceLedger($journalFormValues, $type):mixed{
         $accountIdsArray = collect($journalFormValues)->map(fn($value, $key) => $value['account_id'] ?? null)->toArray();
         $accountMasterModel = AccountMaster::with('accountGroup')
             ->whereIn('id', $accountIdsArray)

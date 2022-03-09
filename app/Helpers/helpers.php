@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Modules\Transactions\Entities\Sale;
 
 /**
  * @param $model
@@ -64,4 +65,11 @@ function authUser(): ?Authenticatable
 
 function getCurrentRouteTitle():string{
     return ucfirst(explode('.',request()->route()->getName())[1]);
+}
+
+function getSalesMaxInvoices():int{
+    if(is_null(Sale::max('invoice_number'))){
+        return 0;
+    }
+    return Sale::max('invoice_number');
 }

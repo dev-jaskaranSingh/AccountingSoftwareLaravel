@@ -33,25 +33,22 @@
                         @enderror
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
+                        @php
+                            $invoiceNumber = getSalesMaxInvoices()+1;
+                            $invoiceNumber = str_pad($invoiceNumber, 2, '0', STR_PAD_LEFT);
+                            $fromYear = \Carbon\Carbon::parse(authCompany()->from_date)->format('y');
+                            $toYear = \Carbon\Carbon::parse(authCompany()->to_date)->format('y');
+                            $finalInvoice = 'SB/'.$fromYear.'-'.$toYear.'/'.$invoiceNumber;
+                        @endphp
                         {!! Form::label('invoice_number','Invoice Number') !!}
-                        {!! Form::text('invoice_number',\Modules\Transactions\Entities\StockMaster::getMaxInvoices()+1,['class'=>'form-control','readonly' => true]) !!}
+                        {!! Form::hidden('invoice_number',$invoiceNumber) !!}
+                        {!! Form::text('invoice',$finalInvoice,['class'=>'form-control','readonly' => true]) !!}
                         @error('invoice_number')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
                         @enderror
                     </div>
-
-                    {{--                    <div class="col-md-6 col-sm-12 mb-3">--}}
-                    {{--                        <div class="row mb-2">--}}
-                    {{--                            <div class="col-md-4">--}}
-                    {{--                                State Code:--}}
-                    {{--                                <h2><div class="state_code">-</div></h2>--}}
-                    {{--                            </div>--}}
-                    {{--                            <div class="col-md-8">--}}
-                    {{--                            </div>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
                     <div class="col-md-6 col-sm-12 mb-3">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 mb-3">

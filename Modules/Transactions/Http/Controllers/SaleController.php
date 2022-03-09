@@ -4,18 +4,18 @@ namespace Modules\Transactions\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Modules\Masters\Entities\ItemMaster;
 use Modules\Transactions\DataTables\SalesDataTable;
-use Modules\Transactions\Entities\Purchase;
-use Modules\Transactions\Entities\PurchaseItem;
+use Modules\Transactions\Entities\Sale;
 use Modules\Transactions\Entities\StockMaster;
-use Modules\Transactions\Entities\SaleItem;
-use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
-use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
 use Modules\Transactions\Http\Requests\SaleSaveRequest;
+use Modules\Transactions\Http\Requests\SaleUpdateRequest;
+use Modules\Transactions\Services\SaleServices;
 use Session;
+use Throwable;
 
 class SaleController extends Controller
 {
@@ -45,40 +45,69 @@ class SaleController extends Controller
      * Store a newly created resource in storage.
      * @param SaleSaveRequest $request
      * @return RedirectResponse
+     * @throws Throwable
      */
     public function store(SaleSaveRequest $request): RedirectResponse
     {
-        $saleID = StockMaster::create($request->validated() + ['invoice_number' => StockMaster::getMaxInvoices() + 1])->id;
-        if ($saleID) {
-            $saleInvoiceItems = $this->mapPurchaseItemData($request, $saleID);
-            if (SaleItem::insert($saleInvoiceItems)) {
-                Session::flash("success", "Success|Purchase has been created successfully");
-            } else {
-                Session::flash('error', 'Something went wrong');
-            }
-        } else {
-            Session::flash("error", "Error|Purchase save failed");
+        try {
+
+            DB::beginTransaction();
+
+            //Manipulate bill products data
+            $filteredSaleItemsJson = $this->filteredSaleItemsArray($request->bill_products)->toJson();
+
+            //Save Sale bill
+            $saleModel = Sale::create($request->validated() + ['bill_products_json' => $filteredSaleItemsJson]);
+
+            //Manipulate Sale bill items
+            $saleItems = $this->mapSaleItemData($request->bill_products, $request->bill_date, $request->account_id, $request->invoice_number);
+
+            //Save Sale bill items
+            $savedSaleItems = $saleModel->saleItems()->createMany($saleItems);
+
+            // Save Finance Ledger
+            SaleServices::saveSaleInFinanceLedger('sale', $saleModel, $request);
+
+            // Save Stock
+            SaleServices::saveSaleStockMaster($savedSaleItems, 'sale', $saleModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
+
+            DB::commit();
+            Session::flash("success", "Success|Sale saved Successfully");
+
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Session::flash("error", "Error|Sale save failed");
+            dd($exception);
         }
         return back();
     }
 
     /**
-     * @param $request
-     * @param $sale_id
+     * @param $bill_products
+     * @return Collection
+     */
+    public function filteredSaleItemsArray($bill_products): Collection
+    {
+        return collect(json_decode($bill_products))
+            ->filter(fn($item) => $item[0] != null);
+    }
+
+    /**
+     * @param $bill_products
+     * @param $bill_date
+     * @param $account_id
      * @return array
      */
-    public function mapPurchaseItemData($request, $sale_id): array
+    public function mapSaleItemData($bill_products, $bill_date, $account_id): array
     {
-        return collect(json_decode($request->bill_products))->filter(function ($item) {
-            return $item[0] != null;
-        })->map(function ($item) use ($sale_id) {
-            return ['sale_id' => $sale_id, 'item_id' => $item[0], 'hsn_code' => $item[1], 'gross_wt' => $item[4], 'ting_wt' => $item[5], 'net_wt' => $item[6], 'rate_gm' => $item[7], 'amount' => $item[8], 'discount_percentage' => $item[9], 'discount' => $item[10], 'net_amount' => $item[11], 'cgst' => $item[12], 'sgst' => $item[13], 'igst' => $item[14], 'gst_amount' => $item[15], 'total' => $item[16], 'unit' => $item[17], 'unit_id' => $item[18], 'hsn_id' => $item[19], 'created_at' => now(), 'updated_at' => null];
-        })->toArray();
+        return $this->filteredSaleItemsArray($bill_products)
+            ->map(fn($item) => ['item_id' => $item[0], 'bill_date' => $bill_date, 'account_id' => $account_id, 'company_id' => authCompany()->id, 'unit_id' => $item[18], 'unit' => $item[17], 'hsn_id' => $item[19], 'hsn_code' => $item[1], 'gross_wt' => $item[4], 'ting_wt' => $item[5], 'net_wt' => $item[6], 'rate_gm' => $item[7], 'amount' => $item[8], 'discount_percentage' => $item[9], 'discount' => $item[10], 'net_amount' => $item[11], 'cgst' => $item[12], 'sgst' => $item[13], 'igst' => $item[14], 'gst_amount' => $item[15], 'total' => $item[16], 'created_at' => now(), 'updated_at' => null])
+            ->toArray();
     }
 
     /**
      * Show the specified resource.
-     * @param StockMaster $sales
+     * @param StockMaster $sale
      * @return Renderable
      */
     public function show(StockMaster $sale): Renderable
@@ -98,32 +127,42 @@ class SaleController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param PurchaseUpdateRequest $request
-     * @param StockMaster $sales
+     * @param SaleUpdateRequest $request
+     * @param StockMaster $sale
      * @return RedirectResponse
      */
-    public function update(PurchaseUpdateRequest $request, StockMaster $sale): RedirectResponse
+    public function update(SaleUpdateRequest $request, StockMaster $sale): RedirectResponse
     {
-        $sales->update($request->validated());
-        Session::flash("success", "Success|Purchase has been updated successfully");
+        $sale->update($request->validated());
+        Session::flash("success", "Success|Sale has been updated successfully");
         return back();
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param StockMaster $sales
+     * @param Sale $sale
      * @return RedirectResponse
+     * @throws Throwable
      */
-    public function destroy(StockMaster $sale): RedirectResponse
+    public function destroy(Sale $sale): RedirectResponse
     {
-        dump("Sales destroy");
-        dd($sale);
-        $sale->delete();
-        Session::flash("success", "Success|Purchase has been deleted successfully");
-        return back();
+        try {
+            DB::beginTransaction();
+            $sale->delete();
+            $sale->ledgerEntries()->delete();
+            $sale->saleItems()->delete();
+            Session::flash("success", "Success|Sale has been deleted successfully");
+            DB::commit();
+        } catch (Throwable $exception) {
+            DB::rollBack();
+            Session::flash("error", "Error|Sale Delete failed");
+            dd(['code' => $exception->getCode(), 'message' => $exception->getMessage()]);
+        } finally {
+            return back();
+        }
     }
 
-    public function printPurchase(StockMaster $sales)
+    public function printSale(StockMaster $sales)
     {
         return view('transactions::sales.print', ['model' => $sales]);
     }
