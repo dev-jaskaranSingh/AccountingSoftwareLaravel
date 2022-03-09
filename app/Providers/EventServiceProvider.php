@@ -10,12 +10,11 @@ use App\Observers\SaleObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 use Modules\Masters\Entities\HsnMaster;
 use Modules\Masters\Entities\ItemGroupMaster;
 use Modules\Masters\Entities\ItemMaster;
 use Modules\Transactions\Entities\Purchase;
-use Modules\Transactions\Entities\StockMaster;
+use Modules\Transactions\Entities\Sale;
 
 class EventServiceProvider extends ServiceProvider
 {

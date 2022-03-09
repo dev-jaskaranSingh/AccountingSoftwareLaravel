@@ -26,6 +26,10 @@ class SalesDataTable extends DataTable
         })->editColumn('account_id', function ($model) {
             if ($model->account == null) return null;
             return $model->account->name;
+        })->editColumn('invoice_number',function($model){
+            $fromYear = \Carbon\Carbon::parse(authCompany()->from_date)->format('y');
+            $toYear = \Carbon\Carbon::parse(authCompany()->to_date)->format('y');
+            return 'SB/'.$fromYear.'-'.$toYear.'/'.$model->invoice_number;
         })->editColumn('created_at', function ($model) {
             if (is_null($model->created_at)) return null;
             return $model->created_at->format('d-m-Y h:i:s A');
