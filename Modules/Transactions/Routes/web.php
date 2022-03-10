@@ -19,7 +19,7 @@ Route::group(['prefix' => 'transactions','as' => 'transactions.','middleware' =>
     Route::resource('/purchases', 'PurchaseController');
 
 //  Sale Routes
-    Route::get('sales/print/{sales}', 'SaleController@printPurchase')->name('sales.print');
+    Route::get('sales/print/{sales}', 'SaleController@printSaleInvoice')->name('sales.print');
     Route::resource('/sales', 'SaleController');
 
 //  Receipt Routes

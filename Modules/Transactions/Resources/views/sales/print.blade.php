@@ -182,7 +182,13 @@
                 <tr>
                     <th width="25%">INVOICE NO</th>
                     <td>:</td>
-                    <td>{{ $model->invoice_number }}</td>
+                    @php
+                        $invoiceNumber = $model->invoice_number;
+                        $fromYear = \Carbon\Carbon::parse(authCompany()->from_date)->format('y');
+                        $toYear = \Carbon\Carbon::parse(authCompany()->to_date)->format('y');
+                        $finalInvoice = 'SB/'.$fromYear.'-'.$toYear.'/'.$invoiceNumber;
+                    @endphp
+                    <td>{!! $finalInvoice !!}</td>
                 </tr>
                 <tr>
                     <th width="25%">DATED</th>

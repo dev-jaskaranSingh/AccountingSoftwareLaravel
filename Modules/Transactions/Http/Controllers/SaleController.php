@@ -163,7 +163,7 @@ class SaleController extends Controller
         }
     }
 
-    public function printSale(StockMaster $sales)
+    public function printSaleInvoice(Sale $sales)
     {
         return view('transactions::sales.print', ['model' => $sales]);
     }
