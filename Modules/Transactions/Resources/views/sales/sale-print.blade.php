@@ -1,4 +1,6 @@
-@php($model = $model->load('saleItems.item','account.state'))
+@php
+    $model = $model->load('saleItems.item','account.state');
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -183,12 +185,13 @@
                     <th width="25%">INVOICE NO</th>
                     <td>:</td>
                     @php
+
                         $invoiceNumber = $model->invoice_number;
                         $fromYear = \Carbon\Carbon::parse(authCompany()->from_date)->format('y');
                         $toYear = \Carbon\Carbon::parse(authCompany()->to_date)->format('y');
                         $finalInvoice = 'SB/'.$fromYear.'-'.$toYear.'/'.$invoiceNumber;
                     @endphp
-                    <td>{!! $finalInvoice !!}</td>
+                    <td>{{ $finalInvoice }}</td>
                 </tr>
                 <tr>
                     <th width="25%">DATED</th>

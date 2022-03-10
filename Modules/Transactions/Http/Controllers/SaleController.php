@@ -165,6 +165,6 @@ class SaleController extends Controller
 
     public function printSaleInvoice(Sale $sales)
     {
-        return view('transactions::sales.print', ['model' => $sales]);
+        return view('transactions::sales.sale-print', ['model' => $sales]);
     }
 }
