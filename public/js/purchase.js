@@ -23,7 +23,7 @@ $(function () {
                 }
             }else{
                 $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
-            }
+        }
         }else{
             $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
         }
@@ -48,6 +48,9 @@ $(function () {
     $('body').on('change', '.account_id', function () {
         var account_id = $(this).val();
         ajax_request(route + '/ajax/get-account-by-id/' + account_id, 'GET', null, function (data) {
+
+            $('#purchasePartyForm').modal('show');
+
             if (!data.status) {
                 toastr.error(data.message, 'Error');
                 return false;
