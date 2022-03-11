@@ -39,7 +39,15 @@
         <div class="col-lg-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>Selected Accounts</h5>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 col-lg-6">
+                            <h5>Selected Accounts</h5>
+                        </div>
+                        <div class="offset-2 col-sm-12 col-md-6 col-lg-6">
+                            Total Debit : <span id="totalDebitAmountHTML"></span> &nbsp; | &nbsp;
+                            Total Credit : <span id="totalCreditAmountHTML"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="ibox-content">
                     <div class="table-responsive">
@@ -67,9 +75,9 @@
     </div>
 
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::open(['route' => 'transactions.journal.store']) !!}
+        {!! Form::open(['route' => 'transactions.journal.store','id' => 'journalSaveForm']) !!}
         {!! Form::hidden('journalFormValues') !!}
-        {!! Form::submit('Save',['class'=>'btn btn-primary']) !!}
+        {!! Form::button('Save',['class'=>'btn btn-primary journalSaveFormButton']) !!}
         {!! Form::close() !!}
     </div>
 @endsection
@@ -111,7 +119,19 @@
                 </tr>`;
             });
             $('#selectedAccounts').html(selectedAccountsHtml);
+            window.selectedAccountsFormData = selectedAccountsData;
             $('input[name="journalFormValues"]').val(JSON.stringify(selectedAccountsData));
+
+            let totalCreditAmount = 0;
+            let totalDebitAmount = 0;
+
+            selectedAccountsFormData.forEach(function (account) {
+                totalCreditAmount += parseFloat(account.credit);
+                totalDebitAmount += parseFloat(account.debit);
+            });
+
+            $('#totalCreditAmountHTML').html(totalCreditAmount);
+            $('#totalDebitAmountHTML').html(totalDebitAmount);
         }
 
 
@@ -127,7 +147,6 @@
 
         $('.addJournalButton').on('click', (function (e) {
 
-            console.clear();
             e.preventDefault();
             e.stopPropagation();
 
@@ -138,7 +157,6 @@
             } else {
                 creditOrDebit.removeClass('is-invalid');
             }
-
 
             if (account_id.val() == '') {
                 account_id.addClass('is-invalid');
@@ -172,8 +190,6 @@
                 amount.removeClass('is-invalid');
             }
 
-
-
             let getInstrTypeList = $('input[name=getInstrTypeList]').val();
             let getFirstAccountsList = $('input[name=getFirstAccountsList]').val();
 
@@ -194,7 +210,26 @@
             selectedAccounts.push(formDataObj);
             displaySelectedAccounts(selectedAccounts);
             resetForm();
-
         }));
+
+        $('body').on('click','.journalSaveFormButton',function(event) {
+            event.preventDefault(); 			// Prevents the default submit
+            console.log('@selectedAccountsFormData : ',selectedAccountsFormData);
+
+            let totalCreditAmount = 0;
+            let totalDebitAmount = 0;
+
+            selectedAccountsFormData.forEach(function (account) {
+                totalCreditAmount += parseFloat(account.credit);
+                totalDebitAmount += parseFloat(account.debit);
+            });
+
+            if(totalCreditAmount !== totalDebitAmount) {
+                toastr.error('Total credit amount should be equal to total debit amount','Error');
+                return false;
+            }
+
+            $('#journalSaveForm').submit(); 	// continue the submit unbind preventDefault
+        })
     </script>
 @endsection
