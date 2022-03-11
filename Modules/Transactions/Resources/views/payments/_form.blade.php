@@ -65,6 +65,17 @@
                         </span>
                         @enderror
                     </div>
+
+                    <div class="col-md-4 col-sm-12 mb-2">
+                        {!! Form::label('date','Instrument Date') !!}
+                        {!! Form::text('date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        @error('date')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('instr_type','Instrument Type') !!}
                         {!! Form::select('instr_type',getInstrTypeList(),null,['class'=>'form-control select2 instr_type']) !!}

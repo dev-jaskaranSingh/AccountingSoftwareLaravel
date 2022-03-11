@@ -54,6 +54,17 @@
                         </span>
                         @enderror
                     </div>
+
+                    <div class="col-md-4 col-sm-12 mb-2">
+                        {!! Form::label('date','Instrument Date') !!}
+                        {!! Form::text('date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        @error('date')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
                     <div class="col-md-4 col-sm-12 mb-2">
                         {!! Form::label('account_id','Select Account') !!}
                         {!! Form::select('account_id',getAccountsList(),$secondAccountId,['class'=>'form-control select2 second_account_id']) !!}
