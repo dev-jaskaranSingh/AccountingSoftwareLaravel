@@ -31,6 +31,15 @@ class SaleSaveRequest extends FormRequest
             'grand_total_amount' => '',
             'tcs' => '',
             'shipped_to' => '',
+            'party_name' => '',
+            'address' => '',
+            'address2' => '',
+            'country_id' => '',
+            'state_id' => '',
+            'city_id' => '',
+            'pin_code' => '',
+            'gstin' => '',
+            'mobile' => ''
         ];
     }
 

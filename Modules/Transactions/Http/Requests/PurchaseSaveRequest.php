@@ -35,7 +35,16 @@ class PurchaseSaveRequest extends FormRequest
             'tcs' => '',
             'round_off_type' => '',
             'round_off_value' => '',
-            'grand_total_amount' => ''
+            'grand_total_amount' => '',
+            'party_name' => '',
+            'address' => '',
+            'address2' => '',
+            'country_id' => '',
+            'state_id' => '',
+            'city_id' => '',
+            'pin_code' => '',
+            'gstin' => '',
+            'mobile' => ''
         ];
     }
 

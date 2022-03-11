@@ -3,6 +3,16 @@ $(function () {
 
     window.companyStateCode = $('.company_state_code').val();
 
+    function ajaxHandler(url, data, type, callback) {
+        $.ajax({
+            url: url, data: data, type: type, success: function (data) {
+                callback(data);
+            }
+        });
+    }
+
+    window.companyStateCode = $('.company_state_code').val();
+
     function ajax_request(url, type, data, callback) {
         $.ajax({
             url: url, type: type, data: data, success: function (data) {
@@ -10,6 +20,118 @@ $(function () {
             }
         });
     }
+
+    $('body').on('keyup','.roundOffValue',function(){
+        let roundOffType = $('.roundOffSelection').val();
+        let tcs = Number($(this).val());
+        if(tcs > 0 || tcs !== ''){
+            if(window.storeTotalGrandAmount !== undefined){
+                if(roundOffType === 'plus'){
+                    $('.grand_total_amount').val(Number(window.storeTotalGrandAmount)+(tcs/100));
+                }else{
+                    $('.grand_total_amount').val(Number(window.storeTotalGrandAmount)-(tcs/100));
+                }
+            }else{
+                $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
+            }
+        }else{
+            $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
+        }
+
+    });
+
+    //Addition of TCS in net amount
+    $('body').on('keyup','.tcs',function(){
+        let tcs = Number($(this).val());
+        if(tcs > 0 || tcs !== ''){
+            if(window.storeTotalGrandAmount !== undefined){
+                $('.grand_total_amount').val((Number(window.storeTotalGrandAmount)+tcs).toFixed(2));
+            }else{
+                $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
+            }
+        }else{
+            $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
+        }
+    });
+
+    //Make Ajax request to get acount details
+    $('body').on('change', '.account_id', function () {
+        var account_id = $(this).val();
+        ajax_request(route + '/ajax/get-account-by-id/' + account_id, 'GET', null, function (data) {
+            if (!data.status) {
+                toastr.error(data.message, 'Error');
+                return false;
+            }
+            console.log(data);
+            $('#purchasePartyForm').modal('show');
+            window.stateCode = data.account.gst_state_code;
+            $('#party_name').val(data.account.name);
+            $('#address').val(data.account.address);
+            $('#country_id').val(data.account.country_id);
+            $('#gstin').val(data.account.gstin);
+            $('#pin_code').val(data.account.pincode);
+            $('#mobile').val(data.account.phone);
+            $('.country').val(data.account.country_id);
+            $('.country').select2().trigger('change');
+            var stateID = data.account.state_id;
+            var cityID = data.account.city_id;
+            renderStatesByCountry(data.account.country_id).then(function (StateResonse) {
+                console.log(StateResonse,stateID);
+                $('.state').val(stateID);
+                $('.state').select2().trigger('change');
+                renderCitiesByState(data.state_id).then(function (CityResponse) {
+                    console.log(CityResponse,cityID);
+                    $('.city').val(cityID);
+                    $('.city').select2().trigger('change');
+                });
+            }).catch(function (error) {
+                console.error(error);
+            });
+            toastr.success(data.message, 'Success');
+        });
+    });
+
+    $('body').on('change', '.country', function () {
+        renderStatesByCountry($(this).val());
+    });
+
+    $('body').on('change', '.state', function () {
+        var state_id = $(this).val();
+        renderCitiesByState(state_id);
+    });
+
+
+    function renderStatesByCountry(country_id){
+        return new Promise((resolve,reject)=>{
+            try {
+                ajaxHandler(route + "/ajax/get-state-by-country", {country_id: country_id}, 'GET', function (data) {
+                    window.states = data.states;
+                    $('.state').select2({
+                        data: data?.states, placeholder: 'Select State'
+                    });
+                });
+                resolve("statesLoaded");
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    function renderCitiesByState(stateId){
+        return new Promise((resolve,reject)=>{
+            try {
+                ajaxHandler(route + '/ajax/get-city-by-state', {state_id: stateId}, 'GET', function (data) {
+                    $('.city').select2({
+                        data: data?.cities, placeholder: 'Select City'
+                    });
+                });
+                resolve("citiesLoaded");
+            } catch (error) {
+                reject(error);
+            }
+        })
+    }
+
 
     $('body').on('keyup','.roundOffValue',function(){
         let roundOffType = $('.roundOffSelection').val();

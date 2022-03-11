@@ -13,58 +13,12 @@
         width: 90%;
         margin: 0 auto 10px;
     }
+    .inmodal .modal-header {
+        padding: 4px 10px !important;
+        display: block !important;
+    }
 </style>
-
-<div class="modal inmodal fade" id="purchasePartyForm" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span
-                        aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h6 class="modal-title">Create Unit</h6>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 mb-3">
-                        {!! Form::label('name','Unit Name') !!}
-                        {!! Form::text('name',null,['class'=>'form-control']) !!}
-                        @error('name')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-12 col-sm-12 mb-3">
-                        {!! Form::label('name','Unit Name') !!}
-                        {!! Form::text('name',null,['class'=>'form-control']) !!}
-                        @error('name')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-12 col-sm-12 mb-3">
-                        {!! Form::label('name','Unit Name') !!}
-                        {!! Form::text('name',null,['class'=>'form-control']) !!}
-                        @error('name')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                {!! Form::button('Done',['class'=>'btn btn-sm btn-primary']) !!}
-            </div>
-        </div>
-    </div>
-</div>
-
-
+    @include('transactions::purchases._party-modal')
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox ">

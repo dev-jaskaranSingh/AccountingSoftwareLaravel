@@ -1,6 +1,14 @@
 $(function () {
     $('.datatable').dataTable();
 
+    function ajaxHandler(url, data, type, callback) {
+        $.ajax({
+            url: url, data: data, type: type, success: function (data) {
+                callback(data);
+            }
+        });
+    }
+
     window.companyStateCode = $('.company_state_code').val();
 
     function ajax_request(url, type, data, callback) {
@@ -48,25 +56,79 @@ $(function () {
     $('body').on('change', '.account_id', function () {
         var account_id = $(this).val();
         ajax_request(route + '/ajax/get-account-by-id/' + account_id, 'GET', null, function (data) {
-
-            $('#purchasePartyForm').modal('show');
-
             if (!data.status) {
                 toastr.error(data.message, 'Error');
                 return false;
             }
-            // $('.state_code').html(data.account.gst_state_code);
+            console.log(data);
+            $('#purchasePartyForm').modal('show');
             window.stateCode = data.account.gst_state_code;
-                // $('#shipped_to').val(data.account.address);
-            // $('.gst').html(data.account.gstin);
-            // $('.billed_to').html(data.account.name);
-            // $('.pan').html(data.account.pan);
-            // $('.place_of_supply').html(data.account.state.name);
-
+            $('#party_name').val(data.account.name);
+            $('#address').val(data.account.address);
+            $('#country_id').val(data.account.country_id);
+            $('#gstin').val(data.account.gstin);
+            $('#pin_code').val(data.account.pincode);
+            $('#mobile').val(data.account.phone);
+            $('.country').val(data.account.country_id);
+            $('.country').select2().trigger('change');
+            var stateID = data.account.state_id;
+            var cityID = data.account.city_id;
+            renderStatesByCountry(data.account.country_id).then(function (StateResonse) {
+                console.log(StateResonse,stateID);
+                $('.state').val(stateID);
+                $('.state').select2().trigger('change');
+                renderCitiesByState(data.state_id).then(function (CityResponse) {
+                    console.log(CityResponse,cityID);
+                    $('.city').val(cityID);
+                    $('.city').select2().trigger('change');
+                });
+            }).catch(function (error) {
+                console.error(error);
+            });
             toastr.success(data.message, 'Success');
         });
     });
 
+    $('body').on('change', '.country', function () {
+        renderStatesByCountry($(this).val());
+    });
+
+    $('body').on('change', '.state', function () {
+        var state_id = $(this).val();
+        renderCitiesByState(state_id);
+    });
+
+
+    function renderStatesByCountry(country_id){
+        return new Promise((resolve,reject)=>{
+            try {
+                ajaxHandler(route + "/ajax/get-state-by-country", {country_id: country_id}, 'GET', function (data) {
+                    window.states = data.states;
+                    $('.state').select2({
+                        data: data?.states, placeholder: 'Select State'
+                    });
+                });
+                resolve("statesLoaded");
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    function renderCitiesByState(stateId){
+        return new Promise((resolve,reject)=>{
+            try {
+                ajaxHandler(route + '/ajax/get-city-by-state', {state_id: stateId}, 'GET', function (data) {
+                    $('.city').select2({
+                        data: data?.cities, placeholder: 'Select City'
+                    });
+                });
+                resolve("citiesLoaded");
+            } catch (error) {
+                reject(error);
+            }
+        })
+    }
 
     // Handsone Table
     var debounceFn = Handsontable.helper.debounce(function (colIndex, event) {
