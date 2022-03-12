@@ -85,6 +85,8 @@
     <script>
 
         function resetForm() {
+            $('#account_id').val(null);
+            $('#account_id').select2().trigger('change');
             $('#journalForm').trigger("reset");
         }
 
@@ -135,7 +137,7 @@
         }
 
 
-        $('body').on('click','.removeAccount',function () {
+        $('body').on('click', '.removeAccount', function () {
             let id = $(this).data('id');
             console.log(id);
             selectedAccounts = selectedAccounts.filter(function (account) {
@@ -152,7 +154,7 @@
 
             if (creditOrDebit.val() == '') {
                 creditOrDebit.addClass('is-invalid');
-                toastr.error('Please select a credit or debit','Error');
+                toastr.error('Please select a credit or debit', 'Error');
                 return false;
             } else {
                 creditOrDebit.removeClass('is-invalid');
@@ -160,7 +162,7 @@
 
             if (account_id.val() == '') {
                 account_id.addClass('is-invalid');
-                toastr.error('Please select an account','Error');
+                toastr.error('Please select an account', 'Error');
                 return false;
             } else {
                 account_id.removeClass('is-invalid');
@@ -168,7 +170,7 @@
 
             if (instr_type.val() == '') {
                 instr_type.addClass('is-invalid');
-                toastr.error('Please select an instrument type','Error');
+                toastr.error('Please select an instrument type', 'Error');
                 return false;
             } else {
                 instr_type.removeClass('is-invalid');
@@ -176,7 +178,7 @@
 
             if (instrument_date.val() == '') {
                 instrument_date.addClass('is-invalid');
-                toastr.error('Please select an instrument date','Error');
+                toastr.error('Please select an instrument date', 'Error');
                 return false;
             } else {
                 instrument_date.removeClass('is-invalid');
@@ -184,7 +186,7 @@
 
             if (amount.val() == '') {
                 amount.addClass('is-invalid');
-                toastr.error('Please enter an amount','Error');
+                toastr.error('Please enter an amount', 'Error');
                 return false;
             } else {
                 amount.removeClass('is-invalid');
@@ -197,7 +199,7 @@
             let getFirstAccountsListJSON = JSON.parse(getFirstAccountsList);
 
             let formDataObj = {
-                creditOrDebit : creditOrDebit.val(),
+                creditOrDebit: creditOrDebit.val(),
                 account_id: account_id.val(),
                 accountName: getFirstAccountsListJSON[account_id.val()],
                 instr_type: instr_type.val(),
@@ -212,9 +214,9 @@
             resetForm();
         }));
 
-        $('body').on('click','.journalSaveFormButton',function(event) {
+        $('body').on('click', '.journalSaveFormButton', function (event) {
             event.preventDefault(); 			// Prevents the default submit
-            console.log('@selectedAccountsFormData : ',selectedAccountsFormData);
+            console.log('@selectedAccountsFormData : ', selectedAccountsFormData);
 
             let totalCreditAmount = 0;
             let totalDebitAmount = 0;
@@ -224,8 +226,8 @@
                 totalDebitAmount += parseFloat(account.debit);
             });
 
-            if(totalCreditAmount !== totalDebitAmount) {
-                toastr.error('Total credit amount should be equal to total debit amount','Error');
+            if (totalCreditAmount !== totalDebitAmount) {
+                toastr.error('Total credit amount should be equal to total debit amount', 'Error');
                 return false;
             }
 
