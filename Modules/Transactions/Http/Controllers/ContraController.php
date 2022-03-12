@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Modules\Transactions\DataTables\ContraDataTable;
 use Modules\Transactions\Entities\FinanceLedger;
-use Modules\Transactions\Http\Requests\ReceiptSaveRequest;
+use Modules\Transactions\Http\Requests\ContraSaveRequest;
 use Modules\Transactions\Services\FinanceLedgerServices;
 use Session;
 use Throwable;
@@ -36,11 +36,11 @@ class ContraController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param ReceiptSaveRequest $request
+     * @param ContraSaveRequest $request
      * @return RedirectResponse
      * @throws Throwable
      */
-    public function store(ReceiptSaveRequest $request): RedirectResponse
+    public function store(ContraSaveRequest $request): RedirectResponse
     {
         try {
             DB::beginTransaction();
@@ -77,12 +77,12 @@ class ContraController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param ReceiptSaveRequest $request
+     * @param ContraSaveRequest $request
      * @param $firstTransactionNo
      * @return RedirectResponse
      * @throws Throwable
      */
-    public function update(ReceiptSaveRequest $request, $firstTransactionNo): RedirectResponse
+    public function update(ContraSaveRequest $request, $firstTransactionNo): RedirectResponse
     {
         try {
             DB::beginTransaction();

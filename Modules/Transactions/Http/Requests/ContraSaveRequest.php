@@ -5,7 +5,7 @@ namespace Modules\Transactions\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
 
-class ReceiptSaveRequest extends FormRequest
+class ContraSaveRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +22,7 @@ class ReceiptSaveRequest extends FormRequest
             'voucher_date' => 'required',
             'instr_type' => 'required',
             'instrument_no' => '',
-            'instrument_date' => 'required|after_or_equal:'.$fromDate.'|before_or_equal:'. $toDate,
+            'instrument_date' => 'required|after_or_equal:' . $fromDate . '|before_or_equal:' . $toDate,
             'amount' => 'required',
             'narration' => ''
         ];
@@ -32,8 +32,8 @@ class ReceiptSaveRequest extends FormRequest
     public function messages()
     {
         return [
-            'first_account_id.required' => 'Bank/Cash Account is required',
-            'second_account_id.required' => 'Received From is required',
+            'first_account_id.required' => 'Debit Account is required',
+            'second_account_id.required' => 'Credit Account is required',
         ];
     }
 

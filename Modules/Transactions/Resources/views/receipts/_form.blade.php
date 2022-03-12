@@ -43,12 +43,11 @@
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-md-6 col-sm-12 mb-3">
-
                         @isset($model)
                             {!! Form::hidden('bill_number',$model->bill_number) !!}
                         @endisset
-
-                        {!! Form::label('first_account_id','First Account') !!}
+                        {!! Form::label('first_account_id','Bank/Cash Account') !!}
+                        <strong class="text-danger">*</strong>
                         {!! Form::select('first_account_id',getFirstAccountsList(),$firstAccountId,['class'=>'form-control select2 first_account_id']) !!}
                         @error('first_account_id')
                         <span class="help-block text-danger">
@@ -58,7 +57,8 @@
                     </div>
 
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('second_account_id','Second Account') !!}
+                        {!! Form::label('second_account_id','Received From') !!}
+                        <strong class="text-danger">*</strong>
                         {!! Form::select('second_account_id',getSecondAccountsList(),$secondAccountId,['class'=>'form-control select2 second_account_id']) !!}
                         @error('second_account_id')
                         <span class="help-block text-danger">
@@ -67,18 +67,9 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4 col-sm-12 mb-2">
-                        {!! Form::label('date','Instrument Date') !!}
-                        {!! Form::text('date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
-                        @error('date')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('instr_type','Second Account') !!}
+                    <div class="col-md-4 col-sm-12 mb-3">
+                        {!! Form::label('instr_type','Instrument Type') !!}
+                        <strong class="text-danger">*</strong>
                         {!! Form::select('instr_type',getInstrTypeList(),null,['class'=>'form-control select2 instr_type']) !!}
                         @error('instr_type')
                         <span class="help-block text-danger">
@@ -87,7 +78,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-4 col-sm-12 mb-3">
                         {!! Form::label('instrument_no','Instrument Number') !!}
                         {!! Form::text('instrument_no',null,['class'=>'form-control']) !!}
                         @error('instrument_no')
@@ -97,7 +88,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-4 col-sm-12 mb-3">
                         {!! Form::label('instrument_date','Instrument Date') !!}
                         {!! Form::text('instrument_date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
                         @error('instrument_date')
@@ -107,8 +98,20 @@
                         @enderror
                     </div>
 
+                    <div class="col-md-6 col-sm-12 mb-2">
+                        {!! Form::label('voucher_date','Voucher Date') !!}
+                        <strong class="text-danger">*</strong>
+                        {!! Form::text('voucher_date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        @error('voucher_date')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('amount','Amount') !!}
+                        <strong class="text-danger">*</strong>
                         {!! Form::text('amount',$amount,['class'=>'form-control']) !!}
                         @error('amount')
                         <span class="help-block text-danger">

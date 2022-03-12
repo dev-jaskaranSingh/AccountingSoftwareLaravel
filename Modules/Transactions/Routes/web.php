@@ -11,26 +11,32 @@
 |
 */
 
-Route::group(['prefix' => 'transactions','as' => 'transactions.','middleware' => 'admin'],function() {
+Route::group(['prefix' => 'transactions','as' => 'transactions.','middleware' => 'admin'], function () {
     Route::get('/', 'TransactionsController@index');
 
-//    Purchase Routes
+    //  Purchase Routes
+
     Route::get('purchases/print/{purchase}', 'PurchaseController@printPurchase')->name('purchases.print');
     Route::resource('/purchases', 'PurchaseController');
 
-//  Sale Routes
+    //  Sale Routes
+
     Route::get('sales/print/{sales}', 'SaleController@printSaleInvoice')->name('sales.print');
     Route::resource('/sales', 'SaleController');
 
-//  Receipt Routes
+    //  Receipt Routes
+
     Route::resource('/receipts', 'ReceiptController');
 
-//  Payments Routes
+    //  Payments Routes
+
     Route::resource('/payments', 'PaymentController');
 
-//  Contra Routes
+    //  Contra Routes
+
     Route::resource('/contra', 'ContraController');
 
-//  Journal Routes
+    //  Journal Routes
+
     Route::resource('/journal', 'JournalController');
 });
