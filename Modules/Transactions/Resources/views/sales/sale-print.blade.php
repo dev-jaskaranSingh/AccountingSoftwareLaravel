@@ -1,5 +1,5 @@
 @php
-    $model = $model->load('saleItems.item','account.state');
+    $model = $model?->load('saleItems.item','account.state');
 @endphp
     <!DOCTYPE html>
 <html lang="en">
@@ -147,7 +147,7 @@
         <h1 class="text-primary" style="font-family: Algerian;font-size: 50px;">SINGH ENTERPRISES</h1>
         377,PARTAP AVENUE,PHASE-2,G.T.ROAD,AMRITSAR-143001,PUNJAB<br/>
         <b>TEL: 0183-5153221. MOB:9815595183</b><br/>
-        Email : jaskaransingh4704@gmail.com<br/>
+        Email : hstinu@gmail.com<br/>
         <br/>
         <i style="font-size: 10px;">( INPUT TAX CREDIT IS AVAILABLE TO A TAXABLE PERSON AGAINST THIS COPY )</i>
     </div>
@@ -165,17 +165,17 @@
                 <tr>
                     <th width="25%">BILLED TO</th>
                     <td>:</td>
-                    <td>{{ $model->account?->address }}</td>
+                    <td>{{ $model?->account?->address }}</td>
                 </tr>
                 <tr>
                     <th width="25%">GSTIN</th>
                     <td>:</td>
-                    <td>{{ $model->account?->gstin ?? '-' }}</td>
+                    <td>{{ $model?->account?->gstin ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th width="25%">PAN</th>
                     <td>:</td>
-                    <td>{{ $model->account?->pan }}</td>
+                    <td>{{ $model?->account?->pan }}</td>
                 </tr>
             </table>
         </div>
@@ -186,7 +186,7 @@
                     <td>:</td>
                     @php
 
-                        $invoiceNumber = $model->invoice_number;
+                        $invoiceNumber = $model?->invoice_number;
                         $fromYear = \Carbon\Carbon::parse(authCompany()->from_date)->format('y');
                         $toYear = \Carbon\Carbon::parse(authCompany()->to_date)->format('y');
                         $finalInvoice = 'SB/'.$fromYear.'-'.$toYear.'/'.$invoiceNumber;
@@ -196,22 +196,22 @@
                 <tr>
                     <th width="25%">DATED</th>
                     <td>:</td>
-                    <td>{{ $model->invoice_date }}</td>
+                    <td>{{ $model?->invoice_date }}</td>
                 </tr>
                 <tr>
                     <th width="25%">PLACE OF SUPPLY</th>
                     <td>:</td>
-                    <td>{{ $model->account?->state->name }}</td>
+                    <td>{{ $model?->account?->state->name }}</td>
                 </tr>
                 <tr>
                     <th width="25%">STATE CODE</th>
                     <td>:</td>
-                    <td>{{ $model->account?->state->tin }}</td>
+                    <td>{{ $model?->account?->state->tin }}</td>
                 </tr>
                 <tr>
                     <th width="25%">SHIPPED TO</th>
                     <td>:</td>
-                    <td>{{ $model->shipped_to }}</td>
+                    <td>{{ $model?->shipped_to }}</td>
                 </tr>
             </table>
         </div>
@@ -231,7 +231,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($model->saleItems as $key => $purchaseItem)
+    @foreach($model?->saleItems as $key => $purchaseItem)
         <tr>
             <td>{{++$key}}</td>
             <td>{{ $purchaseItem->item->name }}</td>
@@ -258,11 +258,11 @@
         <td></td>
         <td>
             <div>
-                <span>0.00 ₹</span><br/>
-                <span>0.00 ₹</span><br/>
-                <span>0.00 ₹</span><br/>
+                <span>{{ $model?->total_amount ?? '0.00' }}  ₹</span><br/>
+                <span>{{ $model?->tcs ?? '0.00' }}  ₹</span><br/>
+                <span>{{ $model?->igst ?? '0.00' }} ₹</span><br/>
                 <br/><br/>
-                <span>0.00 ₹</span>
+                <span>{{ $model?->round_off_value ?? '0.00' }} ₹</span>
             </div>
         </td>
         <td></td>
@@ -271,17 +271,17 @@
         <td style="line-height: 40px !important;"></td>
         <td style="line-height: 40px !important;"><b>GRAND TOTAL :</b></td>
         <td style="line-height: 40px !important;"></td>
-        <td style="line-height: 40px !important;">{{round($model->saleItems->sum('gross_wt',2))}}</td>
-        <td style="line-height: 40px !important;">{{round($model->saleItems->sum('net_wt',2))}}</td>
+        <td style="line-height: 40px !important;">{{round($model?->saleItems->sum('gross_wt',2))}}</td>
+        <td style="line-height: 40px !important;">{{round($model?->saleItems->sum('net_wt',2))}}</td>
         <td style="line-height: 40px !important;"></td>
-        <td style="line-height: 40px !important;"><strong>₹ {{$model->saleItems->sum('amount')}}</strong></td>
-        <td style="line-height: 40px !important;">GM</td>
+        <td style="line-height: 40px !important;"><strong>₹ {{ $model?->grand_total_amount }}</strong></td>
+        <td style="line-height: 40px !important;"></td>
     </tr>
     <tr>
         <td style="line-height: 60px !important;"></td>
         <td style="line-height: 60px !important;" colspan="1"><b>TOTAL AMOUNT IN WORDS:</b></td>
         <td style="line-height: 60px !important;" colspan="6">
-            <b>{{getIndianCurrency($model->saleItems->sum('amount'))}}</b></td>
+            <b>{{ getIndianCurrency($model?->grand_total_amount) }}</b></td>
     </tr>
     <tr>
         <td></td>
@@ -295,8 +295,8 @@
     </tr>
     <tr>
         <td></td>
-        <td>7113</td>
-        <td>₹ 0.00</td>
+        <td>-</td>
+        <td>₹ {{ $model?->total_discount }}</td>
         <td><b>TAX RATE</b></td>
         <td>3%</td>
         <td>0.100%</td>
@@ -309,19 +309,19 @@
     <tr>
         <td></td>
         <td>
-            <h5>TOTOAL</h5>
+            <h5>TOTAL</h5>
         </td>
-        <td><b>₹ 0.00</b></td>
+        <td><b>₹ {{ $model?->igst ?? '0.00' }}</b></td>
         <td></td>
-        <td><b>₹ 0.00</b></td>
-        <td><b>₹ 0.00</b></td>
-        <td><b>₹ 0.00</b></td>
+        <td><b>₹ {{ $model?->igst }}</b></td>
+        <td><b>₹ {{ $model?->tcs ?? '0.00' }}</b></td>
+        <td><b>₹ {{ $model?->igst + $model?->tcs }}</b></td>
         <td></td>
     </tr>
     <tr>
         <td style="line-height: 60px !important;"></td>
         <td style="line-height: 60px !important;" colspan="1"><b>TOTAL TAX IN WORDS:</b></td>
-        <td style="line-height: 60px !important;" colspan="6"><b>Rupees Zero and Paisa Zero Only</b></td>
+        <td style="line-height: 60px !important;" colspan="6"><b>{{ getIndianCurrency($model?->igst + $model?->tcs) }}</b></td>
     </tr>
     <tr>
         <td colspan="8" align="center" style="padding: 25px;">
@@ -362,8 +362,8 @@
         </td>
     </tr>
 </table>
-<script>
-    window.print();
-</script>
+{{--<script>--}}
+{{--    window.print();--}}
+{{--</script>--}}
 </body>
 </html>
