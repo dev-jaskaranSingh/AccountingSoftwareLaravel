@@ -321,7 +321,8 @@
     <tr>
         <td style="line-height: 60px !important;"></td>
         <td style="line-height: 60px !important;" colspan="1"><b>TOTAL TAX IN WORDS:</b></td>
-        <td style="line-height: 60px !important;" colspan="6"><b>{{ getIndianCurrency($model?->igst + $model?->tcs) }}</b></td>
+        <td style="line-height: 60px !important;" colspan="6">
+            <b>{{ getIndianCurrency($model?->igst + $model?->tcs) }}</b></td>
     </tr>
     <tr>
         <td colspan="8" align="center" style="padding: 25px;">
