@@ -45,7 +45,7 @@
                 @endisset
             <div class="ibox-content">
                 <div class="row">
-                    <div class="col-md-4 col-sm-12 mb-2">
+                    <div class="col-md-6 col-sm-12 mb-2">
                         {!! Form::label('creditOrDebit','Credit/Debit') !!}
                         {!! Form::select('creditOrDebit',['credit' => 'Credit','debit' => 'Debit' ],null,['class'=>'form-control select2']) !!}
                         @error('creditOrDebit')
@@ -55,17 +55,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4 col-sm-12 mb-2">
-                        {!! Form::label('date','Instrument Date') !!}
-                        {!! Form::text('date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
-                        @error('date')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-4 col-sm-12 mb-2">
+                    <div class="col-md-6 col-sm-12 mb-2">
                         {!! Form::label('account_id','Select Account') !!}
                         {!! Form::select('account_id',getAccountsList(),$secondAccountId,['class'=>'form-control select2 second_account_id']) !!}
                         @error('second_account_id')
@@ -75,7 +65,7 @@
                         @enderror
                     </div>
                     <div class="col-md-4 col-sm-12 mb-2">
-                        {!! Form::label('instr_type','Second Account') !!}
+                        {!! Form::label('instr_type','Instrument Type') !!}
                         {!! Form::select('instr_type',getInstrTypeList(),null,['class'=>'form-control select2 instr_type']) !!}
                         @error('instr_type')
                         <span class="help-block text-danger">
@@ -105,6 +95,17 @@
                     </div>
 
                     <div class="col-md-4 col-sm-12 mb-2">
+                        {!! Form::label('date','Instrument Date') !!}
+                        {!! Form::text('date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        @error('date')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+
+                    <div class="col-md-6 col-sm-12 mb-2">
                         {!! Form::label('amount','Amount') !!}
                         {!! Form::text('amount',$amount,['class'=>'form-control']) !!}
                         @error('amount')
