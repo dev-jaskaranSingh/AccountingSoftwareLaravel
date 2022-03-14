@@ -53,7 +53,7 @@ class SaleReturnController extends Controller
     public function store(SaleSaveRequest $request): RedirectResponse
     {
         try {
-            dd($request->all());
+
             DB::beginTransaction();
 
             //Manipulate bill products data
@@ -66,7 +66,7 @@ class SaleReturnController extends Controller
             $saleItems = $this->mapSaleItemData($request->bill_products, $request->bill_date, $request->account_id, $request->invoice_number);
 
             //Save Sale bill items
-            $savedSaleItems = $saleModel->saleItems()->createMany($saleItems);
+            $savedSaleItems = $saleModel->saleReturnItems()->createMany($saleItems);
 
             // Save Finance Ledger
             SaleReturnServices::saveSaleInFinanceLedger('sale_return', $saleModel, $request);
