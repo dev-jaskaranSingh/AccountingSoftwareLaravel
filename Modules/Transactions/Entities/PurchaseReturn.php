@@ -16,7 +16,7 @@ class PurchaseReturn extends Model
 {
     use HasFactory;
 
-    protected $table = 'purchases';
+    protected $table = 'purchase_return';
     protected $guarded = ['id'];
 
     /**
@@ -32,9 +32,9 @@ class PurchaseReturn extends Model
     /**
      * @return HasMany
      */
-    public function purchaseItems(): HasMany
+    public function purchaseReturnItems(): HasMany
     {
-        return $this->hasMany(PurchaseItem::class, 'purchase_id', 'id');
+        return $this->hasMany(PurchaseReturnItem::class, 'purchase_id', 'id');
     }
 
     /**

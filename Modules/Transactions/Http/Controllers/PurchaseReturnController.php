@@ -10,10 +10,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Masters\Entities\ItemMaster;
 use Modules\Transactions\DataTables\PurchaseDataTable;
+use Modules\Transactions\DataTables\PurchaseReturnDataTable;
 use Modules\Transactions\Entities\Purchase;
+use Modules\Transactions\Entities\PurchaseReturn;
 use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
 use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
 use Modules\Transactions\Services\FinanceLedgerServices;
+use Modules\Transactions\Services\PurchaseReturnServices;
 use Modules\Transactions\Services\PurchaseServices;
 use Session;
 use Throwable;
@@ -25,9 +28,9 @@ class PurchaseReturnController extends Controller
      * @param PurchaseDataTable $dataTable
      * @return void
      */
-    public function index(PurchaseDataTable $dataTable)
+    public function index(PurchaseReturnDataTable $dataTable)
     {
-        return $dataTable->render('transactions::purchases.index');
+        return $dataTable->render('transactions::purchase-return.index');
     }
 
     /**
@@ -58,27 +61,27 @@ class PurchaseReturnController extends Controller
             //Manipulate bill products data
             $filteredPurchaseItemsJson = $this->filteredPurchaseItemsArray($request->bill_products)->toJson();
 
-            //Save Purchase bill
-            $purchaseModel = Purchase::create($request->validated() + ['bill_products_json' => $filteredPurchaseItemsJson]);
+            //Save PurchaseReturn bill
+            $purchases_returnModel = Purchase::create($request->validated() + ['bill_products_json' => $filteredPurchaseItemsJson]);
 
-            //Manipulate Purchase bill items
+            //Manipulate PurchaseReturn bill items
             $purchaseItems = $this->mapPurchaseItemData($request->bill_products, $request->bill_date, $request->account_id, $request->invoice_number);
 
-            //Save Purchase bill items
-            $savedPurchaseItems = $purchaseModel->purchaseItems()->createMany($purchaseItems);
+            //Save PurchaseReturn bill items
+            $savedPurchaseItems = $purchases_returnModel->purchaseItems()->createMany($purchaseItems);
 
             // Save Finance Ledger
-            FinanceLedgerServices::savePurchaseInFinanceLedger('purchase', $purchaseModel, $request);
+            FinanceLedgerServices::savePurchaseInFinanceLedger('purchase', $purchases_returnModel, $request);
 
             // Save Stock
-            PurchaseServices::saveStockMaster($savedPurchaseItems, 'purchase', $purchaseModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
+            PurchaseReturnServices::saveStockMaster($savedPurchaseItems, 'purchase', $purchases_returnModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
 
             DB::commit();
-            Session::flash("success", "Success|Purchase saved Successfully");
+            Session::flash("success", "Success|PurchaseReturn saved Successfully");
 
         } catch (Exception $exception) {
             DB::rollBack();
-            Session::flash("error", "Error|Purchase save failed");
+            Session::flash("error", "Error|PurchaseReturn save failed");
             dd($exception);
         }
         return back();
@@ -109,63 +112,63 @@ class PurchaseReturnController extends Controller
 
     /**
      * Show the specified resource.
-     * @param Purchase $purchase
+     * @param PurchaseReturn $purchases_return
      * @return Renderable
      */
-    public function show(Purchase $purchase): Renderable
+    public function show(PurchaseReturn $purchases_return): Renderable
     {
-        return view('transactions::purchases.show', ['model' => $purchase]);
+        return view('transactions::purchases.show', ['model' => $purchases_return]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param Purchase $purchase
+     * @param PurchaseReturn $purchases_return
      * @return Renderable
      */
-    public function edit(Purchase $purchase): Renderable
+    public function edit(PurchaseReturn $purchases_return): Renderable
     {
-        return view('transactions::purchases.edit', ['model' => $purchase,'purchase_items' => $purchase->bill_products_json]);
+        return view('transactions::purchases.edit', ['model' => $purchases_return, 'purchase_items' => $purchases_return->bill_products_json]);
     }
 
     /**
      * Update the specified resource in storage.
      * @param PurchaseUpdateRequest $request
-     * @param Purchase $purchase
+     * @param PurchaseReturn $purchases_return
      * @return RedirectResponse
      */
-    public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
+    public function update(PurchaseUpdateRequest $request, PurchaseReturn $purchases_return): RedirectResponse
     {
-        $purchase->update($request->validated());
-        Session::flash("success", "Success|Purchase has been updated successfully");
+        $purchases_return->update($request->validated());
+        Session::flash("success", "Success|PurchaseReturn has been updated successfully");
         return back();
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param Purchase $purchase
+     * @param PurchaseReturn $purchases_return
      * @return RedirectResponse
      * @throws Throwable
      */
-    public function destroy(Purchase $purchase): RedirectResponse
+    public function destroy(PurchaseReturn $purchases_return): RedirectResponse
     {
         try {
             DB::beginTransaction();
-            $purchase->delete();
-            $purchase->ledgerEntries()->delete();
-            $purchase->purchaseItems()->delete();
-            Session::flash("success", "Success|Purchase has been deleted successfully");
+            $purchases_return->delete();
+            $purchases_return->ledgerEntries()->delete();
+            $purchases_return->purchaseReturnItems()->delete();
+            Session::flash("success", "Success|PurchaseReturn has been deleted successfully");
             DB::commit();
         } catch (Throwable $exception) {
             DB::rollBack();
-            Session::flash("error", "Error|Purchase Delete failed");
+            Session::flash("error", "Error|PurchaseReturn Delete failed");
             dd(['code' => $exception->getCode(), 'message' => $exception->getMessage()]);
         } finally {
             return back();
         }
     }
 
-    public function printPurchase(Purchase $purchase)
+    public function printPurchase(PurchaseReturn $purchases_return)
     {
-        return view('transactions::purchases.print', ['model' => $purchase]);
+        return view('transactions::purchases.print', ['model' => $purchases_return]);
     }
 }

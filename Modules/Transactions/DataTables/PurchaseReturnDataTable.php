@@ -2,8 +2,8 @@
 
 namespace Modules\Transactions\DataTables;
 
-
 use Modules\Transactions\Entities\Purchase;
+use Modules\Transactions\Entities\PurchaseReturn;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -21,23 +21,23 @@ class PurchaseReturnDataTable extends DataTable
     public function dataTable($query): DataTableAbstract
     {
         return datatables()->eloquent($query)->editColumn('action', function ($model) {
-                return view('transactions::purchases._action', compact('model'));
-            })->editColumn('account_id', function ($model) {
-                if ($model->account == null) return null;
-                return $model->account->name;
-            })->editColumn('created_at', function ($model) {
-                if (is_null($model->created_at)) return null;
-                return $model->created_at->format('d-m-Y h:i:s A');
-            })->rawColumns(['is_primary', 'action']);
+            return view('transactions::purchase-return._action', compact('model'));
+        })->editColumn('account_id', function ($model) {
+            if ($model->account == null) return null;
+            return $model->account->name;
+        })->editColumn('created_at', function ($model) {
+            if (is_null($model->created_at)) return null;
+            return $model->created_at->format('d-m-Y h:i:s A');
+        })->rawColumns(['is_primary', 'action']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param Purchase $model
+     * @param PurchaseReturn $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Purchase $model): \Illuminate\Database\Eloquent\Builder
+    public function query(PurchaseReturn $model): \Illuminate\Database\Eloquent\Builder
     {
         return $model->newQuery()->with('account');
     }
@@ -49,7 +49,7 @@ class PurchaseReturnDataTable extends DataTable
      */
     public function html(): Builder
     {
-        return $this->builder()->setTableId('purchases-datatable-table')->columns($this->getColumns())->minifiedAjax()->dom('Bfrtip')->orderBy(1)->buttons(Button::make('create'), Button::make('export'), Button::make('print'), Button::make('reset'), Button::make('reload'));
+        return $this->builder()->setTableId('purchases-return-datatable-table')->columns($this->getColumns())->minifiedAjax()->dom('Bfrtip')->orderBy(1)->buttons(Button::make('create'), Button::make('export'), Button::make('print'), Button::make('reset'), Button::make('reload'));
     }
 
     /**
