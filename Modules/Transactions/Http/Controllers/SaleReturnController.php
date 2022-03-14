@@ -153,7 +153,7 @@ class SaleReturnController extends Controller
             DB::beginTransaction();
             $sales_return->delete();
             $sales_return->ledgerEntries()->delete();
-            $sales_return->saleItems()->delete();
+            $sales_return->saleReturnItems()->delete();
             Session::flash("success", "Success|Sale has been deleted successfully");
             DB::commit();
         } catch (Throwable $exception) {

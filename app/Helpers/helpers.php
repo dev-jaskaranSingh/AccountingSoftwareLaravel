@@ -74,7 +74,11 @@ function authUser(): ?Authenticatable
 
 function getCurrentRouteTitle(): string
 {
-    return ucfirst(explode('.', request()->route()->getName())[1]);
+    $str = explode('.', request()->route()->getName())[1];
+    if(str_contains($str,'-')){
+        return ucfirst(explode('-',$str)[0]).' '.ucfirst(explode('-',$str)[1]);
+    }
+    return ucfirst($str);
 }
 
 function getSalesMaxInvoices(): int

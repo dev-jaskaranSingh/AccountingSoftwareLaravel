@@ -23,7 +23,7 @@ class SalesReturnDataTable extends DataTable
     public function dataTable($query): DataTableAbstract
     {
         return datatables()->eloquent($query)->editColumn('action', function ($model) {
-            return view('transactions::sales._action', compact('model'));
+            return view('transactions::sale-return._action', compact('model'));
         })->editColumn('account_id', function ($model) {
             if ($model->account == null) return null;
             return $model->account->name;
