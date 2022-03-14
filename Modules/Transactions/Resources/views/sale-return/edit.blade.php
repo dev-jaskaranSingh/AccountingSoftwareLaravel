@@ -20,10 +20,10 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::model($model,['method'=>'PUT','route'=>['transactions.sales.update',$model->id]]) !!}
-            @include('transactions::sales._form')
+        {!! Form::model($model,['method'=>'PUT','route'=>['transactions.sales-return.update',$model->id]]) !!}
+            @include('transactions::sale-return._form')
         {!! Form::submit('Update',['class'=>'btn btn-primary']) !!}
-        <a href="{{ route('transactions.sales.index') }}" class="btn btn-danger">Cancel</a>
+        <a href="{{ route('transactions.sales-return.index') }}" class="btn btn-danger">Cancel</a>
         {!! Form::close() !!}
     </div>
 @endsection

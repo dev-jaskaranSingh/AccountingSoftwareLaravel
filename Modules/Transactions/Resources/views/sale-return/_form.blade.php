@@ -14,7 +14,7 @@
         margin: 0 auto 10px;
     }
 </style>
-@include('transactions::sales._party-modal')
+@include('transactions::sale-return._party-modal')
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox ">
