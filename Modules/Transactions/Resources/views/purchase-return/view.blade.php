@@ -27,7 +27,7 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <a href="{{ route('transactions.purchases.index') }}" class="btn btn-danger">Go Back</a>
+                        <a href="{{ route('transactions.purchases-return.index') }}" class="btn btn-danger">Go Back</a>
                     </div>
                 </div>
             </div>
