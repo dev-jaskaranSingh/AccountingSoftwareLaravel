@@ -18,6 +18,8 @@
     $transactionsPaymentRouteArray = ['transactions.payments.index', 'transactions.payments.create', 'transactions.payments.edit', 'transactions.payments.show'];
     $transactionsContraRouteArray = ['transactions.contra.index', 'transactions.contra.create', 'transactions.contra.edit', 'transactions.contra.show'];
     $transactionsJournalRouteArray = ['transactions.journal.index', 'transactions.journal.create', 'transactions.journal.edit', 'transactions.journal.show'];
+    $transactionsSalesReturnRouteArray = ['transactions.sales-return.index', 'transactions.sales-return.create', 'transactions.sales-return.edit', 'transactions.sales-return.show'];
+    $transactionsPurchaseReturnRouteArray = ['transactions.purchases-return.index', 'transactions.purchases-return.create', 'transactions.purchases-return.edit', 'transactions.purchases-return.show'];
 
     //Final Route Array
     $transactionsRouteArray = array_merge(
@@ -26,7 +28,9 @@
         $transactionsReceiptsRouteArray,
         $transactionsPaymentRouteArray,
         $transactionsContraRouteArray,
-        $transactionsJournalRouteArray
+        $transactionsJournalRouteArray,
+        $transactionsSalesReturnRouteArray,
+        $transactionsPurchaseReturnRouteArray
     )
 
 @endphp
@@ -120,9 +124,12 @@
                     <li class="@if(in_array($currentRoute,$transactionsSalesRouteArray)) active @endif">
                         <a href="{{ route('transactions.sales.index') }}">Sale</a>
                     </li>
-                    <li><a href="javascript:void(0)">Sale Return</a></li>
-                    <li><a href="javascript:void(0)">Purchase Return</a></li>
-
+                    <li class="@if(in_array($currentRoute,$transactionsSalesReturnRouteArray)) active @endif">
+                        <a href="{{ route('transactions.sales-return.index') }}">Sale Return</a>
+                    </li>
+                    <li class="@if(in_array($currentRoute,$transactionsPurchaseReturnRouteArray)) active @endif">
+                        <a href="{{ route('transactions.purchases-return.index') }}">Purchase Return</a>
+                    </li>
                     <li class="@if(in_array($currentRoute,$transactionsReceiptsRouteArray)) active @endif">
                         <a href="{{ route('transactions.receipts.index') }}">Receipt</a>
                     </li>

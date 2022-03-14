@@ -9,11 +9,13 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Masters\Entities\ItemMaster;
-use Modules\Transactions\DataTables\SalesDataTable;
+use Modules\Transactions\DataTables\SalesReturnDataTable;
 use Modules\Transactions\Entities\Sale;
+use Modules\Transactions\Entities\SaleReturn;
 use Modules\Transactions\Entities\StockMaster;
 use Modules\Transactions\Http\Requests\SaleSaveRequest;
 use Modules\Transactions\Http\Requests\SaleUpdateRequest;
+use Modules\Transactions\Services\SaleReturnServices;
 use Modules\Transactions\Services\SaleServices;
 use Session;
 use Throwable;
@@ -24,9 +26,9 @@ class SaleReturnController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index(SalesDataTable $dataTable)
+    public function index(SalesReturnDataTable $dataTable)
     {
-        return $dataTable->render('transactions::sales.index');
+        return $dataTable->render('transactions::sale-return.index');
     }
 
     /**
@@ -39,7 +41,7 @@ class SaleReturnController extends Controller
             return ['id' => $key, 'label' => $value];
         })->toArray());
 
-        return view('transactions::sales.create', compact('items'));
+        return view('transactions::sale-return.create', compact('items'));
     }
 
     /**
@@ -58,7 +60,7 @@ class SaleReturnController extends Controller
             $filteredSaleItemsJson = $this->filteredSaleItemsArray($request->bill_products)->toJson();
 
             //Save Sale bill
-            $saleModel = Sale::create($request->validated() + ['bill_products_json' => $filteredSaleItemsJson, 'invoice_number' => getSalesMaxInvoices() + 1]);
+            $saleModel = SaleReturn::create($request->validated() + ['bill_products_json' => $filteredSaleItemsJson, 'invoice_number' => getSalesMaxInvoices() + 1]);
 
             //Manipulate Sale bill items
             $saleItems = $this->mapSaleItemData($request->bill_products, $request->bill_date, $request->account_id, $request->invoice_number);
@@ -67,10 +69,10 @@ class SaleReturnController extends Controller
             $savedSaleItems = $saleModel->saleItems()->createMany($saleItems);
 
             // Save Finance Ledger
-            SaleServices::saveSaleInFinanceLedger('sale', $saleModel, $request);
+            SaleReturnServices::saveSaleInFinanceLedger('sale_return', $saleModel, $request);
 
             // Save Stock
-            SaleServices::saveSaleStockMaster($savedSaleItems, 'sale', $saleModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
+            SaleReturnServices::saveSaleStockMaster($savedSaleItems, 'sale_return', $saleModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
 
             DB::commit();
             Session::flash("success", "Success|Sale saved Successfully");
@@ -108,50 +110,50 @@ class SaleReturnController extends Controller
 
     /**
      * Show the specified resource.
-     * @param StockMaster $sale
+     * @param SaleReturn $sales_return
      * @return Renderable
      */
-    public function show(StockMaster $sale): Renderable
+    public function show(SaleReturn $sales_return): Renderable
     {
-        return view('transactions::sales.show', ['model' => $sale]);
+        return view('transactions::sale-return.show', ['model' => $sales_return]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @param StockMaster $sale
+     * @param SaleReturn $sales_return
      * @return Renderable
      */
-    public function edit(StockMaster $sale): Renderable
+    public function edit(SaleReturn $sales_return): Renderable
     {
-        return view('transactions::sales.edit', ['model' => $sale]);
+        return view('transactions::sale-return.edit', ['model' => $sales_return]);
     }
 
     /**
      * Update the specified resource in storage.
      * @param SaleUpdateRequest $request
-     * @param StockMaster $sale
+     * @param SaleReturn $sales_return
      * @return RedirectResponse
      */
-    public function update(SaleUpdateRequest $request, StockMaster $sale): RedirectResponse
+    public function update(SaleUpdateRequest $request, SaleReturn $sales_return): RedirectResponse
     {
-        $sale->update($request->validated());
+        $sales_return->update($request->validated());
         Session::flash("success", "Success|Sale has been updated successfully");
         return back();
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param Sale $sale
+     * @param SaleReturn $sales_return
      * @return RedirectResponse
      * @throws Throwable
      */
-    public function destroy(Sale $sale): RedirectResponse
+    public function destroy(SaleReturn $sales_return): RedirectResponse
     {
         try {
             DB::beginTransaction();
-            $sale->delete();
-            $sale->ledgerEntries()->delete();
-            $sale->saleItems()->delete();
+            $sales_return->delete();
+            $sales_return->ledgerEntries()->delete();
+            $sales_return->saleItems()->delete();
             Session::flash("success", "Success|Sale has been deleted successfully");
             DB::commit();
         } catch (Throwable $exception) {
@@ -163,8 +165,8 @@ class SaleReturnController extends Controller
         }
     }
 
-    public function printSaleInvoice(Sale $sales)
+    public function printSaleInvoice(SaleReturn $sales_return)
     {
-        return view('transactions::sales.sale-print', ['model' => $sales]);
+        return view('transactions::sale-return.sale-print', ['model' => $sales_return]);
     }
 }
