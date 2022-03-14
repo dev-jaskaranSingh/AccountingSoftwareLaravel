@@ -124,11 +124,11 @@
                     <li class="@if(in_array($currentRoute,$transactionsSalesRouteArray)) active @endif">
                         <a href="{{ route('transactions.sales.index') }}">Sale</a>
                     </li>
-                    <li class="@if(in_array($currentRoute,$transactionsSalesReturnRouteArray)) active @endif">
-                        <a href="{{ route('transactions.sales-return.index') }}">Sale Return</a>
-                    </li>
                     <li class="@if(in_array($currentRoute,$transactionsPurchaseReturnRouteArray)) active @endif">
                         <a href="{{ route('transactions.purchases-return.index') }}">Purchase Return</a>
+                    </li>
+                    <li class="@if(in_array($currentRoute,$transactionsSalesReturnRouteArray)) active @endif">
+                        <a href="{{ route('transactions.sales-return.index') }}">Sale Return</a>
                     </li>
                     <li class="@if(in_array($currentRoute,$transactionsReceiptsRouteArray)) active @endif">
                         <a href="{{ route('transactions.receipts.index') }}">Receipt</a>
