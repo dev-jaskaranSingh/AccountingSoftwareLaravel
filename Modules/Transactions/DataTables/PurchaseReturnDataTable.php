@@ -39,7 +39,6 @@ class PurchaseReturnDataTable extends DataTable
      */
     public function query(PurchaseReturn $model): \Illuminate\Database\Eloquent\Builder
     {
-        dd($model);
         return $model->newQuery()->with('account');
     }
 
