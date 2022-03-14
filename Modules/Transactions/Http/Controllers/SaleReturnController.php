@@ -53,7 +53,7 @@ class SaleReturnController extends Controller
     public function store(SaleSaveRequest $request): RedirectResponse
     {
         try {
-
+            dd($request->all());
             DB::beginTransaction();
 
             //Manipulate bill products data

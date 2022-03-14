@@ -25,7 +25,7 @@ class PurchaseReturnController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @param PurchaseDataTable $dataTable
+     * @param PurchaseReturnDataTable $dataTable
      * @return void
      */
     public function index(PurchaseReturnDataTable $dataTable)
@@ -43,7 +43,7 @@ class PurchaseReturnController extends Controller
             return ['id' => $key, 'label' => $value];
         })->toArray());
 
-        return view('transactions::purchases.create', compact('items'));
+        return view('transactions::purchase-return.create', compact('items'));
     }
 
     /**
@@ -58,23 +58,23 @@ class PurchaseReturnController extends Controller
 
             DB::beginTransaction();
 
-            //Manipulate bill products data
+            // Manipulate bill products data
             $filteredPurchaseItemsJson = $this->filteredPurchaseItemsArray($request->bill_products)->toJson();
 
-            //Save PurchaseReturn bill
-            $purchases_returnModel = Purchase::create($request->validated() + ['bill_products_json' => $filteredPurchaseItemsJson]);
+            // Save PurchaseReturn bill
+            $purchaseReturnModel = PurchaseReturn::create($request->validated() + ['bill_products_json' => $filteredPurchaseItemsJson]);
 
-            //Manipulate PurchaseReturn bill items
+            // Manipulate PurchaseReturn bill items
             $purchaseItems = $this->mapPurchaseItemData($request->bill_products, $request->bill_date, $request->account_id, $request->invoice_number);
 
-            //Save PurchaseReturn bill items
-            $savedPurchaseItems = $purchases_returnModel->purchaseItems()->createMany($purchaseItems);
+            // Save PurchaseReturn bill items
+            $savedPurchaseItems = $purchaseReturnModel->purchaseReturnItems()->createMany($purchaseItems);
 
             // Save Finance Ledger
-            FinanceLedgerServices::savePurchaseInFinanceLedger('purchase', $purchases_returnModel, $request);
+            FinanceLedgerServices::savePurchaseInFinanceLedger('purchase_return', $purchaseReturnModel, $request);
 
             // Save Stock
-            PurchaseReturnServices::saveStockMaster($savedPurchaseItems, 'purchase', $purchases_returnModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
+            PurchaseReturnServices::saveStockMaster($savedPurchaseItems, 'purchase_return', $purchaseReturnModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
 
             DB::commit();
             Session::flash("success", "Success|PurchaseReturn saved Successfully");
@@ -117,7 +117,7 @@ class PurchaseReturnController extends Controller
      */
     public function show(PurchaseReturn $purchases_return): Renderable
     {
-        return view('transactions::purchases.show', ['model' => $purchases_return]);
+        return view('transactions::purchase-return.show', ['model' => $purchases_return]);
     }
 
     /**
@@ -127,7 +127,7 @@ class PurchaseReturnController extends Controller
      */
     public function edit(PurchaseReturn $purchases_return): Renderable
     {
-        return view('transactions::purchases.edit', ['model' => $purchases_return, 'purchase_items' => $purchases_return->bill_products_json]);
+        return view('transactions::purchase-return.edit', ['model' => $purchases_return, 'purchase_items' => $purchases_return->bill_products_json]);
     }
 
     /**
@@ -169,6 +169,6 @@ class PurchaseReturnController extends Controller
 
     public function printPurchase(PurchaseReturn $purchases_return)
     {
-        return view('transactions::purchases.print', ['model' => $purchases_return]);
+        return view('transactions::purchase-return.print', ['model' => $purchases_return]);
     }
 }

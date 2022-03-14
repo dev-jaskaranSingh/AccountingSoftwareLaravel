@@ -40,7 +40,7 @@ class JournalController extends Controller
      * @return RedirectResponse
      * @throws Throwable
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         try {
             DB::beginTransaction();

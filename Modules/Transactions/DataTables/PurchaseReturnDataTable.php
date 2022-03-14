@@ -18,7 +18,7 @@ class PurchaseReturnDataTable extends DataTable
      * @param mixed $query Results from query() method.
      * @return DataTableAbstract
      */
-    public function dataTable($query): DataTableAbstract
+    public function dataTable(mixed $query): DataTableAbstract
     {
         return datatables()->eloquent($query)->editColumn('action', function ($model) {
             return view('transactions::purchase-return._action', compact('model'));
@@ -39,6 +39,7 @@ class PurchaseReturnDataTable extends DataTable
      */
     public function query(PurchaseReturn $model): \Illuminate\Database\Eloquent\Builder
     {
+        dd($model);
         return $model->newQuery()->with('account');
     }
 
@@ -69,6 +70,6 @@ class PurchaseReturnDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Purchase_' . date('YmdHis');
+        return 'PurchaseReturn_' . date('YmdHis');
     }
 }
