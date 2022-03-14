@@ -13,18 +13,18 @@ class SaleReturnItem extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $table = 'sale_items';
+    protected $table = 'sale_return_items';
     protected static function newFactory()
     {
-        return SaleItemFactory::new();
+        return SaleReturnItemFactory::new();
     }
 
     /**
      * @return BelongsTo
      */
-    public function sale(): BelongsTo
+    public function saleReturn(): BelongsTo
     {
-        return $this->belongsTo(StockMaster::class, 'sale_id');
+        return $this->belongsTo(SaleReturn::class, 'sale_id');
     }
 
     /**

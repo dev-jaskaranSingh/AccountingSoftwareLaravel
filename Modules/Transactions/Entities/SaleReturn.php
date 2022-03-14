@@ -15,11 +15,11 @@ class SaleReturn extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $table = 'sales';
+    protected $table = 'sale_return';
 
     protected static function newFactory()
     {
-        return SaleFactory::new();
+        return SaleReturnFactory::new();
     }
 
     /**
@@ -46,9 +46,9 @@ class SaleReturn extends Model
     /**
      * @return HasMany
      */
-    public function saleItems(): HasMany
+    public function saleReturnItems(): HasMany
     {
-        return $this->hasMany(SaleItem::class, 'sale_id', 'id');
+        return $this->hasMany(SaleReturnItem::class, 'sale_id', 'id');
     }
 
     /**

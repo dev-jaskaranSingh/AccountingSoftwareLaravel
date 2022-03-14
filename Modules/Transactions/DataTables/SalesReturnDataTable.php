@@ -5,6 +5,7 @@ namespace Modules\Transactions\DataTables;
 
 use Modules\Transactions\Entities\Purchase;
 use Modules\Transactions\Entities\Sale;
+use Modules\Transactions\Entities\SaleReturn;
 use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
@@ -26,10 +27,10 @@ class SalesReturnDataTable extends DataTable
         })->editColumn('account_id', function ($model) {
             if ($model->account == null) return null;
             return $model->account->name;
-        })->editColumn('invoice_number',function($model){
+        })->editColumn('invoice_number', function ($model) {
             $fromYear = \Carbon\Carbon::parse(authCompany()->from_date)->format('y');
             $toYear = \Carbon\Carbon::parse(authCompany()->to_date)->format('y');
-            return 'SB/'.$fromYear.'-'.$toYear.'/'.$model->invoice_number;
+            return 'SB/' . $fromYear . '-' . $toYear . '/' . $model->invoice_number;
         })->editColumn('created_at', function ($model) {
             if (is_null($model->created_at)) return null;
             return $model->created_at->format('d-m-Y h:i:s A');
@@ -39,10 +40,10 @@ class SalesReturnDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param Sale $model
+     * @param SaleReturn $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Sale $model): \Illuminate\Database\Eloquent\Builder
+    public function query(SaleReturn $model): \Illuminate\Database\Eloquent\Builder
     {
         return $model->newQuery()->with('account');
     }
