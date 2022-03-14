@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use Modules\Transactions\Entities\SaleReturn;
 
-class SaleObserver
+class SaleReturnObserver
 {
 
     /**
