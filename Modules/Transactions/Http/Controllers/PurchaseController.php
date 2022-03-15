@@ -67,7 +67,7 @@ class PurchaseController extends Controller
             $savedPurchaseItems = $purchaseModel->purchaseItems()->createMany($purchaseItems);
 
             // Save Finance Ledger
-            FinanceLedgerServices::savePurchaseInFinanceLedger('purchase', $purchaseModel, $request);
+            PurchaseServices::savePurchaseInFinanceLedger('purchase', $purchaseModel, $request);
 
             // Save Stock
             PurchaseServices::saveStockMaster($savedPurchaseItems, 'purchase', $purchaseModel->id, $request->bill_date, $request->account_id, $request->invoice_number);

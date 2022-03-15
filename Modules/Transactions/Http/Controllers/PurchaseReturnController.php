@@ -71,7 +71,7 @@ class PurchaseReturnController extends Controller
             $savedPurchaseItems = $purchaseReturnModel->purchaseReturnItems()->createMany($purchaseItems);
 
             // Save Finance Ledger
-            FinanceLedgerServices::savePurchaseInFinanceLedger('purchase_return', $purchaseReturnModel, $request);
+            PurchaseReturnServices::savePurchaseInFinanceLedger('purchase_return', $purchaseReturnModel, $request);
 
             // Save Stock
             PurchaseReturnServices::saveStockMaster($savedPurchaseItems, 'purchase_return', $purchaseReturnModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
