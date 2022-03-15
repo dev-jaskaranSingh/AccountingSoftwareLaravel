@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Observers\HsnMasterObserver;
 use App\Observers\ItemGroupMasterObserver;
 use App\Observers\ItemMasterObserver;
+use App\Observers\PurchaseObserver;
 use App\Observers\PurchaseReturnObserver;
 use App\Observers\SaleReturnObserver;
+use App\Observers\SaleObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -38,8 +40,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Sale::observe(SaleReturnObserver::class);
-        Purchase::observe(PurchaseReturnObserver::class);
+        Sale::observe(SaleObserver::class);
+        Purchase::observe(PurchaseObserver::class);
         ItemMaster::observe(ItemMasterObserver::class);
         ItemGroupMaster::observe(ItemGroupMasterObserver::class);
         HsnMaster::observe(HsnMasterObserver::class);

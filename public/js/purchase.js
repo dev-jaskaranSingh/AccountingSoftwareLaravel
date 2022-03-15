@@ -1,5 +1,8 @@
+console.log('Purchase.js loaded');
 $(function () {
     $('.datatable').dataTable();
+
+    window.companyStateCode = $('.company_state_code').val();
 
     function ajaxHandler(url, data, type, callback) {
         $.ajax({
@@ -31,7 +34,7 @@ $(function () {
                 }
             }else{
                 $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
-        }
+            }
         }else{
             $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
         }
@@ -129,6 +132,54 @@ $(function () {
             }
         })
     }
+
+
+    $('body').on('keyup','.roundOffValue',function(){
+        let roundOffType = $('.roundOffSelection').val();
+        let tcs = Number($(this).val());
+        if(tcs > 0 || tcs !== ''){
+            if(window.storeTotalGrandAmount !== undefined){
+                if(roundOffType === 'plus'){
+                    $('.grand_total_amount').val(Number(window.storeTotalGrandAmount)+(tcs/100));
+                }else{
+                    $('.grand_total_amount').val(Number(window.storeTotalGrandAmount)-(tcs/100));
+                }
+            }else{
+                $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
+            }
+        }else{
+            $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
+        }
+
+    });
+
+    //Addition of TCS in net amount
+    $('body').on('keyup','.tcs',function(){
+        let tcs = Number($(this).val());
+        if(tcs > 0 || tcs !== ''){
+            if(window.storeTotalGrandAmount !== undefined){
+                $('.grand_total_amount').val((Number(window.storeTotalGrandAmount)+tcs).toFixed(2));
+            }else{
+                $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
+            }
+        }else{
+            $('.grand_total_amount').val(Number(window.storeTotalGrandAmount).toFixed(2));
+        }
+    });
+
+    //Make Ajax request to get acount details
+    $('body').on('change', '.account_id', function () {
+        var account_id = $(this).val();
+        ajax_request(route + '/ajax/get-account-by-id/' + account_id, 'GET', null, function (data) {
+            if (!data.status) {
+                toastr.error(data.message, 'Error');
+                return false;
+            }
+            window.stateCode = data.account.gst_state_code;
+            toastr.success(data.message, 'Success');
+        });
+    });
+
 
     // Handsone Table
     var debounceFn = Handsontable.helper.debounce(function (colIndex, event) {
@@ -299,6 +350,7 @@ $(function () {
 
                     window.amount = Number(qty * price);
                     data[row][8] = window.amount;
+                    data[row][11] = window.amount;
                     if(data[row][9] === 0 || data[row][10] === 0 || data[row][11] === 0){
                         window.gst_amount = (window.amount * window.gst_min_percentage) / 100;
                         if(window.stateCode === window.companyStateCode){

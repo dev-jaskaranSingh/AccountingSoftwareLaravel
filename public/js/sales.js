@@ -1,3 +1,4 @@
+console.log('Purchase.js loaded');
 $(function () {
     $('.datatable').dataTable();
 
@@ -174,14 +175,7 @@ $(function () {
                 toastr.error(data.message, 'Error');
                 return false;
             }
-            // $('.state_code').html(data.account.gst_state_code);
             window.stateCode = data.account.gst_state_code;
-            // $('#shipped_to').val(data.account.address);
-            // $('.gst').html(data.account.gstin);
-            // $('.billed_to').html(data.account.name);
-            // $('.pan').html(data.account.pan);
-            // $('.place_of_supply').html(data.account.state.name);
-
             toastr.success(data.message, 'Success');
         });
     });
@@ -356,6 +350,7 @@ $(function () {
 
                     window.amount = Number(qty * price);
                     data[row][8] = window.amount;
+                    data[row][11] = window.amount;
                     if(data[row][9] === 0 || data[row][10] === 0 || data[row][11] === 0){
                         window.gst_amount = (window.amount * window.gst_min_percentage) / 100;
                         if(window.stateCode === window.companyStateCode){

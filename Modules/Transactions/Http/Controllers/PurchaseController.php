@@ -52,7 +52,6 @@ class PurchaseController extends Controller
     public function store(PurchaseSaveRequest $request): RedirectResponse
     {
         try {
-
             DB::beginTransaction();
 
             //Manipulate bill products data
