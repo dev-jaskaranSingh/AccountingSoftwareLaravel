@@ -10,7 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::prefix('reports')->group(function() {
+Route::group(['prefix' => 'reports', 'as' => 'reports.', 'middleware' => 'admin'], function () {
     Route::get('/', 'ReportsController@index');
+
+    Route::get('/trial-balance', 'TrailBalanceController@index')->name('trial-balance');
 });

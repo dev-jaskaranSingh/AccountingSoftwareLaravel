@@ -2,19 +2,30 @@
 
 namespace Modules\Reports\Http\Controllers;
 
+use DB;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Reports\DataTables\TrialBalanceDataTable;
+use Modules\Transactions\Entities\FinanceLedger;
 
 class TrailBalanceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     * @return mixed
      */
-    public function index()
+    public function index(): mixed
     {
-        return view('reports::index');
+        $model = FinanceLedger::with('account')->get()->groupBy('account_id')->map(fn($item) => [
+            'account_id' => $item->first()->account_id,
+            'account_name' => $item->first()->account->name,
+            'debit' => $item->sum('debit'),
+            'credit' => $item->sum('credit'),
+            'balance' => $item->sum('debit') - $item->sum('credit')
+        ]);
+
+        return view('reports::trial-balance.index',compact('model'));
     }
 
     /**

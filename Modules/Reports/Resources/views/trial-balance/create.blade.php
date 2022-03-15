@@ -2,7 +2,7 @@
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Edit {!! getCurrentRouteTitle() !!}</h2>
+            <h2>Create {!! getCurrentRouteTitle() !!}</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="javascript:void(0)">Home</a>
@@ -11,7 +11,7 @@
                     <a>{!! getCurrentRouteTitle() !!}</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Edit</strong>
+                    <strong>Create</strong>
                 </li>
             </ol>
         </div>
@@ -20,9 +20,9 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::model($model,['method'=>'PUT','route'=>['transactions.contra.update',$model->first_transaction_no]]) !!}
-            @include('transactions::contra._form')
-        {!! Form::submit('Update',['class'=>'btn btn-primary']) !!}
+        {!! Form::open(['route' => 'transactions.contra.store']) !!}
+        @include('transactions::trial-balance._form')
+        {!! Form::submit('Create',['class'=>'btn btn-primary']) !!}
         <a href="{{ route('transactions.contra.index') }}" class="btn btn-danger">Cancel</a>
         {!! Form::close() !!}
     </div>

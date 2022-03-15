@@ -9,6 +9,8 @@
     $mastersItemsRouteArray = ['master.items.index', 'master.items.create', 'master.items.edit', 'master.items.show'];
     $mastersHsnRouteArray = ['master.hsn.index', 'master.hsn.create', 'master.hsn.edit', 'master.hsn.show'];
     $mastersUnitsRouteArray = ['master.units.index', 'master.units.create', 'master.units.edit', 'master.units.show'];
+
+    //Final Master Route Array
     $mastersRouteArray = array_merge($mastersAccountsGroupRouteArray,$mastersAccountsRouteArray,$mastersItemsGroupRouteArray,$mastersItemsRouteArray,$mastersHsnRouteArray,$mastersUnitsRouteArray);
 
     //Transactions Route Array
@@ -21,7 +23,7 @@
     $transactionsSalesReturnRouteArray = ['transactions.sales-return.index', 'transactions.sales-return.create', 'transactions.sales-return.edit', 'transactions.sales-return.show'];
     $transactionsPurchaseReturnRouteArray = ['transactions.purchases-return.index', 'transactions.purchases-return.create', 'transactions.purchases-return.edit', 'transactions.purchases-return.show'];
 
-    //Final Route Array
+    //Final Transactions Route Array
     $transactionsRouteArray = array_merge(
         $transactionsPurchaseRouteArray,
         $transactionsSalesRouteArray,
@@ -31,7 +33,14 @@
         $transactionsJournalRouteArray,
         $transactionsSalesReturnRouteArray,
         $transactionsPurchaseReturnRouteArray
-    )
+    );
+
+    //Reports Route Array
+    $reportsTrailBalanceRouteArray = ['reports.trial-balance'];
+
+    //Final Reports Route Array
+
+    $reportsRouteArray = array_merge($reportsTrailBalanceRouteArray);
 
 @endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
@@ -86,6 +95,8 @@
                 </li>
             @endauth
 
+            {{-- MASTERS URLS --}}
+
             <li class="@if(in_array($currentRoute,$mastersRouteArray)) active @endif">
                 <a href="javascript:void(0)"><i class="fa fa-users"></i>
                     <span class="nav-label">Masters</span>
@@ -112,6 +123,9 @@
                     </li>
                 </ul>
             </li>
+
+            {{-- TRANSACTIONS URLS --}}
+
             <li class="@if(in_array($currentRoute,$transactionsRouteArray)) active @endif">
                 <a href="javascript:void(0)"><i class="fa fa-users"></i>
                     <span class="nav-label">Transactions</span>
@@ -146,13 +160,17 @@
                     <li><a href="javascript:void(0)">Stock Out</a></li>
                 </ul>
             </li>
-            <li>
+
+            {{-- Reports URLS --}}
+            <li class="@if(in_array($currentRoute,$reportsRouteArray)) active @endif">
                 <a href="javascript:void(0)"><i class="fa fa-users"></i>
                     <span class="nav-label">Reports</span>
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="javascript:void(0)">Trail Balance</a></li>
+                    <li class="@if(in_array($currentRoute,$reportsRouteArray)) active @endif">
+                        <a href="{{ route('reports.trial-balance')  }}">Trail Balance</a>
+                    </li>
                     <li><a href="javascript:void(0)">Ledger Report</a></li>
                     <li><a href="javascript:void(0)">Sale Register</a></li>
                     <li><a href="javascript:void(0)">Purchase Register</a></li>
