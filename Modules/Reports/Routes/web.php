@@ -11,7 +11,11 @@
 |
 */
 Route::group(['prefix' => 'reports', 'as' => 'reports.', 'middleware' => 'admin'], function () {
+
     Route::get('/', 'ReportsController@index');
 
     Route::get('/trial-balance', 'TrailBalanceController@index')->name('trial-balance');
+
+    Route::get('/ledger-report', 'ReportsController@financeLedger')->name('ledger-report');
+
 });

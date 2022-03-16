@@ -6,7 +6,7 @@ use DB;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Reports\DataTables\TrialBalanceDataTable;
+use Modules\Reports\DataTables\FinanceLedgerDataTable;
 use Modules\Transactions\Entities\FinanceLedger;
 
 class TrailBalanceController extends Controller

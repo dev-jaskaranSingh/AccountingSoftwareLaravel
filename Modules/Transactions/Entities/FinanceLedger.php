@@ -2,6 +2,7 @@
 
 namespace Modules\Transactions\Entities;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -43,5 +44,13 @@ class FinanceLedger extends Model
     public function account2(): BelongsTo
     {
         return $this->belongsTo(AccountGroup::class, 'account_id2');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

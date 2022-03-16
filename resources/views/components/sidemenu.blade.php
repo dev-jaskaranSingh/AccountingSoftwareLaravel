@@ -37,10 +37,10 @@
 
     //Reports Route Array
     $reportsTrailBalanceRouteArray = ['reports.trial-balance'];
+    $reportsFinanceLedgerRouteArray = ['reports.finance-ledger'];
 
     //Final Reports Route Array
-
-    $reportsRouteArray = array_merge($reportsTrailBalanceRouteArray);
+    $reportsRouteArray = array_merge($reportsTrailBalanceRouteArray,$reportsFinanceLedgerRouteArray);
 
 @endphp
 <nav class="navbar-default navbar-static-side" role="navigation">
@@ -168,10 +168,12 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level collapse">
-                    <li class="@if(in_array($currentRoute,$reportsRouteArray)) active @endif">
+                    <li class="@if(in_array($currentRoute,$reportsTrailBalanceRouteArray)) active @endif">
                         <a href="{{ route('reports.trial-balance')  }}">Trail Balance</a>
                     </li>
-                    <li><a href="javascript:void(0)">Ledger Report</a></li>
+                    <li class="@if(in_array($currentRoute,$reportsFinanceLedgerRouteArray)) active @endif">
+                        <a href="{{ route('reports.ledger-report') }}">Finance Ledger Report</a>
+                    </li>
                     <li><a href="javascript:void(0)">Sale Register</a></li>
                     <li><a href="javascript:void(0)">Purchase Register</a></li>
                     <li><a href="javascript:void(0)">Sale Return</a></li>
