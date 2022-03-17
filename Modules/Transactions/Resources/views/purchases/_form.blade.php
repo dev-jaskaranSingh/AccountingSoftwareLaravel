@@ -42,7 +42,7 @@ Party',
     ['class' => 'form-control select2 account_id'],
 ) !!}
                         @error('account_id')
-                            <span class="help-block text-danger">
+                        <span class="help-block text-danger">
                                 {{ $message }}
                             </span>
                         @enderror
@@ -51,7 +51,7 @@ Party',
                         {!! Form::label('invoice_number', 'Invoice Number') !!}
                         {!! Form::text('invoice_number', null, ['class' => 'form-control']) !!}
                         @error('invoice_number')
-                            <span class="help-block text-danger">
+                        <span class="help-block text-danger">
                                 {{ $message }}
                             </span>
                         @enderror
@@ -60,7 +60,7 @@ Party',
                         {!! Form::label('bill_date', 'Bill Date') !!}
                         {!! Form::text('bill_date', now()->format('Y-m-d'), ['class' => 'form-control purchaseDatePicker']) !!}
                         @error('bill_date')
-                            <span class="help-block text-danger">
+                        <span class="help-block text-danger">
                                 {{ $message }}
                             </span>
                         @enderror
@@ -72,13 +72,13 @@ Party',
 purchaseDatePicker',
 ]) !!}
                         @error('purchase_date')
-                            <span class="help-block text-danger">
+                        <span class="help-block text-danger">
                                 {{ $message }}
                             </span>
                         @enderror
                     </div>
                 </div>
-                <hr />
+                <hr/>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="hot-container">
@@ -93,41 +93,42 @@ purchaseDatePicker',
                                         <th width="180px">Total Amount</th>
                                         <th width="150px">
                                             <input type="number" name="total_amount" class="total_amount"
-                                                placeholder="0.00" readonly="true" />
+                                                   placeholder="0.00" readonly="true"/>
                                         </th>
                                     </tr>
                                     <tr>
                                         <th width="180px">Total Discount</th>
                                         <th width="150px"><input type="number" name="total_discount"
-                                                class="total_discount" placeholder="0.00" readonly="true"></th>
+                                                                 class="total_discount" placeholder="0.00"
+                                                                 readonly="true"></th>
                                     </tr>
 
                                     <tr>
                                         <th width="180px">Total Net</th>
                                         <th width="150px">
                                             <input type="number" name="total_net_amount" class="total_net_amount"
-                                                placeholder="0.00" readonly="true">
+                                                   placeholder="0.00" readonly="true">
                                         </th>
                                     </tr>
                                     <tr>
                                         <th width="180px">CGST</th>
                                         <th width="150px"><input type="number" name="cgst" class="cgst"
-                                                placeholder="0.00" readonly="true" /></th>
+                                                                 placeholder="0.00" readonly="true"/></th>
                                     </tr>
                                     <tr>
                                         <th width="180px">SGST</th>
                                         <th width="150px"><input type="number" name="sgst" class="sgst"
-                                                placeholder="0.00" readonly="true" /></th>
+                                                                 placeholder="0.00" readonly="true"/></th>
                                     </tr>
                                     <tr>
                                         <th width="180px">IGST</th>
                                         <th width="150px"><input type="number" name="igst" class="igst"
-                                                placeholder="0.00" readonly="true" /></th>
+                                                                 placeholder="0.00" readonly="true"/></th>
                                     </tr>
                                     <tr>
                                         <th width="180px">TCS</th>
                                         <th width="150px">
-                                            <input type="number" name="tcs" class="tcs" placeholder="0.00" />
+                                            <input type="number" name="tcs" class="tcs" placeholder="0.00"/>
                                         </th>
                                     </tr>
                                     <tr>
@@ -139,14 +140,14 @@ purchaseDatePicker',
                                         </th>
                                         <th width="150px">
                                             <input type="number" class="roundOffValue" name="round_off_value"
-                                                placeholder="0.00" />
+                                                   placeholder="0.00"/>
                                         </th>
                                     </tr>
                                     <tr>
                                         <th width="180px">Grand Total</th>
                                         <th width="150px">
                                             <input class="grand_total_amount" name="grand_total_amount"
-                                                placeholder="0.00" readonly="true" type="number" />
+                                                   placeholder="0.00" readonly="true" type="number"/>
                                         </th>
                                     </tr>
                                 </table>
@@ -154,8 +155,8 @@ purchaseDatePicker',
                         </div>
                     </div>
                 </div>
-                <hr />
-                <br />
+                <hr/>
+                <br/>
             </div>
         </div>
     </div>

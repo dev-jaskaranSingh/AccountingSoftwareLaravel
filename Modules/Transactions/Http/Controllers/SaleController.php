@@ -111,7 +111,7 @@ class SaleController extends Controller
      * @param StockMaster $sale
      * @return Renderable
      */
-    public function show(StockMaster $sale): Renderable
+    public function show(Sale $sale): Renderable
     {
         return view('transactions::sales.show', ['model' => $sale]);
     }
@@ -121,7 +121,7 @@ class SaleController extends Controller
      * @param StockMaster $sale
      * @return Renderable
      */
-    public function edit(StockMaster $sale): Renderable
+    public function edit(Sale $sale): Renderable
     {
         return view('transactions::sales.edit', ['model' => $sale]);
     }
