@@ -30,16 +30,13 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('account_id', 'Select Party') !!}
-                        {!! Form::select(
-    'account_id',
-    \Modules\Masters\Entities\AccountMaster::whereNotNull('created_at')->pluck('name', 'id')->prepend(
-            'Select
-Party',
-            null,
-        ),
-    null,
-    ['class' => 'form-control select2 account_id'],
-) !!}
+                        @php
+                        $accountsList = \Modules\Masters\Entities\AccountMaster::whereNotNull('created_at')
+                        ->pluck('name', 'id')
+                        ->prepend('Select Party',null);
+                        @endphp
+                        {!! Form::select('account_id',$accountsList,null,['class' => 'form-control select2
+                        account_id'],) !!}
                         @error('account_id')
                         <span class="help-block text-danger">
                                 {{ $message }}
