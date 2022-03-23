@@ -85,7 +85,8 @@ class FinanceLedgerDataTable extends DataTable
             Column::make('account_group_name')
                 ->title('Account Group')
                 ->orderable(false)
-                ->width(70),
+                ->width(70)
+                ->searchable(false),
             Column::make('bill_type')->title('Bill Type')->width(70),
             Column::make('bill_number')->title('Bill Number')->width(70),
             Column::make('bill_date')->title('Bill Date')->width(70),
