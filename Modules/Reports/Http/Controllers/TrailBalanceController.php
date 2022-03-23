@@ -2,11 +2,12 @@
 
 namespace Modules\Reports\Http\Controllers;
 
-use DB;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Reports\DataTables\FinanceLedgerDataTable;
 use Modules\Transactions\Entities\FinanceLedger;
 
 class TrailBalanceController extends Controller
@@ -15,17 +16,30 @@ class TrailBalanceController extends Controller
      * Display a listing of the resource.
      * @return mixed
      */
-    public function index(): mixed
+    public function index(Request $request): mixed
     {
-        $model = FinanceLedger::with('account')->get()->groupBy('account_id')->map(fn($item) => [
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+
+        $model = FinanceLedger::with('account')->where(['bill_date' => $request->date])->get()->groupBy('account_id')->map(fn($item) => [
             'account_id' => $item->first()->account_id,
             'account_name' => $item->first()->account->name,
             'debit' => $item->sum('debit'),
             'credit' => $item->sum('credit'),
-            'balance' => $item->sum('debit') - $item->sum('credit')
+            'balance' => $item->sum('debit') - $item->sum('credit'),
+            'bill_date' => $item->first()->bill_date
         ]);
 
-        return view('reports::trial-balance.index',compact('model'));
+        return view('reports::trial-balance.index', compact('model'));
+    }
+
+    /**
+     * @return Application|array|null|View|Factory|false
+     */
+    public function trailBalanceForm(): Application|array|null|bool|View|Factory
+    {
+        return view('reports::trial-balance.create');
     }
 
     /**

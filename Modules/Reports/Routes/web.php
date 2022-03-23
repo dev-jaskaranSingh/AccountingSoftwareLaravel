@@ -14,7 +14,8 @@ Route::group(['prefix' => 'reports', 'as' => 'reports.', 'middleware' => 'admin'
 
     Route::get('/', 'ReportsController@index');
 
-    Route::get('/trial-balance', 'TrailBalanceController@index')->name('trial-balance');
+    Route::get('/trial-balance', 'TrailBalanceController@trailBalanceForm')->name('trial-balance');
+    Route::post('/trial-balance-master', 'TrailBalanceController@index')->name('trial-balance-master');
 
     Route::get('/ledger-report', 'ReportsController@financeLedger')->name('ledger-report');
 

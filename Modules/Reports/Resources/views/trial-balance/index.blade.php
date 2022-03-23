@@ -3,18 +3,39 @@
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
+                {!! Form::open(['route' => 'reports.trial-balance-master']) !!}
+                <div class="row">
+                    <div class="col-md-3 col-sm-12">
+                        {!! Form::label('date','Date') !!}
+                        <strong class="text-danger">*</strong>
+                        {!! Form::text('date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        @error('date')
+                        <span class="help-block text-danger">
+                                    {{ $message }}
+                                </span>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        {!! Form::submit('Submit',['class'=>'btn btn-primary mt-4']) !!}
+                    </div>
+                </div>
+                {!! Form::close() !!}
+                <br/>
+            </div>
+            <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
                         <h5>{!! getCurrentRouteTitle() !!} List</h5>
                     </div>
                     <div class="ibox-content">
-                        <div class="table-responsive">
 
+                        <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover dataTables-example" >
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Account</th>
+                                        <th>Date</th>
                                         <th>Debit</th>
                                         <th>Credit</th>
                                         <th>Balance</th>
@@ -25,6 +46,7 @@
                                         <tr>
                                             <td>{{ ++$loop->index }}</td>
                                             <td>{{ $value['account_name'] }}</td>
+                                            <td>{{ $value['bill_date'] }}</td>
                                             <td>{{ $value['debit'] }}</td>
                                             <td>{{ $value['credit'] }}</td>
                                             <td>{{ $value['balance'] }}</td>

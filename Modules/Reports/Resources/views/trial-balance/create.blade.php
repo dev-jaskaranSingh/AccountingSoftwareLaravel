@@ -10,9 +10,6 @@
                 <li class="breadcrumb-item">
                     <a>{!! getCurrentRouteTitle() !!}</a>
                 </li>
-                <li class="breadcrumb-item active">
-                    <strong>Create</strong>
-                </li>
             </ol>
         </div>
         <div class="col-lg-2">
@@ -20,10 +17,9 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
-        {!! Form::open(['route' => 'transactions.contra.store']) !!}
-        @include('transactions::trial-balance._form')
-        {!! Form::submit('Create',['class'=>'btn btn-primary']) !!}
-        <a href="{{ route('transactions.contra.index') }}" class="btn btn-danger">Cancel</a>
+        {!! Form::open(['route' => 'reports.trial-balance-master']) !!}
+        @include('reports::trial-balance._form')
+        {!! Form::submit('Submit',['class'=>'btn btn-primary']) !!}
         {!! Form::close() !!}
     </div>
 @endsection
