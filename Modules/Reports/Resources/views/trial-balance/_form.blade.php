@@ -24,7 +24,7 @@
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-md-4 col-sm-12 mb-3">
-                        {!! Form::label('date','Date') !!}
+                        {!! Form::label('date','Select Date') !!}
                         <strong class="text-danger">*</strong>
                         {!! Form::text('date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
                         @error('date')
