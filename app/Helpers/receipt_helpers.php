@@ -37,6 +37,13 @@ function getAccountsList(): mixed
         ->prepend('Select Account', null);
 }
 
+function getAccountsListForLedger(): mixed
+{
+    return AccountMaster::orderBy('name', 'asc')
+        ->pluck('name', 'id')
+        ->prepend('Select All', null);
+}
+
 /**
  * @return string[]
  */

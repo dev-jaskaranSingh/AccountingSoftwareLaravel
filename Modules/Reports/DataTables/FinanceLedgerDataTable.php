@@ -48,7 +48,11 @@ class FinanceLedgerDataTable extends DataTable
      */
     public function query(FinanceLedger $model): \Illuminate\Database\Eloquent\Builder
     {
-        return $model->newQuery()->with(['account', 'account.accountGroup','user'])->orderBy('id','asc');
+        return $model->newQuery()
+            ->when(!is_null(request()->account_id),function ($query) {
+                return $query->where('account_id',request()?->account_id);
+            })->with(['account', 'account.accountGroup','user'])
+            ->orderBy('id','asc');
     }
 
     /**

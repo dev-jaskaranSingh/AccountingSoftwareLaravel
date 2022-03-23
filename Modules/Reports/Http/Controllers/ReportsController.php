@@ -9,7 +9,12 @@ use Modules\Reports\DataTables\FinanceLedgerDataTable;
 
 class ReportsController extends Controller
 {
-    public function financeLedger(FinanceLedgerDataTable $dataTable){
+    public function financeLedger(Request $request){
+        $dataTable = new FinanceLedgerDataTable;
         return $dataTable->render('reports::finance-ledger.index');
+    }
+
+    public function financeLedgerForm(){
+        return view('reports::finance-ledger.create');
     }
 }

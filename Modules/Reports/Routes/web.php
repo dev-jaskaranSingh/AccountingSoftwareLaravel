@@ -12,11 +12,15 @@
 */
 Route::group(['prefix' => 'reports', 'as' => 'reports.', 'middleware' => 'admin'], function () {
 
+    //Main Route
     Route::get('/', 'ReportsController@index');
 
+    //Trial Balance
     Route::get('/trial-balance', 'TrailBalanceController@trailBalanceForm')->name('trial-balance');
-    Route::post('/trial-balance-master', 'TrailBalanceController@index')->name('trial-balance-master');
+    Route::post('/trial-balance-master-view', 'TrailBalanceController@index')->name('trial-balance-master');
 
-    Route::get('/ledger-report', 'ReportsController@financeLedger')->name('ledger-report');
+    //Ledger Report
+    Route::get('/ledger-report', 'ReportsController@financeLedgerForm')->name('ledger-report');
+    Route::get('/ledger-report-master-view', 'ReportsController@financeLedger')->name('ledger-report-master');
 
 });

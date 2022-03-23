@@ -2,6 +2,30 @@
 @section('content')
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <form action="{{ route('reports.ledger-report-master') }}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {!! Form::label('account_id','Credit Account') !!}
+                            <strong class="text-danger">*</strong>
+                            {!! Form::select('account_id',getAccountsListForLedger(),request()->get('account_id'),['class'=>'form-control select2 account_id']) !!}
+                            @error('account_id')
+                            <span class="help-block text-danger">
+                                        {{ $message }}
+                                    </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
