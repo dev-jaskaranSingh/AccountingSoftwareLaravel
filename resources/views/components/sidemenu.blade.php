@@ -51,16 +51,17 @@
                     <img alt="image" class="rounded-circle" src="{{authCompany()->logo}}" width="60"/>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="block m-t-xs font-bold">{{$activeUser->name}}</span>
-                        <span class="text-muted text-xs block">{{authCompany()->name}}<b
-                                class="caret"></b></span>
+                        <span class="text-muted text-xs block">{{authCompany()->name}}
+                            {{-- <b class="caret"></b> --}}
+                        </span>
                     </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a class="dropdown-item" href="javascript:void(0)">Profile</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)">Contacts</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)">Mailbox</a></li>
-                        <li class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
-                    </ul>
+{{--                    <ul class="dropdown-menu animated fadeInRight m-t-xs">--}}
+{{--                        <li><a class="dropdown-item" href="javascript:void(0)">Profile</a></li>--}}
+{{--                        <li><a class="dropdown-item" href="javascript:void(0)">Contacts</a></li>--}}
+{{--                        <li><a class="dropdown-item" href="javascript:void(0)">Mailbox</a></li>--}}
+{{--                        <li class="dropdown-divider"></li>--}}
+{{--                        <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>--}}
+{{--                    </ul>--}}
                 </div>
                 <div class="logo-element">
                     CORE+
