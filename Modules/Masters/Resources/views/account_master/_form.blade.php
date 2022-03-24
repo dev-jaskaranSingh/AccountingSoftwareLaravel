@@ -86,7 +86,12 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('country_id','Select Country') !!}
                         <strong class="text-danger">*</strong>
-                        {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),@$model->country_id,['class'=>'select2 country form-control']) !!}
+                        @if(request()->old('country_id'))
+                            {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),request()->old('country_id'),['class'=>'select2 country form-control']) !!}
+                        @else
+                            {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),@$model->country_id,['class'=>'select2 country form-control']) !!}
+                        @endif
+
                         @error('country_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -98,7 +103,11 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('state_id','Select State') !!}
                         <strong class="text-danger">*</strong>
-                        {!! Form::select('state_id',\App\Models\State::where('country_id',@$model->country_id)->pluck('name','id'),@$model->state_id,['class'=>'select2 state form-control']) !!}
+                        @if(request()->old('state_id'))
+                            {!! Form::select('state_id',\App\Models\State::where('country_id',request()->old('country_id'))->pluck('name','id'),request()->old('state_id'),['class'=>'select2 state form-control']) !!}
+                        @else
+                            {!! Form::select('state_id',\App\Models\State::where('country_id',@$model->country_id)->pluck('name','id'),@$model->state_id,['class'=>'select2 state form-control']) !!}
+                        @endif
                         @error('state_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -109,11 +118,16 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('city_id','Select City') !!}
                         <strong class="text-danger">*</strong>
-                        @if(isset($model))
-                            {!! Form::select('city_id',\App\Models\State::find(@$model->state_id)->cities()->pluck('name','id'),@$model->city_id,['class'=>'select2 city form-control']) !!}
+                        @if(request()->old('city_id'))
+                            {!! Form::select('city_id',\App\Models\State::find(request()->old('state_id'))->cities()->pluck('name','id'),request()->old('city_id'),['class'=>'select2 city form-control']) !!}
                         @else
-                            {!! Form::select('city_id',[],@$model->city_id,['class'=>'select2 city form-control']) !!}
+                            @if(isset($model))
+                                {!! Form::select('city_id',\App\Models\State::find(@$model->state_id)->cities()->pluck('name','id'),@$model->city_id,['class'=>'select2 city form-control']) !!}
+                            @else
+                                {!! Form::select('city_id',[],@$model->city_id,['class'=>'select2 city form-control']) !!}
+                            @endif
                         @endif
+
                         @error('city_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -241,30 +255,4 @@
 
 @section('scripts')
     <script src="{{ asset('js/account-master.js?ref='.rand(1111,9999)) }}" type="text/javascript"></script>
-    @if(!is_null(request()->old('city_id')))
-    <script>
-
-        var country_id = $(this).val();
-        ajaxHandler(route + "/ajax/get-state-by-country", {country_id: country_id}, 'GET', function (data) {
-            toastr.success('States loaded.', 'Success!');
-            window.states = data.states;
-            $('.state').select2({
-                data: data?.states, placeholder: 'Select State'
-            });
-        });
-
-        $('body').on('change', '.state', function () {
-            var state_id = $(this).val();
-            let statesArray = window.states;
-            var selectedState = statesArray.find(item => item.id == state_id);
-            $('.stateCode').val(selectedState?.tin);
-            toastr.success('Cities loaded.', 'Success!');
-            ajaxHandler(route + '/ajax/get-city-by-state', {state_id: state_id}, 'GET', function (data) {
-                $('.city').select2({
-                    data: data?.cities, placeholder: 'Select City'
-                });
-            });
-        });
-    </script>
-    @endif
 @endsection
