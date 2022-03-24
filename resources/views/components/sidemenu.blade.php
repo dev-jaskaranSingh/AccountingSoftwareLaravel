@@ -170,7 +170,7 @@
                 </a>
                 <ul class="nav nav-second-level collapse">
                     <li class="@if(in_array($currentRoute,$reportsTrailBalanceRouteArray)) active @endif">
-                        <a href="{{ route('reports.trial-balance')  }}">Trail Balance</a>
+                        <a href="{{ route('reports.trial-balance')  }}">Trial Balance</a>
                     </li>
                     <li class="@if(in_array($currentRoute,$reportsFinanceLedgerRouteArray)) active @endif">
                         <a href="{{ route('reports.ledger-report') }}">Finance Ledger Report</a>

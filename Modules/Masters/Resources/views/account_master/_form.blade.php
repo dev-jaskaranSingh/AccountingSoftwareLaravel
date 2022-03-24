@@ -51,17 +51,6 @@
                     </div>
 
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('address','Address') !!}
-                        <strong class="text-danger">*</strong>
-                        {!! Form::textarea('address',null,['class'=>'form-control','rows' =>'4']) !!}
-                        @error('address')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('opening_balance','Opening Balance') !!}
                         <strong class="text-danger">*</strong>
                         {!! Form::number('opening_balance',isset($model) ? $model->opening_balance : 0,['class'=>'form-control']) !!}
@@ -126,6 +115,17 @@
                             {!! Form::select('city_id',[],@$model->city_id,['class'=>'select2 city form-control']) !!}
                         @endif
                         @error('city_id')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('address','Address') !!}
+                        <strong class="text-danger">*</strong>
+                        {!! Form::textarea('address',null,['class'=>'form-control','rows' =>'4']) !!}
+                        @error('address')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
