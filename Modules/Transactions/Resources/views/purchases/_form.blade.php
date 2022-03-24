@@ -30,6 +30,7 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('account_id', 'Select Party') !!}
+                        <strong class="text-danger">*</strong>
                         @php
                         $accountsList = \Modules\Masters\Entities\AccountMaster::whereNotNull('created_at')
                         ->pluck('name', 'id')
@@ -45,6 +46,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('invoice_number', 'Invoice Number') !!}
+                        <strong class="text-danger">*</strong>
                         {!! Form::text('invoice_number', null, ['class' => 'form-control']) !!}
                         @error('invoice_number')
                         <span class="help-block text-danger">
@@ -54,6 +56,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('bill_date', 'Bill Date') !!}
+                        <strong class="text-danger">*</strong>
                         {!! Form::text('bill_date', now()->format('Y-m-d'), ['class' => 'form-control purchaseDatePicker']) !!}
                         @error('bill_date')
                         <span class="help-block text-danger">
@@ -63,10 +66,8 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('purchase_date', 'Purchase Date') !!}
-                        {!! Form::text('purchase_date', now()->format('Y-m-d'), [
-    'class' => 'form-control
-purchaseDatePicker',
-]) !!}
+                        <strong class="text-danger">*</strong>
+                        {!! Form::text('purchase_date', now()->format('Y-m-d'), ['class' => 'form-control purchaseDatePicker']) !!}
                         @error('purchase_date')
                         <span class="help-block text-danger">
                                 {{ $message }}

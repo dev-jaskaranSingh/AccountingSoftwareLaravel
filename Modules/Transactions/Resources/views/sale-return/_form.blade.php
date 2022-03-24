@@ -24,6 +24,7 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('account_id','Select Party') !!}
+                        <strong class="text-danger">*</strong>
                         {!! Form::select('account_id',\Modules\Masters\Entities\AccountMaster::whereNotNull('created_at')->pluck('name','id')->prepend('Select Party',null),null,['class'=>'form-control select2 account_id']) !!}
                         @error('account_id')
                         <span class="help-block text-danger">
@@ -40,6 +41,7 @@
                             $finalInvoice = 'SB/'.$fromYear.'-'.$toYear.'/'.$invoiceNumber;
                         @endphp
                         {!! Form::label('invoice_number','Invoice Number') !!}
+                        <strong class="text-danger">*</strong>
                         {!! Form::hidden('invoice_number',$invoiceNumber) !!}
                         {!! Form::text('invoice',$finalInvoice,['class'=>'form-control','readonly' => true]) !!}
                         @error('invoice_number')
@@ -52,6 +54,7 @@
                         <div class="row">
                             <div class="col-md-12 col-sm-12 mb-3">
                                 {!! Form::label('bill_date','Bill Date') !!}
+                                <strong class="text-danger">*</strong>
                                 {!! Form::text('bill_date',now()->format('Y-m-d'),['class'=>'form-control purchaseDatePicker']) !!}
                                 @error('bill_date')
                                 <span class="help-block text-danger">
