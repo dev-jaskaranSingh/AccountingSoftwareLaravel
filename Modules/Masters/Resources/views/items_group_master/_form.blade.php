@@ -8,6 +8,7 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('name','Name') !!}
+                        <strong class="text-danger">*</strong>
                         {!! Form::text('name',null,['class'=>'form-control']) !!}
                         @error('name')
                         <span class="help-block text-danger">

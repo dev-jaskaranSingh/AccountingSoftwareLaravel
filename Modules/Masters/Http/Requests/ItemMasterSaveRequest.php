@@ -19,8 +19,8 @@ class ItemMasterSaveRequest extends FormRequest
             'item_group_id' => 'required|integer|exists:items_group_master,id',
             'hsn_id' => 'required|integer|exists:hsn_master,id',
             'opening_balance' => 'numeric',
-            'purchase_price' => 'numeric',
-            'sale_price' => 'numeric',
+            'purchase_price' => 'numeric|required',
+            'sale_price' => 'numeric|required',
         ];
     }
 
