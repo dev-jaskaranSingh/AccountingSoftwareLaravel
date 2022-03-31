@@ -47,16 +47,6 @@
                     </div>
 
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('address','Address') !!}
-                        {!! Form::textarea('address',null,['class'=>'form-control','rows'=>4]) !!}
-                        @error('address')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('country_id','Select Country') !!}
                         {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),@$model->country_id,['class'=>'select2 country form-control']) !!}
                         @error('country_id')
@@ -95,6 +85,16 @@
                         {!! Form::label('pincode','PIN Code') !!}
                         {!! Form::number('pincode',null,['class'=>'form-control select']) !!}
                         @error('pincode')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('address','Address') !!}
+                        {!! Form::textarea('address',null,['class'=>'form-control','rows'=>4]) !!}
+                        @error('address')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>

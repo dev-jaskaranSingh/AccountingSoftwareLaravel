@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-12">
                 <form action="{{ route('reports.ledger-report-master') }}">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             {!! Form::label('account_id','Credit Account') !!}
                             <strong class="text-danger">*</strong>
                             {!! Form::select('account_id',getAccountsListForLedger(),request()->get('account_id'),['class'=>'form-control select2 account_id']) !!}
@@ -15,7 +15,27 @@
                                     </span>
                             @enderror
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4 col-sm-12 mb-3">
+                        {!! Form::label('from_date','From Date') !!}
+                        <strong class="text-danger">*</strong>
+                        {!! Form::date('from_date',null,['class'=>'form-control']) !!}
+                        @error('from_date')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-md-4 col-sm-12 mb-3">
+                        {!! Form::label('to_date','To Date') !!}
+                        <strong class="text-danger">*</strong>
+                        {!! Form::date('to_date',null,['class'=>'form-control']) !!}
+                        @error('to_date')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+                        <div class="col-md-12">
                             <button type="submit" class="btn btn-primary mt-4">Submit</button>
                         </div>
                     </div>
@@ -30,10 +50,12 @@
                 <div class="ibox ">
                     <div class="ibox-title">
                         <h5>{!! getCurrentRouteTitle() !!}</h5>
+                        <h5 class="hide float-right" id="openblnc"></h5>
                     </div>
                     <div class="ibox-content">
                         <div class="table-responsive">
-                            {!! $dataTable->table(['class'=>'table table-striped table-bordered table-hover']) !!}
+                            {!! $dataTable->table(['class'=>'table table-striped table-bordered table-hover'],true) !!}
+
                         </div>
                     </div>
                 </div>
@@ -51,6 +73,69 @@
                 $(this).parent('form').submit();
             }
         });
+    </script>
+
+    
+    <script>
+ $(document).ready(function() {
+    setTimeout(function () {
+        var table = $('#finance-ledger-datatable-table').dataTable();
+        var hours = table.fnGetData();
+        $(document).ready(function(){
+        $("tfoot tr>th:nth-child(1)").text("Total");
+            calculateColumn(hours);
+        })
+
+    }, 2000);
+ });
+  function calculateColumn(index) {
+    console.log(index);
+            var credittotal = 0;
+            var openingblnc = 0;
+            var debittotal = 0;
+            var balancetotal = 0;
+            var i = 0;
+            $('table tr').each(function () {
+                if(index.length == i ){
+                    return false;
+                }
+                creditval = parseInt(index[i].credit);
+                // alert(creditval);
+                if (!isNaN(creditval)) {
+                    credittotal+=creditval;
+                }
+                debitval = parseInt(index[i].debit);
+                if (!isNaN(debitval)) {
+                    debittotal+=debitval;
+                }
+                openingblncval = parseInt(index[i].account.opening_balance);
+                var accounts = index[i].account;
+                console.log(accounts);
+                    if(accounts.account_type == "credit"){
+                        balancetotal = debittotal-credittotal-openingblncval;
+                    }
+                    if(accounts.account_type == "debit"){
+                        balancetotal = debittotal-credittotal+openingblncval;
+                    }
+                if (!isNaN(openingblncval)) {
+                    if(accounts.account_type == "credit"){
+
+                        openingblnc= '-'+openingblncval;
+                    }else{
+
+                        openingblnc= openingblncval;
+                    }
+                }
+                i++;
+                
+            });
+            $('#openblnc').show();
+            $('tfoot tr>th:nth-child('+ (5) +')').text(debittotal);
+            $('tfoot tr>th:nth-child('+ (6) +')').text(credittotal);
+            $('tfoot tr>th:nth-child('+ (7) +')').text(balancetotal);
+            $('#openblnc').text("Opening Balance : "+openingblnc);
+        }
+
     </script>
 @endsection
 @endsection

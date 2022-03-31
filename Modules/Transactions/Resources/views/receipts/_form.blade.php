@@ -42,7 +42,7 @@
             </div>
             <div class="ibox-content">
                 <div class="row">
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-4 col-sm-12 mb-3">
                         @isset($model)
                             {!! Form::hidden('bill_number',$model->bill_number) !!}
                         @endisset
@@ -56,7 +56,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-4 col-sm-12 mb-3">
                         {!! Form::label('second_account_id','Received From') !!}
                         <strong class="text-danger">*</strong>
                         {!! Form::select('second_account_id',getSecondAccountsList(),$secondAccountId,['class'=>'form-control select2 second_account_id']) !!}
@@ -98,7 +98,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-2">
+                    <div class="col-md-4 col-sm-12 mb-2">
                         {!! Form::label('voucher_date','Voucher Date') !!}
                         <strong class="text-danger">*</strong>
                         {!! Form::text('voucher_date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
@@ -109,7 +109,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-3">
+                    <div class="col-md-4 col-sm-12 mb-3">
                         {!! Form::label('amount','Amount') !!}
                         <strong class="text-danger">*</strong>
                         {!! Form::text('amount',$amount,['class'=>'form-control']) !!}

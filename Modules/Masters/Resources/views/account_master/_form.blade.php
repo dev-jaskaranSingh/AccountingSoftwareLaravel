@@ -73,17 +73,6 @@
                     </div>
 
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('dealer_type','Dealer Type') !!}
-                        <strong class="text-danger">*</strong>
-                        {!! Form::select('dealer_type',['register' => 'Register','unregister' => 'Unregister'],@$model->dealer_type,['class'=>'select2 form-control dealer_type']) !!}
-                        @error('dealer_type')
-                        <span class="help-block text-danger">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('country_id','Select Country') !!}
                         <strong class="text-danger">*</strong>
                         @if(request()->old('country_id'))
@@ -140,6 +129,17 @@
                         <strong class="text-danger">*</strong>
                         {!! Form::textarea('address',null,['class'=>'form-control','rows' =>'4']) !!}
                         @error('address')
+                        <span class="help-block text-danger">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('dealer_type','Dealer Type') !!}
+                        <strong class="text-danger">*</strong>
+                        {!! Form::select('dealer_type',['register' => 'Register','unregister' => 'Unregister'],@$model->dealer_type,['class'=>'select2 form-control dealer_type']) !!}
+                        @error('dealer_type')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>

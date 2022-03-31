@@ -45,7 +45,7 @@
                 @endisset
             <div class="ibox-content">
                 <div class="row">
-                    <div class="col-md-6 col-sm-12 mb-2">
+                    <div class="col-md-4 col-sm-12 mb-2">
                         {!! Form::label('creditOrDebit','Credit/Debit') !!}
                         {!! Form::select('creditOrDebit',['credit' => 'Credit','debit' => 'Debit' ],null,['class'=>'form-control select2']) !!}
                         @error('creditOrDebit')
@@ -55,7 +55,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 col-sm-12 mb-2">
+                    <div class="col-md-4 col-sm-12 mb-2">
                         {!! Form::label('account_id','Select Account') !!}
                         {!! Form::select('account_id',getAccountsList(),$secondAccountId,['class'=>'form-control select2 second_account_id']) !!}
                         @error('second_account_id')
@@ -105,7 +105,7 @@
                     </div>
 
 
-                    <div class="col-md-6 col-sm-12 mb-2">
+                    <div class="col-md-4 col-sm-12 mb-2">
                         {!! Form::label('amount','Amount') !!}
                         {!! Form::text('amount',$amount,['class'=>'form-control']) !!}
                         @error('amount')

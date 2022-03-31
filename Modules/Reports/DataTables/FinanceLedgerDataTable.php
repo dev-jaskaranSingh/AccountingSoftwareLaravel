@@ -9,6 +9,8 @@ use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
+use Carbon\Carbon;
+use DB;
 
 class FinanceLedgerDataTable extends DataTable
 {
@@ -20,14 +22,15 @@ class FinanceLedgerDataTable extends DataTable
      */
     public function dataTable($query): DataTableAbstract
     {
+
         return datatables()->eloquent($query)
             ->editColumn('created_at', function ($model) {
                 if (is_null($model->created_at)) return null;
                 return $model->created_at->format('d-m-Y h:i:s A');
             })
-            ->editColumn('account_group_name', function ($model) {
-                if (is_null($model->account->accountGroup)) return null;
-                return $model->account->accountGroup->name;
+            ->editColumn('account_name', function ($model) {
+                if (is_null($model->account_name)) return null;
+                return $model->account_name;
             })
             ->editColumn('created_by', function ($model) {
                 if (is_null($model->user)) return null;
@@ -36,7 +39,24 @@ class FinanceLedgerDataTable extends DataTable
             ->editColumn('bill_type', function ($model) {
                 if (is_null($model->bill_type)) return null;
                 return str_replace('_',' ',strtoupper($model->bill_type));
-            })
+            })->editColumn('balance', function ($model) {
+                
+                if (is_null($model->balance)) return null;
+                return $model->balance;
+            })->addColumn('Total', function ($model) {
+                
+                if (is_null($model->balance)) return null;
+                return $model->balance;
+            })->addColumn('total', function ($model) {
+            return 0 + 
+                   0 +
+                    0 +
+                    0 +
+                    0 +
+                    0 +
+                    0;
+        })
+        ->addIndexColumn()
             ->rawColumns(['action']);
     }
 
@@ -48,11 +68,45 @@ class FinanceLedgerDataTable extends DataTable
      */
     public function query(FinanceLedger $model): \Illuminate\Database\Eloquent\Builder
     {
-        return $model->newQuery()
-            ->when(!is_null(request()->account_id),function ($query) {
-                return $query->where('account_id',request()?->account_id);
-            })->with(['account', 'account.accountGroup','user'])
-            ->orderBy('id','asc');
+       
+        $openongBlnc = DB::table('account_masters')->where('id',request()?->account_id)->first();
+        $fnledgers = DB::table('finance_ledger')->where('account_id',request()?->account_id)->get();
+        $opnblncType = $openongBlnc->account_type;
+        $opnblnc = $openongBlnc->opening_balance;
+        foreach ($fnledgers as $key => $fnledger) {
+            
+               $credit = 0;
+               $debit = 0;
+               if($fnledger->credit){
+                $credit = $fnledger->credit;
+               }
+               if($fnledger->debit){
+                $debit = $fnledger->debit;
+               }
+               if($key == 0){
+
+               if($opnblncType == "credit"){
+
+                    $balance = $debit-$credit-$opnblnc;
+               }else{
+                    $balance = $opnblnc+$debit-$credit;
+
+               }
+               }else{
+
+                    $balance = $opnblnc+$debit-$credit;
+               }
+               $opnblnc = $balance;
+
+
+            DB::table('finance_ledger')->where('id',$fnledger->id)->update(['balance' => $balance]);
+            
+        }
+
+        $result = $model->newQuery()->when(!is_null(request()->from_date),function ($query) {
+                return $query->where('account_id',request()?->account_id)->where('bill_date','<=',Carbon::createFromFormat('Y-m-d', request()?->to_date)->format('Y-m-d'))->where('bill_date','>=',Carbon::createFromFormat('Y-m-d', request()?->from_date)->format('Y-m-d'));})->with(['account', 'account.accountGroup','user'])->orderBy('id','asc');
+        return $result;
+
     }
 
     /**
@@ -66,6 +120,8 @@ class FinanceLedgerDataTable extends DataTable
             ->setTableId('finance-ledger-datatable-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->ajax()
+  ->drawCallback('function() { $("#total").val( this.api().ajax.json().total ) }')
             ->dom('Bfrtip')
             ->orderBy(1)
             ->buttons(
@@ -84,21 +140,18 @@ class FinanceLedgerDataTable extends DataTable
      */
     protected function getColumns(): array
     {
-        return [Column::make('id')->width(40),
-            Column::make('account_name')->title('Account Name')->width(80),
-            Column::make('account_group_name')
-                ->title('Account Group')
+        return [Column::make('bill_date')->title('Date')->width(70),
+            Column::make('account_name')
+                ->title('Account Name')
                 ->orderable(false)
                 ->width(70)
                 ->searchable(false),
-            Column::make('bill_type')->title('Bill Type')->width(70),
-            Column::make('bill_number')->title('Bill Number')->width(70),
-            Column::make('bill_date')->title('Bill Date')->width(70),
-            Column::make('credit')->title('Credit')->width(70),
+            Column::make('bill_type')->title('Voucher Type')->width(70),
+            Column::make('bill_number')->title('Voucher Number')->width(70),
             Column::make('debit')->title('Debit')->width(70),
-            Column::make('created_by')->title('Created BY'),
-            Column::make('created_at')
-                ->title('Created At')];
+            Column::make('credit')->title('Credit')->width(70),
+            Column::make('balance')->title('Balance')->width(70),
+        ];
     }
 
     /**

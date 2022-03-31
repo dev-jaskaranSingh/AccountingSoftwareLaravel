@@ -196,7 +196,7 @@
                 <tr>
                     <th width="25%">DATED</th>
                     <td>:</td>
-                    <td>{{ $model?->invoice_date }}</td>
+                    <td>{{ \Carbon\Carbon::parse($model?->bill_date)->format('d-M-Y') }}</td>
                 </tr>
                 <tr>
                     <th width="25%">PLACE OF SUPPLY</th>

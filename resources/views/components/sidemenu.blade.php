@@ -68,7 +68,7 @@
                 </div>
             </li>
             <li>
-                <a href="javascript:void(0)">
+                <a href="{{url('/admin')}}">
                     <i class="fa fa-th-large"></i>
                     <span class="nav-label">Dashboards</span>
                 </a>
