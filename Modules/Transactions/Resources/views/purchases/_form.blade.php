@@ -19,7 +19,7 @@
     }
 
 </style>
-@include('transactions::purchases._party-modal')
+<!-- @include('transactions::purchases._party-modal') -->
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox ">
