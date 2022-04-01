@@ -83,14 +83,16 @@ class FinanceLedgerDataTable extends DataTable
                if($fnledger->debit){
                 $debit = $fnledger->debit;
                }
-               
+                  
                if($opnblncType == "credit"){
-                     $btl = $debit-$credit;   
-                    $balance = $opnblnc-$btl;
+                     $ttl = $opnblnc-$debit-$credit;
+                        $balance = $ttl;
+                    
+                   
                }else{
-                     $btl = $debit-$credit;   
-                    $balance = $opnblnc+$btl;
-
+                 $ttl = $opnblnc+$debit-$credit;
+                     
+                    $balance = $ttl;
                }
                
                $opnblnc = $balance;

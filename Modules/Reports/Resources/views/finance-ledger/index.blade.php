@@ -89,7 +89,6 @@
     }, 2000);
  });
   function calculateColumn(index) {
-    console.log(index);
             var credittotal = 0;
             var openingblnc = 0;
             var debittotal = 0;
