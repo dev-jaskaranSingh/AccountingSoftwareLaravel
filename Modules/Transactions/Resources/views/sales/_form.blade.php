@@ -38,7 +38,7 @@
                             $invoiceNumber = getSalesMaxInvoices()+1;
                             $fromYear = \Carbon\Carbon::parse(authCompany()->from_date)->format('y');
                             $toYear = \Carbon\Carbon::parse(authCompany()->to_date)->format('y');
-                            $finalInvoice = 'SB/'.$fromYear.'-'.$toYear.'/'.$invoiceNumber;
+                            $finalInvoice = 'SB/'.$fromYear.'-'.$toYear.'/'.sprintf("%02d",$invoiceNumber);
                         @endphp
                         {!! Form::label('invoice_number','Invoice Number') !!}
                         <strong class="text-danger">*</strong>

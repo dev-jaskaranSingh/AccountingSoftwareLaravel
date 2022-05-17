@@ -9,25 +9,28 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Masters\Entities\ItemMaster;
-use Modules\Transactions\DataTables\PurchaseDataTable;
+use Modules\Transactions\DataTables\StockDataTable;
 use Modules\Transactions\Entities\Purchase;
+use Modules\Transactions\Entities\Stock;
 use Modules\Transactions\Http\Requests\PurchaseSaveRequest;
+use Modules\Transactions\Http\Requests\StockSaveRequest;
 use Modules\Transactions\Http\Requests\PurchaseUpdateRequest;
 use Modules\Transactions\Services\FinanceLedgerServices;
 use Modules\Transactions\Services\PurchaseServices;
 use Session;
 use Throwable;
 
-class PurchaseController extends Controller
+class StockController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @param PurchaseDataTable $dataTable
+     * @param StockDataTable $dataTable
      * @return void
      */
-    public function index(PurchaseDataTable $dataTable)
+    public function index(StockDataTable $dataTable)
     {
-        return $dataTable->render('transactions::purchases.index');
+        
+        return $dataTable->render('transactions::stock.index');
     }
 
     /**
@@ -40,7 +43,7 @@ class PurchaseController extends Controller
             return ['id' => $key, 'label' => $value];
         })->toArray());
 
-        return view('transactions::purchases.create', compact('items'));
+        return view('transactions::stock.create', compact('items'));
     }
 
     /**
@@ -49,7 +52,7 @@ class PurchaseController extends Controller
      * @return RedirectResponse
      * @throws Throwable
      */
-    public function store(PurchaseSaveRequest $request): RedirectResponse
+    public function store(StockSaveRequest $request): RedirectResponse
     {
         try {
             DB::beginTransaction();
@@ -58,7 +61,7 @@ class PurchaseController extends Controller
             $filteredPurchaseItemsJson = $this->filteredPurchaseItemsArray($request->bill_products)->toJson();
 
             //Save Purchase bill
-            $purchaseModel = Purchase::create($request->validated() + ['bill_products_json' => $filteredPurchaseItemsJson,'remarks' => $request->remarks]);
+            $purchaseModel = Stock::create($request->validated() + ['bill_products_json' => $filteredPurchaseItemsJson]);
 
             //Manipulate Purchase bill items
             $purchaseItems = $this->mapPurchaseItemData($request->bill_products, $request->bill_date, $request->account_id, $request->invoice_number);
@@ -67,17 +70,18 @@ class PurchaseController extends Controller
             $savedPurchaseItems = $purchaseModel->purchaseItems()->createMany($purchaseItems);
 
             // Save Finance Ledger
-            PurchaseServices::savePurchaseInFinanceLedger('purchase', $purchaseModel, $request);
+            PurchaseServices::savePurchaseInFinanceLedger('stockIn', $purchaseModel, $request);
 
             // Save Stock
-            PurchaseServices::saveStockMaster($savedPurchaseItems, 'purchase', $purchaseModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
+            PurchaseServices::saveStockMaster($savedPurchaseItems, 'stockIn', $purchaseModel->id, $request->bill_date, $request->account_id, $request->invoice_number);
 
             DB::commit();
-            Session::flash("success", "Success|Purchase saved Successfully");
+            Session::flash("success", "Success|Stock saved Successfully");
 
         } catch (Exception $exception) {
+dd('$request->all()');
             DB::rollBack();
-            Session::flash("error", "Error|Purchase save failed");
+            Session::flash("error", "Error|Stock save failed");
             dd($exception);
         }
         return back();
@@ -111,9 +115,9 @@ class PurchaseController extends Controller
      * @param Purchase $purchase
      * @return Renderable
      */
-    public function show(Purchase $purchase): Renderable
+    public function show(Stock $stock): Renderable
     {
-        return view('transactions::purchases.show', ['model' => $purchase]);
+        return view('transactions::stock.view', ['model' => $stock]);
     }
 
     /**
@@ -121,9 +125,9 @@ class PurchaseController extends Controller
      * @param Purchase $purchase
      * @return Renderable
      */
-    public function edit(Purchase $purchase): Renderable
+    public function edit(Stock $stock): Renderable
     {
-        return view('transactions::purchases.edit', ['model' => $purchase,'purchase_items' => $purchase->bill_products_json]);
+        return view('transactions::stock.edit', ['model' => $stock,'purchase_items' => $stock->bill_products_json]);
     }
 
     /**
@@ -132,10 +136,10 @@ class PurchaseController extends Controller
      * @param Purchase $purchase
      * @return RedirectResponse
      */
-    public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
+    public function update(PurchaseUpdateRequest $request, Stock $stock): RedirectResponse
     {
-        $purchase->update($request->validated());
-        Session::flash("success", "Success|Purchase has been updated successfully");
+        $stock->update($request->validated());
+        Session::flash("success", "Success|Stock has been updated successfully");
         return back();
     }
 
@@ -145,26 +149,26 @@ class PurchaseController extends Controller
      * @return RedirectResponse
      * @throws Throwable
      */
-    public function destroy(Purchase $purchase): RedirectResponse
+    public function destroy(Stock $stock): RedirectResponse
     {
         try {
             DB::beginTransaction();
-            $purchase->delete();
-            $purchase->ledgerEntries()->delete();
-            $purchase->purchaseItems()->delete();
-            Session::flash("success", "Success|Purchase has been deleted successfully");
+            $stock->delete();
+            $stock->ledgerEntries()->delete();
+            $stock->purchaseItems()->delete();
+            Session::flash("success", "Success|Stock has been deleted successfully");
             DB::commit();
         } catch (Throwable $exception) {
             DB::rollBack();
-            Session::flash("error", "Error|Purchase Delete failed");
+            Session::flash("error", "Error|Stock Delete failed");
             dd(['code' => $exception->getCode(), 'message' => $exception->getMessage()]);
         } finally {
             return back();
         }
     }
 
-    public function printPurchase(Purchase $purchase)
+    public function printPurchase(Stock $stock)
     {
-        return view('transactions::purchases.print', ['model' => $purchase]);
+        return view('transactions::stock.print', ['model' => $stock]);
     }
 }

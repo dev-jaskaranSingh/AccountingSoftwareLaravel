@@ -24,7 +24,7 @@
     <div class="col-lg-12">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>Create Purchase <small>Purchase create form</small></h5>
+                <h5>Create Stock In <small>Stock In create form</small></h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -65,20 +65,10 @@
                         @enderror
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('purchase_date', 'Purchase Date') !!}
+                        {!! Form::label('purchase_date', 'StockIn Date') !!}
                         <strong class="text-danger">*</strong>
                         {!! Form::text('purchase_date', now()->format('Y-m-d'), ['class' => 'form-control purchaseDatePicker']) !!}
                         @error('purchase_date')
-                        <span class="help-block text-danger">
-                                {{ $message }}
-                            </span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6 col-sm-12 mb-3">
-                        {!! Form::label('remarks', 'Remarks') !!}
-                        <strong class="text-danger">*</strong>
-                        {!! Form::text('remarks', null, ['class' => 'form-control']) !!}
-                        @error('remarks')
                         <span class="help-block text-danger">
                                 {{ $message }}
                             </span>
@@ -170,6 +160,7 @@
 </div>
 
 {!! Form::hidden('product', json_encode(@$items), ['class' => 'products-data']) !!}
+{!! Form::hidden('stock_type','stockIn') !!}
 {!! Form::hidden('purchase_items', json_encode(@$purchase_items), ['class' => 'purchase-items']) !!}
 {!! Form::hidden('bill_products', null, ['class' => 'purchase_products']) !!}
 {!! Form::hidden('company_state_code', authCompany()->gst_state_code, ['class' => 'company_state_code']) !!}

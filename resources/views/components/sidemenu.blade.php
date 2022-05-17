@@ -157,8 +157,8 @@
                     <li class="@if(in_array($currentRoute,$transactionsJournalRouteArray)) active @endif">
                         <a href="{{ route('transactions.journal.index') }}">Journal</a>
                     </li>
-                    <li><a href="javascript:void(0)">Stock In</a></li>
-                    <li><a href="javascript:void(0)">Stock Out</a></li>
+                    <li><a href="{{ route('transactions.stock.index') }}">Stock In</a></li>
+                    <li><a href="{{ route('transactions.stockOut.index') }}">Stock Out</a></li>
                 </ul>
             </li>
 
