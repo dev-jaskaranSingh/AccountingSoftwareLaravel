@@ -184,9 +184,9 @@ $(function(){
 		});
 	});
 
-    $('form').submit(function(){
-        $(this).find('input[type=submit]').prop('disabled', true);
-    });
+    // $('form').submit(function(){
+    //     $(this).find('input[type=submit]').prop('disabled', true);
+    // });
 
 });
 

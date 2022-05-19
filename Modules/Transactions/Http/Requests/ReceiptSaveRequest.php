@@ -19,7 +19,6 @@ class ReceiptSaveRequest extends FormRequest
         return [
             'first_account_id' => 'required',
             'second_account_id' => 'required',
-            'date' => 'required',
             'instr_type' => 'required',
             'instrument_no' => '',
             'instrument_date' => 'required|after_or_equal:'.$fromDate.'|before_or_equal:'. $toDate,
