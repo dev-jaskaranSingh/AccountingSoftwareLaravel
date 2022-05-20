@@ -40,18 +40,16 @@
                                     <th>Date</th>
                                     <th>Debit</th>
                                     <th>Credit</th>
-                                    <th>Balance</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($model as $key => $value)
                                     <tr>
                                         <td>{{ ++$loop->index }}</td>
-                                        <td>{{ $value['account_name'] }}</td>
-                                        <td>{{ $value['bill_date'] }}</td>
-                                        <td>{{ $value['debit'] }}</td>
-                                        <td>{{ $value['credit'] }}</td>
-                                        <td>{{ $value['balance'] }}</td>
+                                        <td>{{ $value->account_name }}</td>
+                                        <td>{{ $value->bill_date }}</td>
+                                        <td>{{ $value->debit }}</td>
+                                        <td>{{ $value->credit }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

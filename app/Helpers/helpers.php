@@ -56,10 +56,7 @@ function getIndianCurrency($amount): string
     return ($implode_to_Rupees ? $implode_to_Rupees . 'Rupees ' : '') . $get_paise;
 }
 
-/**
- * @return mixed
- */
-function authCompany(): mixed
+function authCompany()
 {
     return Session::get('company');
 }

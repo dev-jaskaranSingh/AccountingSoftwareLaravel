@@ -34,7 +34,7 @@ class Company extends Model
     use HasFactory;
 
     // protected $fillable = ['name', 'logo', 'db_name', 'address', 'email'];
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     /**
      * @return Collection
