@@ -68,7 +68,7 @@ class FinanceLedgerDataTable extends DataTable
      */
     public function query(FinanceLedger $model): \Illuminate\Database\Eloquent\Builder
     {
-       
+      
         $openongBlnc = DB::table('account_masters')->where('id',request()?->account_id)->first();
         $fnledgers = DB::table('finance_ledger')->where('account_id',request()?->account_id)->get();
         $opnblncType = $openongBlnc->account_type;

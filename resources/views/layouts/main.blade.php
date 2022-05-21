@@ -17,6 +17,15 @@
 </div>
 
 @include('components.script')
+<script >
+	$(document).on('click','.select2',function(){
+		
+		
+		$('.select2-search__field').select();
+		
+	});
+	// class="select2-search__field"
+</script>
 
 </body>
 
