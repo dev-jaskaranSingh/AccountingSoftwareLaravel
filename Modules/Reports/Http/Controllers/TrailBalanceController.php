@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Transactions\Entities\FinanceLedger;
 
 class TrailBalanceController extends Controller
@@ -16,28 +17,51 @@ class TrailBalanceController extends Controller
      * Display a listing of the resource.
      * @return mixed
      */
-    public function index(Request $request): mixed
+    public function index(Request $request)
     {
         $request->validate([
-            'date' => 'required|date',
+            'date' => ['required', 'date'],
         ]);
 
-        $model = FinanceLedger::with('account')->where(['bill_date' => $request->date])->get()->groupBy('account_id')->map(fn($item) => [
-            'account_id' => $item->first()->account_id,
-            'account_name' => $item->first()->account->name,
-            'debit' => $item->sum('debit'),
-            'credit' => $item->sum('credit'),
-            'balance' => $item->sum('debit') - $item->sum('credit'),
-            'bill_date' => $item->first()->bill_date
-        ]);
+        $date = $request->date;
+
+        $model = DB::select("SELECT
+            account_name,
+            bill_date,
+            IF((bal + opbal) > 0,
+            bal + opbal,
+            0) AS debit,
+            IF(bal + opbal < 0, ABS(bal + opbal),
+            0) AS credit
+        FROM
+            (
+            SELECT
+                account_id,
+                account_name,
+                account_masters.account_type,
+                finance_ledger.bill_date,
+                IF(
+                    account_masters.account_type = 'debit',
+                    account_masters.opening_balance,
+                    account_masters.opening_balance * -1
+                ) AS opbal,
+                SUM(debit - credit) AS bal
+            FROM
+                `finance_ledger`
+            INNER JOIN account_masters ON finance_ledger.account_id = account_masters.id
+            WHERE
+                finance_ledger.bill_date <= '".$date."'
+            GROUP BY
+                account_id
+        ) AS A");
 
         return view('reports::trial-balance.index', compact('model'));
     }
 
     /**
-     * @return Application|array|null|View|Factory|false
+     * @return array|false|Application|Factory|View|mixed
      */
-    public function trailBalanceForm(): Application|array|null|bool|View|Factory
+    public function trailBalanceForm()
     {
         return view('reports::trial-balance.create');
     }
