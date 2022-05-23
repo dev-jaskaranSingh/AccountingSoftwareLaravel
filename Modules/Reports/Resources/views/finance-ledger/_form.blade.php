@@ -36,7 +36,7 @@
                     <div class="col-md-3 col-sm-12 mb-3">
                         {!! Form::label('from_date','From Date') !!}
                         <strong class="text-danger">*</strong>
-                        {!! Form::date('from_date',authCompany()->from_date,['class'=>'form-control']) !!}
+                        {!! Form::text('from_date',authCompany()->from_date,['class'=>'form-control customDatePicker']) !!}
                         @error('from_date')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -46,7 +46,7 @@
                     <div class="col-md-3 col-sm-12 mb-3">
                         {!! Form::label('to_date','To Date') !!}
                         <strong class="text-danger">*</strong>
-                        {!! Form::date('to_date',authCompany()->to_date,['class'=>'form-control']) !!}
+                        {!! Form::text('to_date',authCompany()->to_date,['class'=>'form-control customDatePicker']) !!}
                         @error('to_date')
                         <span class="help-block text-danger">
                             {{ $message }}

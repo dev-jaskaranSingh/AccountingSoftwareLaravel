@@ -92,7 +92,7 @@
                     <div class="col-md-4 col-sm-12 mb-3">
                         {!! Form::label('instrument_date','Instrument Date') !!}
                         <strong class="text-danger">*</strong>
-                        {!! Form::text('instrument_date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        {!! Form::text('instrument_date',now()->format('d-m-Y'),['class'=>'form-control datepicker']) !!}
                         @error('instrument_date')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -103,7 +103,7 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('voucher_date','Voucher Date') !!}
                         <strong class="text-danger">*</strong>
-                        {!! Form::text('voucher_date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        {!! Form::text('voucher_date',now()->format('d-m-Y'),['class'=>'form-control datepicker']) !!}
                         @error('voucher_date')
                         <span class="help-block text-danger">
                             {{ $message }}
