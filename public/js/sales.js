@@ -348,7 +348,7 @@ $(function () {
                         data[row][11] = 0;
                     }
 
-                    window.amount = Number(qty * price);
+                    window.amount = Number(data[row][6] * price);
                     data[row][8] = window.amount;
                     data[row][11] = window.amount;
                     if(data[row][9] === 0 || data[row][10] === 0 || data[row][11] === 0){

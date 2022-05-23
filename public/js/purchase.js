@@ -328,10 +328,13 @@ $(function () {
                 }
                 //Calculate Net Wt
                 if(change[0][1] === 4 || change[0][1] === 5){
+
                     if(change[0][1] === 4 && data[row][5] === undefined){
                         data[row][5] = 0;
                     }
+
                     data[row][6] = data[row][4] - data[row][5];
+
                     if(price !== undefined){
                         data[row][8] = data[row][6] * price;
                     }else{
@@ -341,16 +344,19 @@ $(function () {
                     if(data[row][9] === undefined || data[row][9] === ''){
                         data[row][9] = 0;
                     }
+
                     if(data[row][10] === undefined || data[row][10] === ''){
                         data[row][10] = 0;
                     }
+
                     if(data[row][11] === undefined || data[row][11] === ''){
                         data[row][11] = 0;
                     }
 
-                    window.amount = Number(qty * price);
+                    window.amount = Number(data[row][6] * price);
                     data[row][8] = window.amount;
                     data[row][11] = window.amount;
+
                     if(data[row][9] === 0 || data[row][10] === 0 || data[row][11] === 0){
                         window.gst_amount = (window.amount * window.gst_min_percentage) / 100;
                         if(window.stateCode === window.companyStateCode){
