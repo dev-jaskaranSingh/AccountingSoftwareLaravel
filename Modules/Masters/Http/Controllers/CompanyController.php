@@ -2,6 +2,7 @@
 
 namespace Modules\Masters\Http\Controllers;
 
+use App\Http\Requests\CompanyCreateRequest;
 use App\Models\Company;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
@@ -35,26 +36,9 @@ class CompanyController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CompanyCreateRequest $request): RedirectResponse
     {
-        Company::create($request->validate([
-            'name' => 'required|unique:companies,name',
-            'address' => '',
-            'email' => 'email|unique:companies,email',
-            'db_name' => 'unique:companies',
-            'website' => '',
-            'mobile' => '',
-            'phone' => '',
-            'to_date' => 'required|date',
-            'from_date' => 'required|date',
-            'pan' => '',
-            'gstin' => 'required|unique:companies,gstin',
-            'country_id' => 'required|exists:countries,id',
-            'state_id' => 'required|exists:states,id',
-            'city_id' => 'required|exists:cities,id',
-            'pincode' => '',
-            'gst_state_code' => ''
-        ]));
+        Company::create($request->validated());
         Session::flash('success', 'Success|Company Created Successfully');
         return back();
     }

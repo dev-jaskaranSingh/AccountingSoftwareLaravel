@@ -2,13 +2,13 @@
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Create Account Group</h2>
+            <h2>Create Company</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="javascript:void(0)">Home</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a>Account Group</a>
+                    <a>Company</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>Create</strong>
