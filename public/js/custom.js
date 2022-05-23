@@ -183,11 +183,6 @@ $(function(){
 			}
 		});
 	});
-
-    // $('form').submit(function(){
-    //     $(this).find('input[type=submit]').prop('disabled', true);
-    // });
-
 });
 
 function getDoctors(department_id){

@@ -1,7 +1,8 @@
 <style>
     .hot-container {
-        width: 100%;
-        height: 300px;
+        width: 100%!important;
+        height: 300px!important;
+        overflow: hidden!important;
     }
 
     .address {

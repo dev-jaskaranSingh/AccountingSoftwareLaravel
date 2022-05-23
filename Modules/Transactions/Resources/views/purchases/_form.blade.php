@@ -1,7 +1,9 @@
 <style>
+
     .hot-container {
-        width: 100%;
-        height: 300px;
+        width: 100%!important;
+        height: 300px!important;
+        overflow: hidden!important;
     }
 
     .address {
@@ -37,7 +39,7 @@
                         ->prepend('Select Party',null);
                         @endphp
                         {!! Form::select('account_id',$accountsList,null,['class' => 'form-control select2
-                        account_id'],) !!}
+                        account_id']) !!}
                         @error('account_id')
                         <span class="help-block text-danger">
                                 {{ $message }}

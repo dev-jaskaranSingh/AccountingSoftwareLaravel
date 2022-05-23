@@ -63,7 +63,7 @@ $(function () {
                 toastr.error(data.message, 'Error');
                 return false;
             }
-            console.log(data);
+
             $('#purchasePartyForm').modal('show');
             window.stateCode = data.account.gst_state_code;
             $('#party_name').val(data.account.name);

@@ -37,7 +37,8 @@ class SaleReturnController extends Controller
      */
     public function create(): Renderable
     {
-        $items = array_values(ItemMaster::pluck('name', 'id')->map(function ($value, $key) {
+        $items = array_values(ItemMaster::orderBy('name','asc')
+            ->pluck('name', 'id')->map(function ($value, $key) {
             return ['id' => $key, 'label' => $value];
         })->toArray());
 
