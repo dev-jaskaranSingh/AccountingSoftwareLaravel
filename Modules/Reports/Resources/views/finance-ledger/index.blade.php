@@ -112,15 +112,15 @@
                 var accounts = index[i].account;
                 console.log(accounts);
                     if(accounts.account_type == "credit"){
-                        balancetotal = debittotal-credittotal-openingblncval;
+                        balancetotal = openingblncval+debittotal-credittotal;
                     }
                     if(accounts.account_type == "debit"){
-                        balancetotal = debittotal-credittotal+openingblncval;
+                        balancetotal = openingblncval+debittotal-credittotal;
                     }
                 if (!isNaN(openingblncval)) {
                     if(accounts.account_type == "credit"){
 
-                        openingblnc= '-'+openingblncval;
+                        openingblnc= openingblncval;
                     }else{
 
                         openingblnc= openingblncval;

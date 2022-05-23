@@ -108,7 +108,7 @@
     $(document).ready(function () {
 
     $('.purchaseDatePicker').datepicker({
-        format: 'yyyy-mm-dd',
+        format: 'dd-mm-yyy',
         maxViewMode: 0,
         todayBtn: "linked",
         clearBtn: true,

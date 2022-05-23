@@ -68,34 +68,28 @@ class FinanceLedgerDataTable extends DataTable
      */
     public function query(FinanceLedger $model): \Illuminate\Database\Eloquent\Builder
     {
-      
+       
         $openongBlnc = DB::table('account_masters')->where('id',request()?->account_id)->first();
         $fnledgers = DB::table('finance_ledger')->where('account_id',request()?->account_id)->get();
         $opnblncType = $openongBlnc->account_type;
         $opnblnc = $openongBlnc->opening_balance;
         foreach ($fnledgers as $key => $fnledger) {
-            
                $credit = 0;
                $debit = 0;
-               if($fnledger->credit){
-                $credit = $fnledger->credit;
-               }
-               if($fnledger->debit){
-                $debit = $fnledger->debit;
-               }
-                  
-               if($opnblncType == "credit"){
-                     $ttl = $opnblnc-$debit-$credit;
-                        $balance = $ttl;
-                    
-                   
-               }else{
-                 $ttl = $opnblnc+$debit-$credit;
-                     
+                if($fnledger->credit){
+                 $credit = $fnledger->credit;
+                }
+                if($fnledger->debit){
+                 $debit = $fnledger->debit;
+                }
+                if($opnblncType == "credit"){
+                    $ttl = $opnblnc+$debit-$credit;
                     $balance = $ttl;
-               }
-               
-               $opnblnc = $balance;
+                }else{
+                 $ttl = $opnblnc+$debit-$credit;
+                    $balance = $ttl;
+                }
+        $opnblnc = $balance;
 
 
             DB::table('finance_ledger')->where('id',$fnledger->id)->update(['balance' => $balance]);
