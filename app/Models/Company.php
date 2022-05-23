@@ -33,7 +33,6 @@ class Company extends Model
 {
     use HasFactory;
 
-    // protected $fillable = ['name', 'logo', 'db_name', 'address', 'email'];
     protected $guarded = ['id'];
 
     /**
@@ -42,5 +41,13 @@ class Company extends Model
     public static function getCompanies(): Collection
     {
         return Self::pluck('name', 'id');
+    }
+
+    public function getToDateAttribute($value){
+        return Carbon::parse($value)->format('d-m-Y');
+    }
+
+    public function getFromDateAttribute($value){
+        return Carbon::parse($value)->format('d-m-Y');
     }
 }
