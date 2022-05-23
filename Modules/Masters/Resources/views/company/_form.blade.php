@@ -133,7 +133,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('from_date','From Date') !!}
-                        {!! Form::text('from_date',isset($model) ? $model->from_date : now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        {!! Form::text('from_date',isset($model) ? $model->from_date : now()->format('d-m-Y'),['class'=>'form-control customDatePicker']) !!}
                         @error('from_date')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -143,7 +143,7 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('to_date','To Date') !!}
-                        {!! Form::text('to_date',isset($model) ? $model->to_date : now()->addDays(365)->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        {!! Form::text('to_date',isset($model) ? $model->to_date : now()->addDays(365)->format('d-m-Y'),['class'=>'form-control customDatePicker']) !!}
                         @error('to_date')
                         <span class="help-block text-danger">
                             {{ $message }}

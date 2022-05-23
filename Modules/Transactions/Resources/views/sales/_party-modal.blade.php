@@ -116,7 +116,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                {!! Form::button('Done',['class'=>'btn btn-sm btn-primary']) !!}
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Done</button>
+                <!-- {!! Form::button('Done',['class'=>'btn btn-sm btn-primary']) !!} -->
             </div>
         </div>
     </div>

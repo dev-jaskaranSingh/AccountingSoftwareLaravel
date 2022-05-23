@@ -58,7 +58,7 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('bill_date', 'Bill Date') !!}
                         <strong class="text-danger">*</strong>
-                        {!! Form::text('bill_date', now()->format('Y-m-d'), ['class' => 'form-control purchaseDatePicker']) !!}
+                        {!! Form::text('bill_date', now()->format('d-m-Y'), ['class' => 'form-control purchaseDatePicker']) !!}
                         @error('bill_date')
                         <span class="help-block text-danger">
                                 {{ $message }}
@@ -68,7 +68,7 @@
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('purchase_date', 'StockIn Date') !!}
                         <strong class="text-danger">*</strong>
-                        {!! Form::text('purchase_date', now()->format('Y-m-d'), ['class' => 'form-control purchaseDatePicker']) !!}
+                        {!! Form::text('purchase_date', now()->format('d-m-Y'), ['class' => 'form-control purchaseDatePicker']) !!}
                         @error('purchase_date')
                         <span class="help-block text-danger">
                                 {{ $message }}

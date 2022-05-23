@@ -108,7 +108,7 @@
     $(document).ready(function () {
 
     $('.purchaseDatePicker').datepicker({
-        format: 'dd-mm-yyy',
+        format: 'dd-mm-yyyy',
         maxViewMode: 0,
         todayBtn: "linked",
         clearBtn: true,
@@ -116,6 +116,9 @@
         todayHighlight: true,
         startDate: getCurrentFinancialYearForPurchase($('input.purchaseDatePicker').val()).startDate,
         endDate: getCurrentFinancialYearForPurchase($('input.purchaseDatePicker').val()).endDate
+    });
+    $('.customDatePicker').datepicker({
+        format: 'dd-mm-yyyy'
     });
 
         $('.datepicker').on('change', function(e){
