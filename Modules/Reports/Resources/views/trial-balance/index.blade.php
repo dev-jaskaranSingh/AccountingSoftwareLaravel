@@ -9,7 +9,7 @@
                     <div class="col-md-3 col-sm-12">
                         {!! Form::label('date','Select Date') !!}
                         <strong class="text-danger">*</strong>
-                        {!! Form::text('date',now()->format('Y-m-d'),['class'=>'form-control datepicker']) !!}
+                        {!! Form::text('date',now()->format('d-m-Y'),['class'=>'form-control datepicker']) !!}
                         @error('date')
                             <span class="help-block text-danger">
                                 {{ $message }}
