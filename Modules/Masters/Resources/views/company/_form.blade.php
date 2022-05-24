@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>Create Account Group <small>Account Group create form</small></h5>
+                <h5>Create Company <small>Company create form</small></h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
