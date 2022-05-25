@@ -97,7 +97,7 @@ class FinanceLedgerDataTable extends DataTable
         }
 
         $result = $model->newQuery()->when(!is_null(request()->from_date),function ($query) {
-                return $query->where('account_id',request()?->account_id)->where('bill_date','<=',Carbon::createFromFormat('Y-m-d', request()?->to_date)->format('Y-m-d'))->where('bill_date','>=',Carbon::createFromFormat('Y-m-d', request()?->from_date)->format('Y-m-d'));})->with(['account', 'account.accountGroup','user'])->orderBy('id','asc');
+                return $query->where('account_id',request()?->account_id)->where('bill_date','<=',Carbon::createFromFormat('d-m-Y', request()?->to_date)->format('d-m-Y'))->where('bill_date','>=',Carbon::createFromFormat('d-m-Y', request()?->from_date)->format('d-m-Y'));})->with(['account', 'account.accountGroup','user'])->orderBy('id','asc');
         return $result;
 
     }
