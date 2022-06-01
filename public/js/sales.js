@@ -63,7 +63,7 @@ $(function () {
                 toastr.error(data.message, 'Error');
                 return false;
             }
-            console.log(data);
+
             $('#purchasePartyForm').modal('show');
             window.stateCode = data.account.gst_state_code;
             $('#party_name').val(data.account.name);
@@ -73,18 +73,16 @@ $(function () {
             $('#pin_code').val(data.account.pincode);
             $('#mobile').val(data.account.phone);
             $('.country').val(data.account.country_id);
-            $('.country').select2().trigger('change');
+
             var stateID = data.account.state_id;
             var cityID = data.account.city_id;
-            renderStatesByCountry(data.account.country_id).then(function (StateResonse) {
-                console.log(StateResonse,stateID);
+
+            renderStatesByCountry(data.account.country_id).then(function (StateResponse) {
                 $('.state').val(stateID);
-                $('.state').select2().trigger('change');
-                renderCitiesByState(data.state_id).then(function (CityResponse) {
-                    console.log(CityResponse,cityID);
+                renderCitiesByState(stateID).then(function (CityResponse) {
                     $('.city').val(cityID);
-                    $('.city').select2().trigger('change');
                 });
+
             }).catch(function (error) {
                 console.error(error);
             });
@@ -104,11 +102,18 @@ $(function () {
 
     function renderStatesByCountry(country_id){
         return new Promise((resolve,reject)=>{
+
+            if($('.state option').length > 0){
+                $('.state').empty();
+            }
+            if($('.city option').length > 0){
+                $('.city').empty();
+            }
             try {
                 ajaxHandler(route + "/ajax/get-state-by-country", {country_id: country_id}, 'GET', function (data) {
                     window.states = data.states;
-                    $('.state').select2({
-                        data: data?.states, placeholder: 'Select State'
+                    data?.states.forEach(function (state) {
+                        $('.state').append('<option value="' + state.id + '">' + state.text + '</option>');
                     });
                 });
                 resolve("statesLoaded");
@@ -119,12 +124,18 @@ $(function () {
     }
 
     function renderCitiesByState(stateId){
+
+        if($('.city option').length > 0){
+            $('.city').empty();
+        }
+
         return new Promise((resolve,reject)=>{
             try {
                 ajaxHandler(route + '/ajax/get-city-by-state', {state_id: stateId}, 'GET', function (data) {
-                    $('.city').select2({
-                        data: data?.cities, placeholder: 'Select City'
+                    data?.cities.forEach(function (state) {
+                        $('.city').append('<option value="' + state.id + '">' + state.text + '</option>');
                     });
+
                 });
                 resolve("citiesLoaded");
             } catch (error) {

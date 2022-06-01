@@ -1,15 +1,3 @@
-
-<script>
-    $('#country_id').select2({
-        dropdownParent: $('#purchasePartyForm')
-    });
-    $('#state_id').select2({
-        dropdownParent: $('#purchasePartyForm')
-    });
-    $('#city_id').select2({
-        dropdownParent: $('#purchasePartyForm')
-    });
-</script>
 <div class="modal inmodal fade" id="purchasePartyForm" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">

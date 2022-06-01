@@ -80,7 +80,6 @@
     @endif
 </script>
 <script src="{{ asset('js/validations.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/custom.js?ref='.rand(1111,9999)) }}"></script>
 <!-- iCheck -->
 <script src="{{ asset('template/js/plugins/iCheck/icheck.min.js') }}"></script>
 @php

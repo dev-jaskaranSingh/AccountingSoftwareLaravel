@@ -12,7 +12,7 @@
 
 </script>
 <style type="text/css">
-    
+
     *, ::after, ::before {
         z-index: 9999;
     }

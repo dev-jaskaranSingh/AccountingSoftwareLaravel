@@ -297,15 +297,17 @@
         $('body').on('change', '.state', function () {
             var state_id = $(this).val();
             let statesArray = window.states;
-            var selectedState = statesArray.find(item => item.id == state_id);
-            $('.gst_code').val(selectedState?.tin);
-            toastr.success('Cities loaded.', 'Success!');
-            ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
-                $('.city').select2({
-                    data: data?.cities,
-                    placeholder: 'Select City'
+            if(selectedState){
+                var selectedState = statesArray.find(item => item.id == state_id);
+                $('.gst_code').val(selectedState?.tin);
+                toastr.success('Cities loaded.', 'Success!');
+                ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
+                    $('.city').select2({
+                        data: data?.cities,
+                        placeholder: 'Select City'
+                    }).trigger('change');
                 });
-            });
+            }
         });
     </script>
 
