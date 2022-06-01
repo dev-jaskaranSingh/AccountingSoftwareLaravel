@@ -289,7 +289,7 @@
                 $('.state').select2({
                     data: null,
                     placeholder: 'Select State'
-                }).trigger('change');
+                });
             }
 
             if($('.city option').length > 0){
@@ -297,7 +297,7 @@
                 $('.city').select2({
                     data: null,
                     placeholder: 'Select City'
-                }).trigger('change');
+                });
             }
 
             var country_id = $(this).val();
@@ -318,7 +318,7 @@
                 $('.city').select2({
                     data: null,
                     placeholder: 'Select City'
-                }).trigger('change');
+                });
             }
 
             var state_id = $(this).val();

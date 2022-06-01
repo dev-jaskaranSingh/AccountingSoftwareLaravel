@@ -49,10 +49,18 @@ $('body').on('change', '.country', function () {
 
     if($('.state option').length > 0){
         $('.state').empty();
+        $('.state').select2({
+            data: null,
+            placeholder: 'Select State'
+        });
     }
 
     if($('.city option').length > 0){
         $('.city').empty();
+        $('.city').select2({
+            data: null,
+            placeholder: 'Select City'
+        });
     }
 
     ajaxHandler(route + "/ajax/get-state-by-country", {country_id: country_id}, 'GET', function (data) {
@@ -68,6 +76,10 @@ $('body').on('change', '.state', function () {
 
     if($('.city option').length > 0){
         $('.city').empty();
+        $('.city').select2({
+            data: null,
+            placeholder: 'Select City'
+        });
     }
 
     var state_id = $(this).val();
