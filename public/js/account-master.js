@@ -46,6 +46,23 @@ $('body').on('change', '.dealer_type', function () {
 
 $('body').on('change', '.country', function () {
     var country_id = $(this).val();
+
+    if($('.state option').length > 0){
+        $('.state').empty();
+        $('.state').select2({
+            data: null,
+            placeholder: 'Select State'
+        });
+    }
+
+    if($('.city option').length > 0){
+        $('.city').empty();
+        $('.city').select2({
+            data: null,
+            placeholder: 'Select City'
+        });
+    }
+
     ajaxHandler(route + "/ajax/get-state-by-country", {country_id: country_id}, 'GET', function (data) {
         toastr.success('States loaded.', 'Success!');
         window.states = data.states;
@@ -56,6 +73,15 @@ $('body').on('change', '.country', function () {
 });
 
 $('body').on('change', '.state', function () {
+
+    if($('.city option').length > 0){
+        $('.city').empty();
+        $('.city').select2({
+            data: null,
+            placeholder: 'Select City'
+        });
+    }
+
     var state_id = $(this).val();
     let statesArray = window.states;
     var selectedState = statesArray.find(item => item.id == state_id);
