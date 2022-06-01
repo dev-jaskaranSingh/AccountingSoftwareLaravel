@@ -85,6 +85,21 @@
     <script>
 
  $(document).ready(function() {
+    
+var url      = window.location.href;
+
+var date = url.split("&");
+if(date){
+    if(date['1']){
+        
+    var fromDate = date['1'].split("from_date=")['1']; 
+    $("#from_date").datepicker().datepicker('setDate', fromDate);
+    
+    var toDate = date['2'].split("to_date=")['1']; 
+    $("#to_date").datepicker().datepicker('setDate', toDate);
+    
+    }
+}
     setTimeout(function () {
         var table = $('#finance-ledger-datatable-table').dataTable();
         var hours = table.fnGetData();
