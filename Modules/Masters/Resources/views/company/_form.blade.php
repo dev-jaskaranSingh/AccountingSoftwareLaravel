@@ -283,6 +283,23 @@
         });
 
         $('body').on('change', '.country', function () {
+
+            if($('.state option').length > 0){
+                $('.state').empty();
+                $('.state').select2({
+                    data: null,
+                    placeholder: 'Select State'
+                }).trigger('change');
+            }
+
+            if($('.city option').length > 0){
+                $('.city').empty();
+                $('.city').select2({
+                    data: null,
+                    placeholder: 'Select City'
+                }).trigger('change');
+            }
+
             var country_id = $(this).val();
             ajaxHandler('{{route('ajax.get-state-by-country')}}', {country_id: country_id}, 'GET', function (data) {
                 toastr.success('States loaded.', 'Success!');
@@ -295,19 +312,26 @@
         });
 
         $('body').on('change', '.state', function () {
+
+            if($('.city option').length > 0){
+                $('.city').empty();
+                $('.city').select2({
+                    data: null,
+                    placeholder: 'Select City'
+                }).trigger('change');
+            }
+
             var state_id = $(this).val();
             let statesArray = window.states;
-            if(selectedState){
-                var selectedState = statesArray.find(item => item.id == state_id);
-                $('.gst_code').val(selectedState?.tin);
-                toastr.success('Cities loaded.', 'Success!');
-                ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
-                    $('.city').select2({
-                        data: data?.cities,
-                        placeholder: 'Select City'
-                    }).trigger('change');
-                });
-            }
+            var selectedState = statesArray.find(item => item.id == state_id);
+            $('.gst_code').val(selectedState?.tin);
+            toastr.success('Cities loaded.', 'Success!');
+            ajaxHandler('{{route('ajax.get-city-by-state')}}', {state_id: state_id}, 'GET', function (data) {
+                $('.city').select2({
+                    data: data?.cities,
+                    placeholder: 'Select City'
+                }).trigger('change');
+            });
         });
     </script>
 
