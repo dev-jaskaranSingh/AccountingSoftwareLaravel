@@ -93,6 +93,10 @@
                         </span>
                         @enderror
                     </div>
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        <label id="purchaseOpBal"></label>
+                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,5 +106,16 @@
 
 
 @section('scripts')
+    <script>
 
+    $('#opening_balance').on('change',function() {
+       var opening_balance = $('#opening_balance').val();
+       var purchase_price = $('#purchase_price').val();
+       var total = purchase_price*opening_balance;
+       $('#purchaseOpBal').html('');
+       $('#purchaseOpBal').append('<p>Total of purchase & opening balance '+total+'</p>');
+
+    });
+</script>
 @endsection
+
