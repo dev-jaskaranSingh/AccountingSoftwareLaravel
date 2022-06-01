@@ -48,7 +48,13 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('country_id','Select Country') !!}
-                        {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),@$model->country_id,['class'=>'select2 country form-control']) !!}
+                        <strong class="text-danger">*</strong>
+                        @if(request()->old('country_id'))
+                            {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),request()->old('country_id'),['class'=>'select2 country form-control']) !!}
+                        @else
+                            {!! Form::select('country_id',\App\Models\Country::pluck('name','id')->prepend('Select', null),@$model->country_id,['class'=>'select2 country form-control']) !!}
+                        @endif
+
                         @error('country_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -59,7 +65,12 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('state_id','Select State') !!}
-                        {!! Form::select('state_id',\App\Models\State::where('country_id',@$model->country_id)->pluck('name','id'),@$model->state_id,['class'=>'select2 state form-control']) !!}
+                        <strong class="text-danger">*</strong>
+                        @if(request()->old('state_id'))
+                            {!! Form::select('state_id',\App\Models\State::where('country_id',request()->old('country_id'))->pluck('name','id'),request()->old('state_id'),['class'=>'select2 state form-control']) !!}
+                        @else
+                            {!! Form::select('state_id',\App\Models\State::where('country_id',@$model->country_id)->pluck('name','id'),@$model->state_id,['class'=>'select2 state form-control']) !!}
+                        @endif
                         @error('state_id')
                         <span class="help-block text-danger">
                             {{ $message }}
@@ -69,17 +80,24 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('city_id','Select City') !!}
-                        @if(isset($model))
-                        {!! Form::select('city_id',\App\Models\State::find(@$model->state_id)->cities()->pluck('name','id'),@$model->city_id,['class'=>'select2 city form-control']) !!}
+                        <strong class="text-danger">*</strong>
+                        @if(request()->old('city_id'))
+                            {!! Form::select('city_id',\App\Models\State::find(request()->old('state_id'))->cities()->pluck('name','id'),request()->old('city_id'),['class'=>'select2 city form-control']) !!}
                         @else
-                        {!! Form::select('city_id',[],null,['class'=>'select2 city form-control']) !!}
+                            @if(isset($model))
+                                {!! Form::select('city_id',\App\Models\State::find(@$model->state_id)->cities()->pluck('name','id'),@$model->city_id,['class'=>'select2 city form-control']) !!}
+                            @else
+                                {!! Form::select('city_id',[],@$model->city_id,['class'=>'select2 city form-control']) !!}
+                            @endif
                         @endif
+
                         @error('city_id')
                         <span class="help-block text-danger">
                             {{ $message }}
                         </span>
                         @enderror
                     </div>
+
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('pincode','PIN Code') !!}
@@ -171,30 +189,30 @@
 @section('scripts')
     <script>
 
-    $('#formSubmit').submit(function(event) {
-        event.preventDefault();
-        var mobile = $('.mobile').val();
-        var pan = $('.pan').val();
-        var gstin = $('.gstin').val();
+        $('#formSubmit').submit(function (event) {
+            event.preventDefault();
+            var mobile = $('.mobile').val();
+            var pan = $('.pan').val();
+            var gstin = $('.gstin').val();
 
-        if(mobile.length < 10){
-            toastr.warning('Mobile Number should be 10 digit', 'Warning!');
-            return false;
-        }
+            if (mobile.length < 10) {
+                toastr.warning('Mobile Number should be 10 digit', 'Warning!');
+                return false;
+            }
 
-        if(verifyPAN(pan)&& verifyGSTIN(gstin) && verifyMobile(mobile)){
-            $(this).unbind('submit').submit();
-        }else{
-            return false;
-        }
-    })
+            if (verifyPAN(pan) && verifyGSTIN(gstin) && verifyMobile(mobile)) {
+                $(this).unbind('submit').submit();
+            } else {
+                return false;
+            }
+        })
 
 
         function verifyMobile(mobile) {
             var regex = /^[0-9]{10}$/;
             if (regex.test(mobile)) {
                 return true;
-            }else{
+            } else {
                 toastr.warning('Please Enter Valid Mobile Number', 'Warning!');
                 return false;
             }
@@ -215,11 +233,12 @@
             var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
             if (regex.test(pan)) {
                 return true;
-            }else{
+            } else {
                 toastr.warning('Please Enter Valid PAN Number', 'Warning!');
                 return false;
             }
         }
+
         function ajaxHandler(url, data, type, callback) {
             $.ajax({
                 url: url,
