@@ -59,9 +59,10 @@ class PurchaseController extends Controller
             $filteredPurchaseItemsJson = $this->filteredPurchaseItemsArray($request->bill_products)->toJson();
 
             $fileNameToStore = null;
-            if($request->hasFile('pdf_file')){
-                $fileNameToStore = time().'.'.$request->pdf_file->extension();
-                $request->pdf_file->move(public_path('uploads/docs'), $fileNameToStore);
+            if($request->has('pdf_file')){
+                $fileExtension = $request->file('pdf_file')->getClientOriginalExtension();
+                $fileNameToStore = rand(1111,9999).'_img.'.$fileExtension;
+                $request->file('pdf_file')->move('uploads/purchases',$fileNameToStore);
             }
 
             //Save Purchase bill
