@@ -78,6 +78,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('pdf_file','Attach Document') !!}
+                        <br/>
                         {!! Form::file('pdf_file') !!}
                         @error('pdf_file')
                         <span class="help-block text-danger">
