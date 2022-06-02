@@ -73,6 +73,16 @@
                             </span>
                                 @enderror
                             </div>
+
+                            <div class="col-md-12 col-sm-12 mb-3">
+                                {!! Form::label('remarks','Shipped To') !!}
+                                {!! Form::textarea('remarks',null,['class'=>'form-control','rows'=>4]) !!}
+                                @error('remarks')
+                                <span class="help-block text-danger">
+                                {{ $message }}
+                            </span>
+                                @enderror
+                            </div>
                         </div>
                     </div>
 

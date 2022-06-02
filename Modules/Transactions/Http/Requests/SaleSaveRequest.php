@@ -39,7 +39,8 @@ class SaleSaveRequest extends FormRequest
             'city_id' => '',
             'pin_code' => '',
             'gstin' => '',
-            'mobile' => ''
+            'mobile' => '',
+            'remarks' => ''
         ];
     }
 

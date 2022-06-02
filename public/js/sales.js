@@ -69,6 +69,7 @@ $(function () {
             $('#party_name').val(data.account.name);
             $('#address').val(data.account.address);
             $('#country_id').val(data.account.country_id);
+            $('#shipped_to').val(data.account.address);
             $('#gstin').val(data.account.gstin);
             $('#pin_code').val(data.account.pincode);
             $('#mobile').val(data.account.phone);
