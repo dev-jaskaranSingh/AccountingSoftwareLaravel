@@ -60,11 +60,8 @@ class PurchaseController extends Controller
 
             $fileNameToStore = null;
             if($request->hasFile('pdf_file')){
-                $filenameWithExt = $request->file('pdf_file')->getClientOriginalName();
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension = $request->file('pdf_file')->getClientOriginalExtension();
-                $fileNameToStore = $filename.'_'.time().'.'.$extension;
-                $request->file('pdf_file')->storeAs('public/docs', $fileNameToStore);
+                $fileNameToStore = time().'.'.$request->pdf_file->extension();
+                $request->pdf_file->move(public_path('uploads/docs'), $fileNameToStore);
             }
 
             //Save Purchase bill
