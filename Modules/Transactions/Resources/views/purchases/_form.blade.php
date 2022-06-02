@@ -76,7 +76,7 @@
                             </span>
                         @enderror
                     </div>
-                    <div class="col-md-12 col-sm-12 mb-3">
+                    <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('pdf_file','Attach Document') !!}
                         {!! Form::file('pdf_file') !!}
                         @error('pdf_file')
@@ -85,8 +85,8 @@
                             </span>
                         @enderror
                     </div>
-                    <div class="col-md-12 col-sm-12 mb-3">
-                        {!! Form::label('remarks','Shipped To') !!}
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('remarks','Remarks') !!}
                         {!! Form::textarea('remarks',null,['class'=>'form-control','rows'=>4]) !!}
                         @error('remarks')
                         <span class="help-block text-danger">
