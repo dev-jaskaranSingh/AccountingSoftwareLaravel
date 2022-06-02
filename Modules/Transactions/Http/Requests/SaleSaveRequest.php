@@ -40,7 +40,8 @@ class SaleSaveRequest extends FormRequest
             'pin_code' => '',
             'gstin' => '',
             'mobile' => '',
-            'remarks' => ''
+            'remarks' => '',
+            'gold_price' => ''
         ];
     }
 
