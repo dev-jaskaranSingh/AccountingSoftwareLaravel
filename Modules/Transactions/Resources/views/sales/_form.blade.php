@@ -63,27 +63,27 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                {!! Form::label('shipped_to','Shipped To') !!}
-                                <strong class="text-danger">*</strong>
-                                {!! Form::textarea('shipped_to',null,['class'=>'form-control','rows'=>4]) !!}
-                                @error('shipped_to')
-                                <span class="help-block text-danger">
-                                {{ $message }}
-                            </span>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-6 col-sm-12 mb-3">
-                                {!! Form::label('remarks','Remarks') !!}
-                                {!! Form::textarea('remarks',null,['class'=>'form-control','rows'=>4]) !!}
-                                @error('remarks')
-                                <span class="help-block text-danger">
-                                {{ $message }}
-                            </span>
-                                @enderror
-                            </div>
                         </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('shipped_to','Shipped To') !!}
+                        <strong class="text-danger">*</strong>
+                        {!! Form::textarea('shipped_to',null,['class'=>'form-control','rows'=>4]) !!}
+                        @error('shipped_to')
+                        <span class="help-block text-danger">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        {!! Form::label('remarks','Remarks') !!}
+                        {!! Form::textarea('remarks',null,['class'=>'form-control','rows'=>4]) !!}
+                        @error('remarks')
+                        <span class="help-block text-danger">
+                                {{ $message }}
+                            </span>
+                        @enderror
                     </div>
 
                 </div>
