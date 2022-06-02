@@ -68,7 +68,6 @@
 
                     <div class="col-md-6 col-sm-12 mb-3">
                         {!! Form::label('gold_price','24k/Gold Rate') !!}
-                        <strong class="text-danger">*</strong>
                         {!! Form::text('gold_price',null,['class'=>'form-control']) !!}
                         @error('gold_price')
                         <span class="help-block text-danger">
