@@ -321,8 +321,19 @@
     <tr>
         <td style="line-height: 60px !important;"></td>
         <td style="line-height: 60px !important;" colspan="1"><b>TOTAL TAX IN WORDS:</b></td>
-        <td style="line-height: 60px !important;" colspan="6">
-            <b>{{ getIndianCurrency($model?->igst + $model?->tcs) }}</b></td>
+        <td style="line-height: 60px !important;"
+        @if($model?->gold_price)
+            colspan="4"
+        @else
+            colspan="6"
+        @endif>
+            <b>{{ getIndianCurrency($model?->igst + $model?->tcs) }}</b>
+        </td>
+        @if($model?->gold_price)
+            <td style="line-height: 60px !important;">
+                <b>24k Gold Price : {{ $model?->gold_price }}</b>
+            </td>
+        @endif
     </tr>
     <tr>
         <td colspan="8" align="center" style="padding: 25px;">

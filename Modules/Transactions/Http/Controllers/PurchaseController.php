@@ -58,15 +58,14 @@ class PurchaseController extends Controller
             //Manipulate bill products data
             $filteredPurchaseItemsJson = $this->filteredPurchaseItemsArray($request->bill_products)->toJson();
 
-            $fileNameToStore = null;
+            $fileNameToStore = '';
             if($request->has('pdf_file')){
                 $fileExtension = $request->file('pdf_file')->getClientOriginalExtension();
                 $fileNameToStore = rand(1111,9999).'_img.'.$fileExtension;
                 $request->file('pdf_file')->move('uploads/purchases',$fileNameToStore);
             }
-
             //Save Purchase bill
-            $purchaseModel = Purchase::create($request->validated() + ['bill_products_json' => $filteredPurchaseItemsJson,'remarks' => $request->remarks,'pdf_file' => $fileNameToStore]);
+            $purchaseModel = Purchase::create($request->validated() + ['bill_products_json' => $filteredPurchaseItemsJson,'remarks' => $request->remarks,'file_name' => $fileNameToStore]);
 
             //Manipulate Purchase bill items
             $purchaseItems = $this->mapPurchaseItemData($request->bill_products, $request->bill_date, $request->account_id, $request->invoice_number);

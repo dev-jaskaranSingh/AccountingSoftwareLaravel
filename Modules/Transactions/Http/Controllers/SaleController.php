@@ -51,6 +51,7 @@ class SaleController extends Controller
      */
     public function store(SaleSaveRequest $request): RedirectResponse
     {
+
         try {
 
             DB::beginTransaction();

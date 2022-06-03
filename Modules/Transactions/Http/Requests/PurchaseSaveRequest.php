@@ -45,7 +45,7 @@ class PurchaseSaveRequest extends FormRequest
             'pin_code' => '',
             'gstin' => '',
             'mobile' => '',
-            'pdf_file' => ''
+            'pdf_file' => 'mimes:pdf,xlsx,xls,csv'
         ];
     }
 
